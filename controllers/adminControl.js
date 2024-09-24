@@ -395,7 +395,7 @@ const postProduct=async(req,res)=>{
       images:images
     })
     const saveProduct=await product.save();
-    console.log(saveProduct);
+    // console.log(saveProduct);
     req.flash('msg','product added successfully')
     res.redirect('/admin/addproduct')
    }

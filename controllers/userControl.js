@@ -239,8 +239,19 @@ const loadHome = async (req, res) => {
 
 //load product details page
 const productDetails=async (req,res)=>{
+
   try {
-    res.render('productDetails')
+    const id=req.query.id;
+    const productData=await Product.findOne({_id:id}).populate('brandName').populate('category')
+    const category=await Category.find({isListed:true})
+    const brand=await Brand.find({isListed:true})
+ 
+    if(productData){
+      res.render('productDetails',{data:productData,brand:brand,category:category})
+    }else{
+      res.redirect('/home')
+    }
+    
   } catch (error) {
     console.log(error.message);
   }

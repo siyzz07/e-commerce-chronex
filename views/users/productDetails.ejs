@@ -34,6 +34,9 @@
                        
                         
                     </div> 
+
+
+                    <!-- pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp -->
                     <div class="main-menu  main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
                         <nav>
                             <ul>
@@ -41,15 +44,18 @@
                                     
                                 </li>
                                
-                                <li><a href="shop-grid-right.html">Shop <i class="fi-rs-angle-down"></i></a>
+                                <li><a href="#">Category<i class="fi-rs-angle-down"></i></a>
                                     <ul class="sub-menu">
-                                        <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
-                                        
+                                        <% for(let i=0;i<category.length;i++){ %>
+                                        <li><a href="#"><%= category[i].category %></a></li>
+                                        <% } %>
                                     </ul>
                                 </li>
-                                <li><a href="shop-grid-right.html">Shop <i class="fi-rs-angle-down"></i></a>
+                                <li><a href="#">Brand<i class="fi-rs-angle-down"></i></a>
                                     <ul class="sub-menu">
-                                        <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
+                                        <% for(let i=0;i<brand.length;i++){ %>
+                                            <li><a href="#"><%= brand[i].brand %></a></li>
+                                            <% } %>
                                         
                                     </ul>
                                 </li>   
@@ -70,64 +76,7 @@
                 </div>
                 <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
                 <div class="header-action-right d-block d-lg-none">
-                    <div class="header-action-2">
-                        <!-- <div class="header-action-icon-2">
-                            <a href="shop-wishlist.html">
-                                <img alt="Evara" src="user/assets/imgs/theme/icons/icon-heart.svg">
-                                <span class="pro-count white">4</span>
-                            </a>
-                        </div> -->
-                        <!-- <div class="header-action-icon-2"> -->
-                            <!-- <a class="mini-cart-icon" href="shop-cart.html">
-                                <img alt="Evara" src="user/assets/imgs/theme/icons/icon-cart.svg">
-                                <span class="pro-count white">2</span>
-                            </a> -->
-                            <!-- <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                <ul>
-                                    <li>
-                                        <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="Evara" src="user/assets/imgs/shop/thumbnail-3.jpg"></a>
-                                        </div>
-                                        <div class="shopping-cart-title">
-                                            <h4><a href="shop-product-right.html">Plain Striola Shirts</a></h4>
-                                            <h3><span>1 × </span>$800.00</h3>
-                                        </div>
-                                        <div class="shopping-cart-delete">
-                                            <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="Evara" src="user/assets/imgs/shop/thumbnail-4.jpg"></a>
-                                        </div>
-                                        <div class="shopping-cart-title">
-                                            <h4><a href="shop-product-right.html">Macbook Pro 2022</a></h4>
-                                            <h3><span>1 × </span>$3500.00</h3>
-                                        </div>
-                                        <div class="shopping-cart-delete">
-                                            <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="shopping-cart-footer">
-                                    <div class="shopping-cart-total">
-                                        <h4>Total <span>$383.00</span></h4>
-                                    </div>
-                                    <div class="shopping-cart-button">
-                                        <a href="shop-cart.html">View cart</a>
-                                        <a href="shop-checkout.html">Checkout</a>
-                                    </div>
-                                </div>
-                            </div> -->
-                        <!-- </div> -->
-                        <!-- <div class="header-action-icon-2 d-block d-lg-none">
-                            <div class="burger-icon burger-icon-white">
-                                <span class="burger-icon-top"></span>
-                                <span class="burger-icon-mid"></span>
-                                <span class="burger-icon-bottom"></span>
-                            </div>
-                        </div> -->
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -158,19 +107,22 @@
 
                                 <!-- //////////////////////////////////////////////////////////////////////// -->
                                 <div class="product-image-slider">
-                                    <figure class="border-radius-10">
-                                        <img src="product_images/image-1726815556058.jpeg"  alt="product image">
-                                    </figure>
-                                   
-                                   
+                                    <% for(let i=0;i<data.images.length;i++){ %>
+                                        <figure class="border-radius-10">
+                                            <img src="public/product_images/<%= data.images[i] %>"  alt="product image">
+                                        </figure>
+                                        <% } %>
+ 
                                 </div>
+
+
+
                                 <!-- THUMBNAILS -->
                                 <div class="slider-nav-thumbnails pl-15 pr-15">
-                                    <div><img src="product_images/image-1726815556058.jpeg" style="width: 7rem;height: 7rem;" alt="product image"></div>
+                                    <% for(let i=0;i<data.images.length;i++){ %>
+                                    <div><img src="/public/product_images/<%= data.images[i] %>" style="width: 7rem;height: 7rem;" alt="product image"></div>
+                                    <% } %>
 
-                                    <div><img src="product_images/image-1726815556058.jpeg" style="width: 7rem;height: 7rem;" alt="product image"></div>
-
-                                 
                                 </div>
                             </div>
                         </div>
@@ -277,16 +229,21 @@
                                         <!-- MAIN SLIDES -->
                                          <!-- /////////////////////////////////////////////////////////////////// -->
                                         <div class="product-image-slider">
-                                            <figure class="border-radius-10">
-                                                <img src="product_images/image-1726815556058.jpeg" style="width: 50rem;height: 30rem; object-fit: cover;" alt="product image">
-                                            </figure>
-                                            
-                                         
+                                          
+                                            <% for(let i=0;i<data.images.length;i++){ %>
+                                                <figure class="border-radius-10">
+                                                    <img src="public/product_images/<%= data.images[i] %>"  alt="product image">
+                                                </figure>
+                                                <% } %>
                                         </div>
+
+
                                         <!-- THUMBNAILS -->
                                         <div class="slider-nav-thumbnails pl-15 pr-15">
-                                            <div><img src="product_images/image-1726815556058.jpeg" style="width: 7rem;height: 7rem;" alt="product image"></div>
-                                            <div><img src="product_images/image-1726815556058.jpeg" style="width: 7rem;height: 7rem;" alt="product image"></div>
+                                            <!-- <div><img src="product_images/image-1726815556058.jpeg" style="width: 7rem;height: 7rem;" alt="product image"></div> -->
+                                            <% for(let i=0;i<data.images.length;i++){ %>
+                                                <div><img src="/public/product_images/<%= data.images[i] %>" style="width: 7rem;height: 7rem;" alt="product image"></div>
+                                                <% } %>
 
                                        
                                         </div>
@@ -299,10 +256,10 @@
 
                                 <div class="col-md-6 col-sm-12 col-xs-12">
                                     <div class="detail-info">
-                                        <h2 class="title-detail">Colorful Pattern Shirts HD450</h2>
+                                        <h2 class="title-detail"><%= data.title %></h2>
                                         <div class="product-detail-rating">
                                             <div class="pro-details-brand">
-                                                <span> Brands: <a href="shop-grid-right.html">Bootstrap</a></span>
+                                                <span> Brands: <a href="shop-grid-right.html"><%= data.brandName.brand %></a></span>
                                             </div>
                                             <div class="product-rate-cover text-end">
                                                 <div class="product-rate d-inline-block">
@@ -314,14 +271,21 @@
                                         </div>
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
-                                                <ins><span class="text-brand">$120.00</span></ins>
+                                                <ins><span class="text-brand">$<%= data.price %></span></ins>
                                                 <ins><span class="old-price font-md ml-15">$200.00</span></ins>
                                                 <span class="save-price  font-md color3 ml-15">25% Off</span>
                                             </div>
                                         </div>
                                         <div class="bt-1 border-color-1 mt-15 mb-15"></div>
                                         <div class="short-desc mb-30">
-                                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam rem officia, corrupti reiciendis minima nisi modi, quasi, odio minus dolore impedit fuga eum eligendi? Officia doloremque facere quia. Voluptatum, accusantium!</p>
+                                            <p><%=data.description  %></p>
+                                            <br>
+                                            <p>Brand :<%=data.brandName.brand  %></p>
+                                            <p><%=data.brandName.description  %></p>
+                                            <br>
+                                            <p>Category: <%=data.category.category  %></p>
+                                            <p><%=data.category.description  %></p>
+
                                         </div>
                                         <div class="product_sort_info font-xs mb-30">
                                             <ul>
@@ -366,9 +330,9 @@
                                             </div>
                                         </div>
                                         <ul class="product-meta font-xs color-grey mt-50">
-                                            <li class="mb-5">SKU: <a href="#">FWM15VKT</a></li>
-                                            <li class="mb-5">Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">Women</a>, <a href="#" rel="tag">Dress</a> </li>
-                                            <li>Availability:<span class="in-stock text-success ml-5">8 Items In Stock</span></li>
+                                            <!-- <li class="mb-5">SKU: <a href="#">FWM15VKT</a></li>
+                                            <li class="mb-5">Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">Women</a>, <a href="#" rel="tag">Dress</a> </li> -->
+                                            <li>Availability:<span class="in-stock text-success ml-5"> <%= data.stock %>  Items In Stock</span></li>
                                         </ul>
                                     </div>
                                     <!-- Detail Info -->

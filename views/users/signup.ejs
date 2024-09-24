@@ -145,44 +145,42 @@
   </div>
 
   <div class="right">
-    <form action="/register" method="post">
+    <form action="/register" method="post" onsubmit="return validateForm()">
         <h1>SIGN-UP</h1>
-
-        <P style="color: rgb(255, 23, 23); text-align: center;"><%= fail %></P> 
-
-
+    
+        <p style="color: rgb(255, 23, 23); text-align: center;"><%= fail %></p>
+    
         <label for="name">
-            <input type="text" name="name" id="name">
+            <input type="text" name="name" id="name"  minlength="3" maxlength="50">
             <span>FULL NAME</span>
-          </label>
-
-          <label for="">
+        </label>
+    
+        <label for="email">
             <input type="email" name="email" id="email">
             <span>EMAIL</span>
-          </label>
-
-          <label for="">
-            <input type="tel" name="phone" id="">
+        </label>
+    
+        <label for="phone">
+            <input type="tel" name="phone" id="phone" pattern="[0-9]{10}">
             <span>PHONE</span>
-          </label>
-
-          <label for="">
-            <input type="password" name="password" id="">
+        </label>
+    
+        <label for="password">
+            <input type="password" name="password" id="password"  minlength="4">
             <span>PASSWORD</span>
-          </label>
-          <P style="color: rgb(255, 23, 23); text-align: center;"><%= fail2 %></P> 
-          <label for="">
-            <input type="password" name="confirmpassword" id="">
-            <span>CONFIRM PASSOWRD</span>
-          </label>
-          
-
-
-       
-
-       <input type="submit" value="Create Account">
-       <p>if you have an account? &nbsp;&nbsp;<a href="/login">login</a></p>
+        </label>
+    
+        <p style="color: rgb(255, 23, 23); text-align: center;"><%= fail2 %></p>
+    
+        <label for="confirmpassword">
+            <input type="password" name="confirmpassword" id="confirmpassword" minlength="4">
+            <span>CONFIRM PASSWORD</span>
+        </label>
+    
+        <input type="submit" value="Create Account">
+        <p>If you have an account? &nbsp;&nbsp;<a href="/login">Login</a></p>
     </form>
+    
 
       <!-- goooogle -->
     <a href="/auth/google" style="display: block; text-align: center; margin-top: 20px;">
@@ -195,6 +193,51 @@
 </div>
 
 <%- include('../layout/footer.ejs') %>
+
+<script>
+    function validateForm() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const confirmPassword = document.getElementById('confirmpassword').value.trim();
+  
+      // Full Name Validation
+      if (name.length < 3 || name.length > 50) {
+        alert('Full Name must be between 3 and 50 characters.');
+        return false;
+      }
+  
+      // Email Validation (HTML5 should handle it)
+      if (!email) {
+        alert('Please enter a valid email.');
+        return false;
+      }
+  
+      // Phone Validation
+      const phoneRegex = /^[0-9]{10}$/;
+      if (!phoneRegex.test(phone)) {
+        alert('Please enter a valid 10-digit phone number.');
+        return false;
+      }
+  
+      // Password Validation
+      if (password.length < 4) {
+        alert('Password must be at least 4 characters.');
+        return false;
+      }
+  
+      // Confirm Password Validation
+      if (password !== confirmPassword) {
+        alert('Passwords do not match.');
+        return false;
+      }
+  
+      // If all checks pass, return true to submit the form
+      return true;
+    }
+  </script>
+  
 
 
 

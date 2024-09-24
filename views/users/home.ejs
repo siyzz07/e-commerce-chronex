@@ -237,11 +237,11 @@
                                     <li><a href="#">Category<i class="fi-rs-angle-down"></i></a>
                                         <ul class="sub-menu">
                                             <% for(let i=0;i<category.length;i++){ %>
-                                            <li><a href="#"><%= category[i].category %>aa</a></li>
+                                            <li><a href="#"><%= category[i].category %></a></li>
                                             <% } %>
                                         </ul>
                                     </li>
-                                    <li><a href="shop-grid-right.html">Brand<i class="fi-rs-angle-down"></i></a>
+                                    <li><a href="#">Brand<i class="fi-rs-angle-down"></i></a>
                                         <ul class="sub-menu">
                                             <% for(let i=0;i<brand.length;i++){ %>
                                                 <li><a href="#"><%= brand[i].brand %></a></li>
@@ -459,12 +459,15 @@
 
                                                 
 <!-- ========================================================================== ==product image adding== ========================================================== -->
-                                                    <div style="width: 380px; height: 190px; overflow: hidden;" class="product-img product-img-zoom">
-    <a href="#">
-        <% for(let j = 0; j < product[i].images.length; j++) { %>
-            <img class="default-img" style="width: 100%; height: 100%; object-fit: cover;" src="/public/product_images/<%= product[i].images[j] %>" alt="Product Image">
-        <% } %>
-    </a>
+                                                    <div style="width: 380px; height: 291px; overflow: hidden;" class="product-img product-img-zoom">
+
+                                                        <a href="/productdetails?id=<%= product[i]._id %>">
+
+                                                         <% for(let j = 0; j < product[i].images.length; j++) { %>
+                                                            
+                                                                <img class="default-img" style="width: 100%; height: 100%; object-fit: cover;" src="/public/product_images/<%= product[i].images[j] %>" alt="Product Image">
+                                                                <% } %>
+                                                        </a>
                                                     </div>
 
 
