@@ -45,7 +45,7 @@ const verifyUser = async (req, res) => {
     const email=req.body.email
 
     if (user && user.isVerified == true) {
-      if(user.isBlocked == true){
+      if(user.isBlocked == false){
       const matchPassword = await bcrypt.compare(
         req.body.password,
         user.password
@@ -110,6 +110,7 @@ const postforgotPassword=async(req,res)=>{
         req.flash('fail','you dont have an account,please signup')
         res.redirect('/login')
       }else{
+        
         const email=req.body.email
         const existUser = await User.findOne({ email: req.body.email });
         const otp1 = crypto.randomInt(100000, 999999).toString(); //generate random otp
@@ -278,10 +279,7 @@ const otpVarificationCheck = async (req, res) => {
           req.flash("success", "your account is created ");
           res.redirect("/login");
         } else {
-        //   console.log("rtrtrtt");
-        //   console.log(req.body.userotp);
-        //   console.log(req.body.otp);
-
+          
           req.flash("fail", "invalid otp");
           req.flash("email", req.body.email);
           req.flash("otp", req.body.otp);

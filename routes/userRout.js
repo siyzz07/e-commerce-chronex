@@ -58,7 +58,7 @@ user_route.get('/home',userSession,userController.loadHome)
 
 
 // product details page
-user_route.get('/productdetails',userController.productDetails)
+user_route.get('/productdetails',userSession,userController.productDetails)
 
 
 

@@ -332,7 +332,11 @@
                                         <ul class="product-meta font-xs color-grey mt-50">
                                             <!-- <li class="mb-5">SKU: <a href="#">FWM15VKT</a></li>
                                             <li class="mb-5">Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">Women</a>, <a href="#" rel="tag">Dress</a> </li> -->
+                                            <% if(data.stock <=0) {%>
+                                                <li>Availability:<span   class="in-stock text-danger ml-5"> 0 Items In Stock</span></li>
+                                                <% }else{ %>
                                             <li>Availability:<span class="in-stock text-success ml-5"> <%= data.stock %>  Items In Stock</span></li>
+                                            <% } %>
                                         </ul>
                                     </div>
                                     <!-- Detail Info -->

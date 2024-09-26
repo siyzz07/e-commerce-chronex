@@ -102,7 +102,7 @@ const deleteUser = async (req, res) => {
 const unblockuser = async (req, res) => {
   try {
     const id = req.query.id;
-    const unblock = await User.findByIdAndUpdate(id, { isBlocked: true });
+    const unblock = await User.findByIdAndUpdate(id, { isBlocked: false });////
     res.redirect("/admin/userdata");
   } catch (error) {
     console.log(error.message);
@@ -115,8 +115,8 @@ const blockuser = async (req, res) => {
   try {
     const id = req.query.id;
 
-    const block = await User.findByIdAndUpdate(id, { isBlocked: false });
-    console.log(block);
+    const block = await User.findByIdAndUpdate(id, { isBlocked: true });///
+    // console.log(block);
 
     res.redirect("/admin/userdata");
   } catch (error) {

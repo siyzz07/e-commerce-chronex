@@ -182,10 +182,11 @@
                     <td><%=user[i].email %></td>
                     <td>
                       <% if(user[i].isBlocked){ %>
-                        <span class="badge rounded-pill alert-success">Active</span>
+                        <span class="badge rounded-pill alert-danger">Inactive</span>
                      
                       <%} else{  %>
-                        <span class="badge rounded-pill alert-danger">Inactive</span>
+                        <span class="badge rounded-pill alert-success">Active</span>
+                       
                         <% } %>
                     </td>
                     <td><%= user[i].phone %></td>
@@ -193,9 +194,10 @@
                     <td class="text-end">
 
                       <% if(user[i].isBlocked){ %>
-                        <a href="/admin/blockuser?id=<%= user[i]._id %>"class="btn btn-sm bg-warning btn-brand rounded font-sm mt-15">Block</a>
+                        <a href="/admin/unblockuser?id=<%= user[i]._id %>"class="btn btn-sm bg-success btn-brand rounded font-sm mt-15">Unblock</a>
+
                         <% }else{ %>
-                          <a href="/admin/unblockuser?id=<%= user[i]._id %>"class="btn btn-sm bg-success btn-brand rounded font-sm mt-15">Unblock</a>
+                          <a href="/admin/blockuser?id=<%= user[i]._id %>"class="btn btn-sm bg-warning btn-brand rounded font-sm mt-15">Block</a>
 
                       <% } %>
 
