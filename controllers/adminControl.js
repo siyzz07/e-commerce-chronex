@@ -10,8 +10,12 @@ const password = "12345";
 // load admin login page
 const loadAdminLogin = async (req, res) => {
   try {
+    if(!req.session.admin){
     const fail = req.flash("fail");
     res.render("login", { fail });
+    }else{
+      res.redirect('/home')
+    }  
   } catch (error) {
     console.log(error.message);
   }
@@ -449,37 +453,77 @@ const editproductGet=async (req,res)=>{
 }
 
 
-const editproductpost=async (req,res)=>{
-  
+
+//////////////////////////////////////////////////////////
+
+const editproductpost = async (req, res) => {
   try {
-   
-    
-    const images = req.files.map(file => file.filename);
-   const editproduct=await Product.findByIdAndUpdate(
-    {_id:req.body.id},
-    {
-      title:req.body.title,
-      description:req.body.description,
-      color:req.body.color,
-      brandName:req.body.brand,
-      category:req.body.category,
-      stock:req.body.stock,
-      price:req.body.price,
-      images:images
+    const id=req.body.id
+ 
+    let images =
+      req.files.length > 0 ? req.files.map((file) => file.filename) : undefined;
+
+
+    const updatedProduct = {
+      title: req.body.title,
+      description: req.body.description,
+      category: req.body.category,
+      brand: req.body.brand,
+      stock: req.body.stock,
+      price: req.body.price,
+    };
+    if (images) {
+      updatedProduct.images = images;
     }
-   )
-   if(editproduct){
-    req.flash('msg','product edited succsessfully')
-    res.redirect('/admin/product')
-   }
+    await Product.findByIdAndUpdate(id, updatedProduct);
+
+    res.redirect("/admin/product");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+////////////////////////////////////////////////
+
+
+
+
+// editproductpost
+//post edit product
+// const editproductpostt=async (req,res)=>{
+  
+//   try {
+   
+
+
+//     const images = req.files.map(file => file.filename);
+//    const editproduct=await Product.findByIdAndUpdate(
+//     {_id:req.body.id},
+//     {
+//       title:req.body.title,
+//       description:req.body.description,
+//       color:req.body.color,
+//       brandName:req.body.brand,
+//       category:req.body.category,
+//       stock:req.body.stock,
+//       price:req.body.price,
+//       // images:images
+//     }
+//    )
+//    if(editproduct){
+//     req.flash('msg','product edited succsessfully')
+//     res.redirect('/admin/product')
+//    }
 
   
-   } catch (error) {
-     console.log(error.message);
-   }
-}
+//    } catch (error) {
+//      console.log(error.message);
+//    }
+// }
 
 
+
+// delete product
 const deletproduct=async (req,res)=>{
   try {
    const id=req.query.id;

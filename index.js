@@ -9,6 +9,7 @@ const path=require('path')
 const flash=require('connect-flash')
 const nocache=require('nocache');
 
+app.use(nocache())
 
 app.use(express.static("public"))
 app.use(express.static("public/images"))
@@ -18,7 +19,6 @@ app.use('/public', express.static('public'));
 
 
 app.use(flash());
-app.use(nocache())
 
 const port=5000
 

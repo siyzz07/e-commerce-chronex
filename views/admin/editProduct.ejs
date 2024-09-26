@@ -175,10 +175,11 @@
                                       <input type="text" id="title" value="<%= product.title %>" class="form-control" name="title">
                                       <span id="title-error" class="error-message"></span>
                                   </div>
+                                  
                                   <div class="mb-4">
-                                      <label class="form-label">Description</label>
-                                      <input type="text" id="description" value="<%= product.description %>" class="form-control" name="description">
-                                      <span id="description-error" class="error-message"></span>
+                                    <label class="form-label">Description</label>
+                                    <textarea placeholder="Type here" class="form-control" rows="4" name="description" id="description"><%= product.description %></textarea>
+                                    <span class="error" id="description-error"></span>
                                   </div>
                                   <div class="mb-4">
                                       <label class="form-label">Color</label>
@@ -245,7 +246,8 @@
                               <div class="col-md-9">
                                   <div class="mb-4">
                                       <label class="form-label">Images</label>
-                                      <input class="form-control" id="images" type="file" name="images" multiple>
+                                      <input class="form-control"  id="images" type="file" name="images" multiple>
+                                      <img style="display: none;" src="/public/product_images/<%= product.images[0] %>" alt="">
                                       <span id="images-error" class="error-message"></span>
                                   </div>
                               </div>

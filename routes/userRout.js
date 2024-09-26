@@ -1,5 +1,6 @@
 const express = require('express')
 const session=require('express-session')
+const userSession=require('../middlewares/userSession')
 const user_route=express();
 
 user_route.set("view engine","ejs");
@@ -30,6 +31,18 @@ const userController=require("../controllers/userControl");
 user_route.get("/login",userController.loadLogin)
 user_route.post('/verifyuser',userController.verifyUser)
 
+//logout
+user_route.get('/logout',userController.logout)
+
+
+// forgot password
+user_route.get('/forgotemail',userController.getforgotPassword)
+user_route.post('/forgotemail',userController.postforgotPassword)
+user_route.get('/otpcheck',userController.getotpcheck)
+user_route.post('/otpcheck',userController.postotpcheck)
+user_route.get('/setpassword',userController.getSetPassword)
+user_route.post('/setpassword',userController.postSetPassword)
+
 // singup page
 user_route.get("/signup",userController.loadSignup)
 user_route.post('/register',userController.insertUser)
@@ -40,7 +53,7 @@ user_route.post("/otpverification",userController.otpVarificationCheck)
 user_route.get('/resendotp',userController.resendOtp)
 
 //home page
-user_route.get('/home',userController.loadHome)
+user_route.get('/home',userSession,userController.loadHome)
 
 
 

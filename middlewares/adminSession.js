@@ -1,10 +1,10 @@
+const adminSession = (req, res, next) => {
+  if (req.session.admin) {
+    next();
+  } else {
+    res.redirect("/admin/login");
+  }
+};
 
-const adminSession=(req,res,next) => {
-    if(req.session.admin)
-    {
-        next();
-    }else{
-        res.redirect('/admin/login')
-    }
-}
-module.exports=adminSession
+
+module.exports = adminSession;

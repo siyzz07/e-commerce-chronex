@@ -25,9 +25,13 @@ const transporter = nodemailer.createTransport({
 //  for load login page
 const loadLogin = async (req, res) => {
   try {
+    if(req.session.user){
+      res.redirect('/home')
+    }else{
     const fail = req.flash("fail");
     const success = req.flash("success");
     res.render("login", { success, fail });
+  }
   } catch (error) {
     console.log(error.message);
   }
@@ -38,19 +42,27 @@ const loadLogin = async (req, res) => {
 const verifyUser = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    // console.log(`2222222${user.isVerified}`);
+    const email=req.body.email
 
     if (user && user.isVerified == true) {
+      if(user.isBlocked == true){
       const matchPassword = await bcrypt.compare(
         req.body.password,
         user.password
       );
       if (matchPassword) {
+        req.session.user=email
+        
+        
         res.redirect("/home");
       } else {
         req.flash("fail", "invalied password");
         res.redirect("/login");
       }
+    }else{
+      req.flash('fail','Your account blocked by admin')
+      res.redirect('/login')
+    }
     } else {
       req.flash("fail", "invalied email");
       res.redirect("/login");
@@ -61,6 +73,168 @@ const verifyUser = async (req, res) => {
 };
 
 //------------------------end--------------------------
+//-------------------------------logout-------------------
+
+const logout= async (req,res)=>{
+  try {
+    req.session.destroy()
+  res.redirect('/login')
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+
+//-----------------------------forgot password---------------------
+
+
+//  get email check page
+const getforgotPassword=async(req,res)=>{
+
+  try {
+    const fail=req.flash('fail')
+    res.render('forgotPassword',{fail})
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+//  post email check page
+const postforgotPassword=async(req,res)=>{
+  try {
+    
+      const user=await User.findOne({email:req.body.email})
+      if(!user || user.isVerified == false){
+        req.flash('fail','you dont have an account,please signup')
+        res.redirect('/login')
+      }else{
+        const email=req.body.email
+        const existUser = await User.findOne({ email: req.body.email });
+        const otp1 = crypto.randomInt(100000, 999999).toString(); //generate random otp
+
+        existUser.otp=otp1
+        existUser.otpexpire = Date.now()+300000
+        await existUser.save()
+
+        
+      
+
+          //send OTP to user's email
+          await transporter.sendMail({
+            from: "testbrocamp@gmail.com",
+            to: req.body.email,
+            subject: "Secure Your Account with This Code",
+            text: `your OTP for reset  password ${otp1}`,
+          });
+        
+          
+          res.redirect(`/otpcheck?email=${email}`);
+
+      }
+    
+  } catch (error) {
+    console.log(error.message);
+  }
+
+}
+
+
+// get otp check page
+const getotpcheck=async (req,res)=>{
+  try {
+    const email=req.query.email
+    if(email){
+
+    res.render('forgotpassOTP',{email:email})
+  }else{
+    res.redirect('/login')
+  }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+//post otp checkpage
+const postotpcheck=async (req,res)=>{
+  const email=req.body.email
+  const user = await User.findOne({ email:email });
+  
+  
+  try {
+    if(user.otpexpire < new Date()){   
+      req.flash('fail','otpexpired')
+      res.redirect('/forgotemail')
+     
+      
+    }else{
+      if(user.otp == req.body.otp){
+        user.otp=null
+        user.otpexpire=null
+        await user.save();
+   
+
+        res.redirect(`/setpassword?email=${email}`)
+      }else{
+        req.flash('fail','otp not correct start again')
+       
+        res.redirect(`/forgotemail`)
+      }
+    }
+  
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+// get set password page
+const getSetPassword=async (req,res)=>{
+  try {
+    const email=req.query.email
+    if(email){
+      const fail=req.flash('fail')
+    res.render('setpassword',{fail,email})
+  }else{
+    res.redirect('/login')
+  }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+const postSetPassword=async (req,res)=>{
+  const email=req.body.email
+  
+  try {
+    if(req.body.password == req.body.conformpassword){
+  
+      const password=req.body.password
+      const user=await User.findOne({email:email})
+      
+      const hasedpassword = await bcrypt.hash(password, 10); //hash password
+      user.password=hasedpassword
+    
+      await user.save()
+     
+      req.flash('success','password changed ')
+      res.redirect('/login')
+
+
+
+    }else{
+      req.flash('fail','password and conform Passwords are not correct')
+      
+      res.redirect(`/setpassword?email=${email}`)
+    }
+
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 
 //------------------------------------signup page--resent otp--otp --------
 
@@ -217,6 +391,7 @@ const resendOtp = async (req, res) => {
   }
 };
 //----------------------------end-----------------------------
+
 //-----------------------------------home page-------------------------------------
 
 //load home
@@ -262,10 +437,17 @@ module.exports = {
   loadLogin,
   loadSignup,
   otpVarification,
+  getforgotPassword,
+  postforgotPassword,
+  postotpcheck,
+  getotpcheck,
+  getSetPassword,
+  postSetPassword,
   insertUser,
   otpVarificationCheck,
   resendOtp,
   verifyUser,
   loadHome,
-  productDetails
+  productDetails,
+  logout
 };

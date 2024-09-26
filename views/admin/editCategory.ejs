@@ -169,11 +169,12 @@
                                   <input type="text" id="category" value="<%= data.category %>" class="form-control" name="category" />
                                   <span id="category-error" class="error-message"></span>
                               </div>  
+
                               <div class="mb-4">
-                                  <label for="description" class="form-label">Description</label>
-                                  <input type="text" id="description" value="<%= data.description %>" class="form-control" name="description" />
-                                  <span id="description-error" class="error-message"></span>
-                              </div>
+                                <label for="description" class="form-label">Description</label>
+                                <textarea id="description" placeholder="Type here" class="form-control" name="description"><%= data.description %></textarea>
+                                <span id="description-error" class="error-message"></span>
+                            </div>
                               <div class="d-grid">
                                   <button type="submit" class="btn btn-primary">Edit Category</button>
                               </div>
