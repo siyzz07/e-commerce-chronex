@@ -25,8 +25,12 @@ admin_route.use(
     })
 )
 
-
+//-------------- CONTROLLER --------------------------------
 const adminController=require('../controllers/adminControl')
+const brandController=require('../controllers/brandControl')
+const categoryController=require('../controllers/categoryContorl')
+const productController=require('../controllers/productContorl')
+
 
 // get loagin page and verify admim
 admin_route.get("/login",adminController.loadAdminLogin)
@@ -48,38 +52,38 @@ admin_route.get('/blockuser',adminController.blockuser)
 
 
 // category page
-admin_route.get('/category',adminSession,adminController.category)
-admin_route.get('/deletecategory',adminController.deletCategory)
-admin_route.get('/listcategory',adminController.listCategory)
-admin_route.get('/editcategory',adminController.loadEditCategory)
-admin_route.get('/unlistcategory',adminController.unlistCategory)
+admin_route.get('/category',adminSession,categoryController.category)
+admin_route.get('/deletecategory',categoryController.deletCategory)
+admin_route.get('/listcategory',categoryController.listCategory)
+admin_route.get('/editcategory',categoryController.loadEditCategory)
+admin_route.get('/unlistcategory',categoryController.unlistCategory)
 
-admin_route.post('/addcategory',adminController.addCategory)
-admin_route.post('/editcategory',adminController.editCategoryPost)
+admin_route.post('/addcategory',categoryController.addCategory)
+admin_route.post('/editcategory',categoryController.editCategoryPost)
 
+// admin_route.post('/editcategory',adminController.editCategoryPost)
 
 //brand page
-admin_route.get('/brand',adminSession,adminController.brand)
+admin_route.get('/brand',adminSession,brandController.brand)
 
-admin_route.get('/deletebrand',adminController.deleteBrand)
-admin_route.get('/listbrand',adminController.listbrand)
-admin_route.get('/unlistbrand',adminController.unlistBrand)
-admin_route.get('/editbrand',adminController.editBrand)
+admin_route.get('/deletebrand',brandController.deleteBrand)
+admin_route.get('/listbrand',brandController.listBrand)
+admin_route.get('/unlistbrand',brandController.unlistBrand)
+admin_route.get('/editbrand',brandController.editBrand)
 
 
-admin_route.post('/editbrand',adminController.edit)
-admin_route.post('/editcategory',adminController.editCategoryPost)
-admin_route.post('/addbrand',adminController.addBrand)
+admin_route.post('/editbrand',brandController.edit)
+admin_route.post('/addbrand',brandController.addBrand)
 
 //product list and   add product page 
-admin_route.get('/product',adminSession,adminController.getProduct)
-admin_route.get('/addproduct',adminSession,adminController.getAddProuduct)
-admin_route.post('/addproduct',upload.array('images', 3),adminController.postProduct)
-admin_route.get('/blockproduct',adminController.blockProduct)
-admin_route.get('/unblockproduct',adminController.unblockProduct)
-admin_route.get('/editproduct',adminController.editproductGet)
-admin_route.post('/editproduct',upload.array('images', 3),adminController.editproductpost)
-admin_route.get('/deleteproduct',adminController.deletproduct)
+admin_route.get('/product',adminSession,productController.getProduct)
+admin_route.get('/addproduct',adminSession,productController.getAddProuduct)
+admin_route.post('/addproduct',upload.array('images', 3),productController.postProduct)
+admin_route.get('/blockproduct',productController.blockProduct)
+admin_route.get('/unblockproduct',productController.unblockProduct)
+admin_route.get('/editproduct',productController.editproductGet)
+admin_route.post('/editproduct',upload.array('images', 3),productController.editproductpost)
+admin_route.get('/deleteproduct',productController.deletproduct)
 
 
 

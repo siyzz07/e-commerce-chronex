@@ -166,104 +166,105 @@
 
         <form action="addproduct" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
           <div class="row">
-            <div class="col-lg-9">
-              <div class="card mb-4">
-                <div class="card-body">
-                  <!-- General Info -->
-                  <div class="row">
-                    <div class="col-md-3">
-                      <h6>1. General info</h6>
-                    </div>
-                    <div class="col-md-9">
-                      <div class="mb-4">
-                        <label class="form-label">Product title</label>
-                        <input type="text" placeholder="Type here" class="form-control  error-message" name="title" id="title">
-                        <span class="error" id="title-error"></span>
+              <div class="col-lg-9">
+                  <div class="card mb-4">
+                      <div class="card-body">
+                          <!-- General Info -->
+                          <div class="row">
+                              <div class="col-md-3">
+                                  <h6>1. General info</h6>
+                              </div>
+                              <div class="col-md-9">
+                                  <div class="mb-4">
+                                      <label class="form-label">Product title</label>
+                                      <input type="text" placeholder="Type here" class="form-control" name="title" id="title">
+                                      <span class="error" id="title-error" style="color: rgb(255, 23, 23); display: none;"></span>
+                                  </div>
+                                  <div class="mb-4">
+                                      <label class="form-label">Description</label>
+                                      <textarea placeholder="Type here" class="form-control" rows="4" name="description" id="description"></textarea>
+                                      <span class="error" id="description-error" style="color: rgb(255, 23, 23); display: none;"></span>
+                                  </div>
+                                  <div class="mb-4">
+                                      <label class="form-label">Color</label>
+                                      <input type="text" placeholder="Type here" class="form-control" name="color" id="color">
+                                      <span class="error" id="color-error" style="color: rgb(255, 23, 23); display: none;"></span>
+                                  </div>
+                                  <div class="mb-4">
+                                      <label class="form-label">Stock</label>
+                                      <input type="text" placeholder="Type here" class="form-control" name="stock" id="stock">
+                                      <span class="error" id="stock-error" style="color: rgb(255, 23, 23); display: none;"></span>
+                                  </div>
+                                  <div class="mb-4">
+                                      <label class="form-label">Brand name</label>
+                                      <select class="form-select" name="brand" id="brand">
+                                          <% brand.forEach(row => { %>
+                                              <option value="<%= row._id %>"><%= row.brand %></option>
+                                          <% }); %>
+                                      </select>
+                                      <span class="error" id="brand-error" style="color: rgb(255, 23, 23); display: none;"></span>
+                                  </div>
+                              </div>
+                          </div>
+      
+                          <!-- Pricing -->
+                          <hr class="mb-4 mt-0">
+                          <div class="row">
+                              <div class="col-md-3">
+                                  <h6>2. Pricing</h6>
+                              </div>
+                              <div class="col-md-9">
+                                  <div class="mb-4">
+                                      <label class="form-label">Cost in USD</label>
+                                      <input type="text" placeholder="$00.0" class="form-control" name="price" id="price">
+                                      <span class="error" id="price-error" style="color: rgb(255, 23, 23); display: none;"></span>
+                                  </div>
+                              </div>
+                          </div>
+      
+                          <!-- Category -->
+                          <hr class="mb-4 mt-0">
+                          <div class="row">
+                              <div class="col-md-3">
+                                  <h6>3. Category</h6>
+                              </div>
+                              <div class="col-md-9">
+                                  <div class="mb-4">
+                                      <label class="form-label">Category</label>
+                                      <select class="form-select" name="category" id="category">
+                                          <% category.forEach(row => { %>
+                                              <option value="<%= row._id %>"><%= row.category %></option>
+                                          <% }) %>
+                                      </select>
+                                      <span class="error" id="category-error" style="color: rgb(255, 23, 23); display: none;"></span>
+                                  </div>
+                              </div>
+                          </div>
+      
+                          <!-- Media -->
+                          <hr class="mb-4 mt-0">
+                          <div class="row">
+                              <div class="col-md-3">
+                                  <h6>4. Media</h6>
+                              </div>
+                              <div class="col-md-9">
+                                  <div class="mb-4">
+                                      <label class="form-label">Images</label>
+                                      <input class="form-control" type="file" name="images" multiple id="images" accept="image/*">
+                                      <span class="error" id="images-error" style="color: rgb(255, 23, 23); display: none;"></span>
+                                  </div>
+                              </div>
+                          </div>
+      
                       </div>
-                      <div class="mb-4">
-                        <label class="form-label">Description</label>
-                        <textarea placeholder="Type here" class="form-control" rows="4" name="description" id="description"></textarea>
-                        <span class="error" id="description-error"></span>
-                      </div>
-                      <div class="mb-4">
-                        <label class="form-label">Color</label>
-                        <input type="text" placeholder="Type here" class="form-control" name="color" id="color">
-                        <span class="error" id="color-error"></span>
-                      </div>
-                      <div class="mb-4">
-                        <label class="form-label">Stock</label>
-                        <input type="text" placeholder="Type here" class="form-control" name="stock" id="stock">
-                        <span class="error" id="stock-error"></span>
-                      </div>
-                      <div class="mb-4">
-                        <label class="form-label">Brand name</label>
-                        <select class="form-select" name="brand" id="brand">
-                          <% brand.forEach(row => { %>
-                            <option value="<%=row._id%>"><%= row.brand %></option>
-                          <% }); %>
-                        </select>
-                        <span class="error" id="brand-error"></span>
-                      </div>
-                    </div>
                   </div>
-        
-                  <!-- Pricing -->
-                  <hr class="mb-4 mt-0">
-                  <div class="row">
-                    <div class="col-md-3">
-                      <h6>2. Pricing</h6>
-                    </div>
-                    <div class="col-md-9">
-                      <div class="mb-4">
-                        <label class="form-label">Cost in USD</label>
-                        <input type="text" placeholder="$00.0" class="form-control" name="price" id="price">
-                        <span class="error" id="price-error"></span>
-                      </div>
-                    </div>
+                  <div class="d-grid">
+                      <button type="submit" class="btn btn-primary">Add Product</button>
                   </div>
-        
-                  <!-- Category -->
-                  <hr class="mb-4 mt-0">
-                  <div class="row">
-                    <div class="col-md-3">
-                      <h6>3. Category</h6>
-                    </div>
-                    <div class="col-md-9">
-                      <div class="mb-4">
-                        <label class="form-label">Category</label>
-                        <select class="form-select" name="category" id="category">
-                          <% category.forEach(row => { %>
-                            <option value="<%=row._id%>"><%= row.category %></option>
-                          <% }) %>
-                        </select>
-                        <span class="error" id="category-error"></span>
-                      </div>
-                    </div>
-                  </div>
-        
-                  <!-- Media -->
-                  <hr class="mb-4 mt-0">
-                  <div class="row">
-                    <div class="col-md-3">
-                      <h6>4. Media</h6>
-                    </div>
-                    <div class="col-md-9">
-                      <div class="mb-4">
-                        <label class="form-label">Images</label>
-                        <input class="form-control" type="file" name="images" multiple id="images" accept="image/*">
-                        <span class="error" id="images-error"></span>
-                      </div>
-                    </div>
-                  </div>
-        
-                </div>
               </div>
-              <div class="d-grid">
-                <button type="submit" class="btn btn-primary">Add Product</button>
-              </div>
-            </div>
           </div>
-        </form>
+      </form>
+      
         
         
       
@@ -290,128 +291,83 @@
 
     <script>
 
+function validateForm() {
+        // Clear previous error messages
+        document.querySelectorAll('.error').forEach(function (el) {
+            el.style.display = 'none';
+            el.innerText = '';
+        });
 
-////////////////////////////////////image resizse
-// document.getElementById('images').addEventListener('change', function(e) {
-//     const files = e.target.files;
-//     const maxWidth = 5;
-//     const maxHeight = 5;
+        let valid = true;
 
-//     Array.from(files).forEach(file => {
-//       if (file.type.startsWith('image/')) {
-//         const reader = new FileReader();
-//         reader.onload = function(event) {
-//           const img = new Image();
-//           img.src = event.target.result;
-
-//           img.onload = function() {
-//             let canvas = document.createElement('canvas');
-//             let ctx = canvas.getContext('2d');
-
-//             let width = img.width;
-//             let height = img.height;
-
-//             if (width > maxWidth || height > maxHeight) {
-//               if (width > height) {
-//                 height *= maxWidth / width;
-//                 width = maxWidth;
-//               } else {
-//                 width *= maxHeight / height;
-//                 height = maxHeight;
-//               }
-//             }
-
-//             canvas.width = width;
-//             canvas.height = height;
-
-//             ctx.drawImage(img, 0, 0, width, height);
-            
-//             canvas.toBlob(function(blob) {
-//               // Here you can append the resized image to FormData before submission
-//               const formData = new FormData();
-//               formData.append('images', blob, file.name);
-
-//               // Example of adding the formData to a POST request
-//               const xhr = new XMLHttpRequest();
-//               xhr.open('POST', '/addproduct', true);
-//               xhr.send(formData);
-//             }, file.type);
-//           };
-//         };
-//         reader.readAsDataURL(file);
-//       }
-//     });
-//   });
-
-
-
-//////////////////////////////////form validatiion
-
-
-      function validateForm() {
-        let isValid = true;
-      
-        // Clear previous errors
-        document.querySelectorAll('.error').forEach(e => e.innerHTML = '');
-      
-        // Validate Title
-        const title = document.getElementById('title').value.trim();
+        // Validate title
+        const title = document.getElementById('title').value;
         if (!title) {
-          document.getElementById('title-error' ).innerHTML = 'Product title is required';
-          document.getElementById('title-error').style.color = 'red';
-          isValid = false;
+            document.getElementById('title-error').innerText = 'Product title is required.';
+            document.getElementById('title-error').style.display = 'block';
+            valid = false;
         }
-      
-        // Validate Description
-        const description = document.getElementById('description').value.trim();
+
+        // Validate description
+        const description = document.getElementById('description').value;
         if (!description) {
-          document.getElementById('description-error').innerHTML = 'Description is required';
-          document.getElementById('description-error').style.color = 'red';
-          isValid = false;
+            document.getElementById('description-error').innerText = 'Description is required.';
+            document.getElementById('description-error').style.display = 'block';
+            valid = false;
         }
-      
-        // Validate Color
-        const color = document.getElementById('color').value.trim();
+
+        // Validate color
+        const color = document.getElementById('color').value;
         if (!color) {
-          document.getElementById('color-error').innerHTML = 'Color is required';
-          document.getElementById('color-error').style.color = 'red';
-          isValid = false;
+            document.getElementById('color-error').innerText = 'Color is required.';
+            document.getElementById('color-error').style.display = 'block';
+            valid = false;
         }
-      
-        // Validate Stock
-        const stock = document.getElementById('stock').value.trim();
-        if (!stock || isNaN(stock)) {
-          document.getElementById('stock-error').innerHTML = 'Stock must be a number';
-          document.getElementById('stock-error').style.color = 'red';
-          isValid = false;
+
+        // Validate stock
+        const stock = document.getElementById('stock').value;
+        if (!stock || isNaN(stock) || stock < 0) {
+            document.getElementById('stock-error').innerText = 'Stock must be a positive number.';
+            document.getElementById('stock-error').style.display = 'block';
+            valid = false;
         }
-      
-        // Validate Brand
+
+        // Validate brand
         const brand = document.getElementById('brand').value;
         if (!brand) {
-          document.getElementById('brand-error').innerHTML = 'Brand is required';
-          document.getElementById('brand-error').style.color = 'red';
-          isValid = false;
+            document.getElementById('brand-error').innerText = 'Brand name is required.';
+            document.getElementById('brand-error').style.display = 'block';
+            valid = false;
         }
-      
-        // Validate Price
-        const price = document.getElementById('price').value.trim();
-        if (!price || isNaN(price)) {
-          document.getElementById('price-error').innerHTML = 'Price must be a number';
-          document.getElementById('price-error').style.color = 'red';
-          isValid = false;
+
+        // Validate price
+        const price = document.getElementById('price').value;
+        if (!price || isNaN(price) || price <= 0) {
+            document.getElementById('price-error').innerText = 'Price must be a positive number.';
+            document.getElementById('price-error').style.display = 'block';
+            valid = false;
         }
-      
-        // Validate Category
+
+        // Validate category
         const category = document.getElementById('category').value;
         if (!category) {
-          document.getElementById('category-error').innerHTML = 'Category is required';
-          document.getElementById('category-error').style.color = 'red';
-          isValid = false;
+            document.getElementById('category-error').innerText = 'Category is required.';
+            document.getElementById('category-error').style.display = 'block';
+            valid = false;
         }
-      
-        return isValid;
+
+        // Validate images
+        const images = document.getElementById('images').files;
+        if (images.length < 3) {
+            document.getElementById('images-error').innerText = '3 image is required.';
+            document.getElementById('images-error').style.display = 'block';
+            valid = false;
+        }
+
+        return valid;
       }
+
+
       </script>
       
 </body>

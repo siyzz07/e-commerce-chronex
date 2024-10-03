@@ -182,7 +182,7 @@
         <p style="color: #6c6767;">Enter the 6 digit OTP that you will receive in your registered Email</p>
         <P style="color: rgb(255, 23, 23); text-align: center;"><%= fail %></P> 
 
-        <input type="hidden" name="email" value="<%= email %>"> 
+        <input type="" name="id" value="<%= id %>"> 
 
         
        
@@ -196,7 +196,7 @@
         <input type="submit" value="Submit">
         <!-- Resend link and timer -->
         <div id="timer"></div>
-<a id="resend-otp" href="/resendotp?email=<%= email %>" style="display: none;">Resend OTP</a>
+<a id="resend-otp" href="/resendotp?id=<%= id %>" style="display: none;">Resend OTP</a>
 
 
        
