@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Evara - eCommerce HTML Template</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="user/assets/css/main.css">
+</head>
+
+<body>
+
+
+    
+    <div class="header-bottom header-bottom-bg-color sticky-bar">
+        <div class="container">
+            <div class="header-wrap header-space-between position-relative">
+              
+                <div class="header-nav d-none d-lg-flex">
+                    <div class="main-categori-wrap d-none d-lg-block">
+                       
+                        
+                    </div> 
+
+
+                    <!-- pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp -->
+                    <div class="main-menu  main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
+                        <nav>
+                            <ul>
+                                <li><a href="/home">Home </a>
+                                    
+                                </li>
+                               
+                                <li><a href="#">Category<i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <% for(let i=0;i<category.length;i++){ %>
+                                        <li><a href="#"><%= category[i].category %></a></li>
+                                        <% } %>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Brand<i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <% for(let i=0;i<brand.length;i++){ %>
+                                            <li><a href="#"><%= brand[i].brand %></a></li>
+                                            <% } %>
+                                        
+                                    </ul>
+                                </li>   
+                                <li>
+                                    <a href="page-about.html">About</a>
+                                </li>
+                               
+                              
+                                <li>
+                                    <a href="page-contact.html">Contact</a>
+                                </li>
+
+                                <li>
+                                    <a class="active"  href="page-contact.html">Account</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="hotline d-none d-lg-block">
+                    <p><i class="fi-rs-headset"></i><span>Helpline</span> 1900 - 888 </p>
+                </div>
+                <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
+                <div class="header-action-right d-block d-lg-none">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="http://localhost:5000/home" rel="nofollow">Home</a>
+                  <a href="http://localhost:5000/userAccount">  <span></span> Account</a>
+                  <a href="">  <span></span>Address</a>
+                </div>
+            </div>
+        </div>
+        <section class="pt-150 pb-150">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 m-auto">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="dashboard-menu">
+                                    <ul class="nav flex-column" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link " id="account-detail-tab" data-bs-toggle="tab" href="/userAccount" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Profile</a>
+                                        </li>
+                                       
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                        </li>
+                
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="page-login-register.html"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                        </li>
+                                        
+                                       
+                                    </ul>
+                                </div>
+                            </div>
+                       
+                            <div class="col-md-8">
+                               
+                                <div class=" dashboard-content">
+
+                                <!-- ========================= USER FORM ============== -->
+
+                                    
+                                <div class="form-group">
+                                    <a href="/addAddress?id=<%= userId %>"> <button type="" class="btn btn-fill-out btn-block hover-up" >+ Add New Address</button></a>
+                                 </div>
+                                 <P style="color:green; text-align: center;"><%= msg %></P>
+                                 <P style="color:red; text-align: center;"><%= fail %></P>
+
+                                    <div class="tab-pane " id="address" role="tabpanel" aria-labelledby="address-tab">
+                                        <div class="row">
+
+
+
+
+                                                <% if (userAddress && userAddress.addressData && userAddress.addressData.length > 0) { %>
+                                                    <% for (let i = 0; i < userAddress.addressData.length; i++) { %>
+                                                        <div class="col-lg-6">
+                                                            <div class="card mb-3 mb-lg-0">
+                                                                <div class="card-header">
+                                                                    <h5 class="mb-0"><%= userAddress.addressData[i].city%></h5> 
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <address style="color: rgb(0, 0, 0);">Address :  <span style="color: blue"> <%= userAddress.addressData[i].address  %></span>
+                                                                    <br>Pincode :<span style="color: blue"></span> <%=  userAddress.addressData[i].pincode %></span> 
+                                                                    <br>Secondary phno :<span style="color: blue"><%=userAddress.addressData[i]. secphone %> </span> 
+                                                                    <br>City :<span style="color: blue"><%=  userAddress.addressData[i].city %> </span> 
+                                                                    <br>State :<span style="color: blue"><%=  userAddress.addressData[i].state %></span> 
+                                                                    <br>Country :<span style="color: blue"><%= userAddress.addressData[i].country%></span> 
+                                                                </address>
+                                                                    
+                                                                    <a href="/editAddress?addressid=<%= userAddress.addressData[i]._id %>" style="color: rgb(17, 219, 44);" class="btn-small">Edit</a><br>
+                                                                    <a href="/deleteAddress?id=<%= userAddress.addressData[i]._id %>" style="color: rgb(255, 21, 0);" class="btn-small">Delete</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <% } %>
+                                                <% } else { %>
+                                                    <p>No addresses found for this user.</p>
+                                                <% } %>
+                                                
+
+                                         
+                                            
+                                         
+                                        </div>
+                                    </div>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Preloader Start -->
+    
+    <!-- Vendor JS-->
+    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/plugins/slick.js"></script>
+    <script src="assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="assets/js/plugins/wow.js"></script>
+    <script src="assets/js/plugins/jquery-ui.js"></script>
+    <script src="assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="assets/js/plugins/magnific-popup.js"></script>
+    <script src="assets/js/plugins/select2.min.js"></script>
+    <script src="assets/js/plugins/waypoints.js"></script>
+    <script src="assets/js/plugins/counterup.js"></script>
+    <script src="assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="assets/js/plugins/images-loaded.js"></script>
+    <script src="assets/js/plugins/isotope.js"></script>
+    <script src="assets/js/plugins/scrollup.js"></script>
+    <script src="assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
+    <!-- Template  JS -->
+    <script src="assets/js/main.js"></script>
+   
+    
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
+</html>

@@ -46,7 +46,13 @@ const verifyUser = async (req, res) => {
         user.password
       );
       if (matchPassword) {
-        req.session.user=email
+        req.session.user= {email: user.email ,_id: user._id }
+
+    
+        
+        
+        
+        
         res.redirect("/home");
       } else {
         req.flash("fail", "invalied password");
@@ -164,6 +170,9 @@ const insertUser = async (req, res) => {
 // for load otp varification
 const otpVarification = async (req, res) => {
   try {
+    if(req.session.user){
+      res.redirect('/home')
+    }else{
     const id=req.query.id;
     if(id){   
     const fail = req.flash("fail");
@@ -171,6 +180,7 @@ const otpVarification = async (req, res) => {
   }else{
     res.redirect('/signup')
   }
+}
   } catch (error) {
     console.log(error.message);
   }
@@ -183,6 +193,7 @@ const otpVarificationCheck = async (req, res) => {
   
   try {
     const id=req.body.id
+    // console.log(id);
     
     const user = await User.findOne({ _id: id});  
     const userOtp=await UserOtpStore.findOne({userId:id})
@@ -228,7 +239,7 @@ const resendOtp = async (req, res) => {
   try {
     const id=req.query.id
     const userOtp = await UserOtpStore.findOne({ userId:id });
-
+    const user=await User.findOne({_id:id})
     if (!userOtp) {
       req.flash("fail", "User not found");
       return res.redirect("/signup");
@@ -261,6 +272,7 @@ const resendOtp = async (req, res) => {
 
 const logout= async (req,res)=>{
   try {
+    
     req.session.destroy()
   res.redirect('/login')
   } catch (error) {
@@ -452,7 +464,7 @@ const postSetPassword=async (req,res)=>{
 const loadHome = async (req, res) => {
   
   try {
-    const user=req.session.user  
+    const user=req.session.user.email 
     const userData=await User.findOne({email:user})
     if(userData.isBlocked){
       req.session.destroy()
@@ -484,7 +496,9 @@ const productDetails=async (req,res)=>{
     const brand=await Brand.find({isListed:true})
  
     if(productData){
-      res.render('productDetails',{data:productData,brand:brand,category:category})
+      const msg=req.flash('msg')
+      const fail=req.flash('fail')
+      res.render('productDetails',{data:productData,brand:brand,category:category,msg,fail})
     }else{
       res.redirect('/home')
     }
@@ -495,6 +509,121 @@ const productDetails=async (req,res)=>{
 }
 
 //----------------------------------------------------  END  -----------------------------------------------------------
+
+//----------------------------------------------  USER ACCOUNT --------------------------------------------------------
+
+//user accoutprofile page get
+
+const account=async (req,res)=>{
+
+  try {
+    const email=req.session.user.email 
+
+
+    
+     const user=await User.findOne({email:email})
+
+    const category=await Category.find({isListed:true})
+    const brand=await Brand.find({isListed:true})
+
+    const msg=req.flash('msg')
+     res.render("account",{category:category,brand:brand,user:user,msg});
+    
+  } catch (error) {
+    console.log(error.message);
+  }
+
+}
+
+
+//edit the user data
+const postEditUser= async (req,res)=>{
+  try {    
+    let id=req.body.id
+    console.log("ewewe"+id);
+    
+    const user=await User.findOne({_id:id})
+    console.log(user);
+    
+    if(user){      
+      const update= await User.findOneAndUpdate(
+        {  _id:id},
+        {
+          $set:{
+            name:req.body.name,
+            phone:req.body.phone,
+            email:req.body.email
+          }
+        }
+      )
+      
+      if(update){
+        req.flash('msg','updated successfully')
+        res.redirect('/userAccount')
+      }
+    }else{
+      res.redirect('/userAccount')
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+  
+}
+
+ // get change password page
+ const getChangePassword=async (req,res)=>{
+   try {
+     const id=req.query.id
+     if(id){
+
+     const user=await User.findOne({_id:id})
+     const category=await Category.find({isListed:true})
+     const brand=await Brand.find({isListed:true})
+
+     const fail=req.flash('fail')
+ 
+     res.render('changePassword',{category:category,brand:brand,user:user,fail})
+    }else{
+      res.redirect('/userAccount')
+    }
+   } catch (error) {
+     console.log(error.message);
+   }
+ }
+
+ //post change password 
+ const postChangePassword=async (req,res)=>{
+  try {
+   const id=req.body.id
+   const user=await User.findOne({_id:id})
+   const matchPassword = await bcrypt.compare(
+    req.body.oldpass,
+    user.password
+  )
+  if(matchPassword){
+    if (req.body.newpass == req.body.confirmpass){
+        const password=req.body.newpass
+        const hasedpassword=await bcrypt.hash(password,10);
+        user.password=hasedpassword
+
+        await user.save()
+        req.flash('msg','Password Changed')
+        res.redirect('/userAccount')
+    }
+  }else{
+    req.flash("fail","Current Password is Wrong ")
+    res.redirect(`/changePassword?id=${id}`)
+  }
+   
+  } catch (error) {
+    console.log(error.message);
+  }
+ }
+  
+
+
+//----------------------------------------------------  END  -----------------------------------------------------------
+//----------------------------------------------- ADDRESS ---------------------------------------------------------------
 
 
 
@@ -514,5 +643,10 @@ module.exports = {
   verifyUser,
   loadHome,
   productDetails,
-  logout
+  logout,
+  account,
+  postEditUser,
+  getChangePassword,
+  postChangePassword,
+ 
 };

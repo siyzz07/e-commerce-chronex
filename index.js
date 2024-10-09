@@ -2,7 +2,9 @@ const express=require('express')
     const app=express()
 require('dotenv').config();
 
-
+const methodOverride = require('method-override');
+// Middleware to handle PUT and DELETE methods from forms
+app.use(methodOverride('_method'));
 
 const mongoose = require("mongoose");
 mongoose

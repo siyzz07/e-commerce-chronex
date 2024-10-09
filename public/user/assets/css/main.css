@@ -1244,8 +1244,8 @@ textarea:focus {
   -webkit-box-shadow: none;
   box-shadow: none;
   padding-left: 20px;
-  font-size: 13px;
-  color: #1a1a1a;
+  font-size: 19px;
+  color: #302f2f;
   width: 100%;
 }
 

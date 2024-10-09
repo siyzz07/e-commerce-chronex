@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Evara - eCommerce HTML Template</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="user/assets/css/main.css">
+</head>
+
+<body>
+
+
+    
+    <div class="header-bottom header-bottom-bg-color sticky-bar">
+        <div class="container">
+            <div class="header-wrap header-space-between position-relative">
+              
+                <div class="header-nav d-none d-lg-flex">
+                    <div class="main-categori-wrap d-none d-lg-block">
+                       
+                        
+                    </div> 
+
+
+                    <!-- pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp -->
+                    <div class="main-menu  main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
+                        <nav>
+                            <ul>
+                                <li><a href="/home">Home </a>
+                                    
+                                </li>
+                               
+                                <li><a href="#">Category<i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <% for(let i=0;i<category.length;i++){ %>
+                                        <li><a href="#"><%= category[i].category %></a></li>
+                                        <% } %>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Brand<i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <% for(let i=0;i<brand.length;i++){ %>
+                                            <li><a href="#"><%= brand[i].brand %></a></li>
+                                            <% } %>
+                                        
+                                    </ul>
+                                </li>   
+                                <li>
+                                    <a href="page-about.html">About</a>
+                                </li>
+                               
+                              
+                                <li>
+                                    <a href="page-contact.html">Contact</a>
+                                </li>
+
+                                <li>
+                                    <a class="active"  href="page-contact.html">Account</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="hotline d-none d-lg-block">
+                    <p><i class="fi-rs-headset"></i><span>Helpline</span> 1900 - 888 </p>
+                </div>
+                <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
+                <div class="header-action-right d-block d-lg-none">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="http://localhost:5000/home" rel="nofollow">Home</a>
+                  <a href="http://localhost:5000/userAccount">  <span></span> Account</a>
+                  <a href="http://localhost:5000/Address">  <span></span> Address</a>
+                  <a href="#">  <span></span> Add Address</a>
+                </div>
+            </div>
+        </div>
+        <section class="pt-150 pb-150">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 m-auto">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="dashboard-menu">
+                                    <ul class="nav flex-column" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link " id="account-detail-tab" data-bs-toggle="tab" href="/userAccount" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Profile</a>
+                                        </li>
+                                       
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                        </li>
+                
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="/address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="page-login-register.html"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                        </li>
+                                        
+                                       
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class=" dashboard-content">
+
+                                <!-- ========================= add address============== -->
+
+                                    
+                                    <div class="tab-pane fade show" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>Add Address</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                
+                                                <form method="post" name="enq" action="/addAddress" id="addressForm">
+                                                    <div class="row">
+                                                      <div class="form-group col-md-12">
+                                                        <label>Address</label>
+                                                        <input class="form-control square" name="address" type="text" id="address">
+                                                        <span class="error" id="addressError"></span>
+                                                      </div>
+                                                  
+                                                      <div class="form-group col-md-6">
+                                                        <label>Pincode</label>
+                                                        <input class="form-control square" name="pincode" type="text" id="pincode">
+                                                        <span class="error" id="pincodeError"></span>
+                                                      </div>
+                                                  
+                                                      <div class="form-group col-md-6">
+                                                        <label>Secondary phone number</label>
+                                                        <input class="form-control square" name="sphone" id="sphone">
+                                                        <span class="error" id="sphoneError"></span>
+                                                      </div>
+                                                  
+                                                      <div class="form-group col-md-6">
+                                                        <label>Country</label>
+                                                        <input class="form-control square" name="country" type="text" id="country">
+                                                        <span class="error" id="countryError"></span>
+                                                      </div>
+                                                  
+                                                      <div class="form-group col-md-6">
+                                                        <label>State</label>
+                                                        <input class="form-control square" name="state" id="state">
+                                                        <span class="error" id="stateError"></span>
+                                                      </div>
+                                                  
+                                                      <div class="form-group col-md-12">
+                                                        <label>City</label>
+                                                        <input class="form-control square" name="city" type="text" id="city">
+                                                        <span class="error" id="cityError"></span>
+                                                      </div>
+                                                  
+                                                      <div class="col-md-12">
+                                                        <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Save</button>
+                                                      </div>
+                                                    </div>
+                                                  </form>
+                                                  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Preloader Start -->
+    
+    <!-- Vendor JS-->
+    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/plugins/slick.js"></script>
+    <script src="assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="assets/js/plugins/wow.js"></script>
+    <script src="assets/js/plugins/jquery-ui.js"></script>
+    <script src="assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="assets/js/plugins/magnific-popup.js"></script>
+    <script src="assets/js/plugins/select2.min.js"></script>
+    <script src="assets/js/plugins/waypoints.js"></script>
+    <script src="assets/js/plugins/counterup.js"></script>
+    <script src="assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="assets/js/plugins/images-loaded.js"></script>
+    <script src="assets/js/plugins/isotope.js"></script>
+    <script src="assets/js/plugins/scrollup.js"></script>
+    <script src="assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
+    <!-- Template  JS -->
+    <script src="assets/js/main.js"></script>
+   
+    
+      
+      <style>
+        .error {
+          color: red;
+          font-size: 12px;
+        }
+      </style>
+      
+      <script>
+        const form = document.getElementById('addressForm');
+      
+        form.addEventListener('submit', function(event) {
+          // Clear all previous errors
+          document.querySelectorAll('.error').forEach(el => el.textContent = '');
+      
+          let isValid = true;
+      
+          // Get form field values
+          const address = document.getElementById('address').value.trim();
+          const pincode = document.getElementById('pincode').value.trim();
+          const sphone = document.getElementById('sphone').value.trim();
+          const country = document.getElementById('country').value.trim();
+          const state = document.getElementById('state').value.trim();
+          const city = document.getElementById('city').value.trim();
+      
+          // Validate Address (must be at least 10 characters)
+          if (address.length < 5) {
+            document.getElementById('addressError').textContent = 'Address must be at least 5 characters long';
+            isValid = false;
+          }
+      
+          // Validate Pincode
+          if (pincode.length !==4 || isNaN(pincode)) {
+            document.getElementById('pincodeError').textContent = 'Pincode must be exactly 4 digits';
+            isValid = false;
+          }
+      
+          // Validate Secondary Phone (must be exactly 10 digits and numeric)
+          if (sphone.length !== 10 || isNaN(sphone)) {
+            document.getElementById('sphoneError').textContent = 'Phone number must be exactly 10 digits';
+            isValid = false;
+          }
+      
+         
+      
+          // Validate Country
+    if (country === '') {
+      document.getElementById('countryError').textContent = 'Please enter your country';
+      isValid = false;
+    }
+
+    // Validate State
+    if (state === '') {
+      document.getElementById('stateError').textContent = 'Please enter your state';
+      isValid = false;
+    }
+
+    // Validate City
+    if (city === '') {
+      document.getElementById('cityError').textContent = 'Please enter your city';
+      isValid = false;
+    }
+      
+          // Prevent form submission if validation fails
+          if (!isValid) {
+            event.preventDefault();
+          }
+        });
+      </script>
+      
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
+</html>

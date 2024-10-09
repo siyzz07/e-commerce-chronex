@@ -97,9 +97,9 @@ const postProduct=async(req,res)=>{
       const category=await Category.find()
       const brand=await Brand.find()
       if(editproduct){
+     
         
-        
-        res.render('editProduct',{ product:editproduct,brand:brand,category:category })
+        res.render('editProduct',{ product:editproduct,brand:brand,category:category, })
       }else{
           res.redirect('/admin/product')
       }

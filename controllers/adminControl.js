@@ -3,9 +3,13 @@ const bcrypt = require("bcrypt");
 const Category = require("../models/category");
 const Brand=require('../models/brand')
 const Product=require("../models/porduct")
+const Admin=require('../models/adminModel')
 
 const email = "admin@gmail.com";
-const password = "12345";
+// const password = "12345";
+
+
+
 //-------------------------------------------------- LOGIN --------------------------------------------------------------
 
 // load admin login page
@@ -27,10 +31,12 @@ const adminVerify = async (req, res) => {
 
   try {
     
-    if (email == req.body.email) {
+    const admin=await Admin.findOne({email:email})
 
-      if (req.body.password == password) {
-        req.session.admin=email
+    if (admin.email == req.body.email) {
+
+      if (req.body.password == admin.password) {
+        req.session.admin= admin.email
         res.redirect("/admin/dashboard");
       } else {
         req.flash("fail", "wrong password");
@@ -130,7 +136,6 @@ const blockuser = async (req, res) => {
 
 
 
-//------------------------------- end------------
 
 module.exports = {
   loadAdminLogin,

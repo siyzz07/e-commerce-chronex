@@ -25,7 +25,13 @@ user_route.use(
 user_route.use(express.json())
 user_route.use(express.urlencoded({extended:true}));
 
+
+//--------------- CONTROLLER ------------------------
 const userController=require("../controllers/userControl");
+const addressController=require("../controllers/addressController")
+const orderController=require('../controllers/orderControl')
+const cartController=require('../controllers/cartControl')
+
 
 // login page
 user_route.get("/login",userController.loadLogin)
@@ -60,9 +66,37 @@ user_route.get('/home',userSession,userController.loadHome)
 // product details page
 user_route.get('/productdetails',userSession,userController.productDetails)
 
+//user account page 
+user_route.get('/userAccount',userSession,userController.account)
+user_route.put('/editUser',userController.postEditUser)
+
+//change password
+user_route.get('/changePassword',userSession,userController.getChangePassword)
+user_route.put('/changePassword',userController.postChangePassword)
+
+
+//address
+user_route.get('/address',userSession,addressController.getAddress)
+user_route.get('/addAddress',userSession,addressController.getAddAddress)
+user_route.post('/addAddress',addressController.postAddAddres)
+user_route.get('/deleteAddress',addressController.deletAddress)
+user_route.get('/editAddress',addressController.editAddress)
 
 
 
+
+
+// cart and 
+user_route.post('/addToCart',cartController.addToCart)//this post come from the product details page
+user_route.get('/cart',userSession,cartController.getCart)
+user_route.post('/updateCart',cartController.updateCart)
+user_route.get('/deletFromCart',cartController.deleFromCart)
+
+
+// chekout    order placing 
+user_route.get('/checkOut',userSession,orderController.getCheckOut)
+user_route.post('/submit-payment',orderController.placeOrder)
+user_route.get('/confirmorder',orderController.confirmOrder)
 
 
 

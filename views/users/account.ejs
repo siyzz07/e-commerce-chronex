@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Evara - eCommerce HTML Template</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="user/assets/css/main.css">
+</head>
+
+<body>
+
+
+    
+    <div class="header-bottom header-bottom-bg-color sticky-bar">
+        <div class="container">
+            <div class="header-wrap header-space-between position-relative">
+              
+                <div class="header-nav d-none d-lg-flex">
+                    <div class="main-categori-wrap d-none d-lg-block">
+                       
+                        
+                    </div> 
+
+
+                    <!-- pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp -->
+                    <div class="main-menu  main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
+                        <nav>
+                            <ul>
+                                <li><a class="active" href="/home">Home </a>
+                                    
+                                </li>
+                               
+                                <li><a href="#">Category<i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <% for(let i=0;i<category.length;i++){ %>
+                                        <li><a href="#"><%= category[i].category %></a></li>
+                                        <% } %>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Brand<i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <% for(let i=0;i<brand.length;i++){ %>
+                                            <li><a href="#"><%= brand[i].brand %></a></li>
+                                            <% } %>
+                                        
+                                    </ul>
+                                </li>   
+                                <li>
+                                    <a href="page-about.html">About</a>
+                                </li>
+                               
+                              
+                                <li>
+                                    <a href="page-contact.html">Contact</a>
+                                </li>
+
+                                <li>
+                                    <a href="page-contact.html">Account</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="hotline d-none d-lg-block">
+                    <p><i class="fi-rs-headset"></i><span>Helpline</span> 1900 - 888 </p>
+                </div>
+                <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
+                <div class="header-action-right d-block d-lg-none">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="http://localhost:5000/home" rel="nofollow">Home</a>
+                  <a href="">  <span></span> Account</a>
+                </div>
+            </div>
+        </div>
+        <section class="pt-150 pb-150">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 m-auto">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="dashboard-menu">
+                                    <ul class="nav flex-column" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Profile</a>
+                                        </li>
+                                       
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                        </li>
+                
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="/address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="page-login-register.html"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                        </li>
+                                        
+                                       
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="tab-content dashboard-content">
+
+                                <!-- ========================= USER FORM ============== -->
+                                <form id="editForm" action="/editUser?_method=PUT" method="post">
+                                    <div class="form-group">
+                                        <h3 style="font-weight: bold;">Profile Details</h3><br>
+                                        <p style="color: rgb(47, 215, 38); text-align: center;"><%= msg %></p>
+                                
+                                       
+                                        <div class="form-group">
+                                            <input type="hidden"  value="<%= user._id %>" name="id">
+                                        </div>
+                                
+                                      
+                                        <div class="form-group">
+                                            <label for="name">Name</label>
+                                            <input type="text"  value="<%= user.name %>" name="name" placeholder="Username" 
+                                                pattern="^[A-Za-z\s]+$" title="Name must only contain letters and spaces.">
+                                                <span style="color: red;font-size: 13PX;" id="nameerror"></span>
+                                        </div>
+                                
+                                        <br>
+                                
+                                 
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="text" disabled value="<%= user.email %>" name="email" placeholder="Email">
+                                        </div>
+                                
+                                        <br>
+                                
+                                      
+                                        <div class="form-group">
+                                            <label for="phome">Phone</label>
+                                            <input  type="tel" value="<%= user.phone %>" name="phone" placeholder="Phone"
+                                                pattern="^[0-9]{10}$" title="Phone number must be 10 digits.">
+                                                <span style="color: red;font-size: 13PX;" id="phoneerror"></span>
+                                        </div>
+                                
+                                        <br>
+                                
+                                       
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-fill-out btn-block hover-up" onclick="return confirmEdit()">Edit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                
+
+                                    <div class="form-group">
+                                        <a href="/changePassword?id=<%= user._id %>"> <button type="" class="btn btn-fill-out btn-block hover-up" >Change Password</button></a>
+                                     </div>
+                                   
+
+
+
+                                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Your Orders</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Order</th>
+                                                                <th>Date</th>
+                                                                <th>Status</th>
+                                                                <th>Total</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>#1357</td>
+                                                                <td>March 45, 2020</td>
+                                                                <td>Processing</td>
+                                                                <td>$125.00 for 2 item</td>
+                                                                <td><a href="#" class="btn-small d-block">View</a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>#2468</td>
+                                                                <td>June 29, 2020</td>
+                                                                <td>Completed</td>
+                                                                <td>$364.00 for 5 item</td>
+                                                                <td><a href="#" class="btn-small d-block">View</a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>#2366</td>
+                                                                <td>August 02, 2020</td>
+                                                                <td>Completed</td>
+                                                                <td>$280.00 for 3 item</td>
+                                                                <td><a href="#" class="btn-small d-block">View</a></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="track-orders" role="tabpanel" aria-labelledby="track-orders-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Orders tracking</h5>
+                                            </div>
+                                            <div class="card-body contact-from-area">
+                                                <p>To track your order please enter your OrderID in the box below and press "Track" button. This was given to you on your receipt and in the confirmation email you should have received.</p>
+                                                <div class="row">
+                                                    <div class="col-lg-8">
+                                                        <form class="contact-form-style mt-30 mb-50" action="#" method="post">
+                                                            <div class="input-style mb-20">
+                                                                <label>Order ID</label>
+                                                                <input name="order-id" placeholder="Found in your order confirmation email" type="text" class="square">
+                                                            </div>
+                                                            <div class="input-style mb-20">
+                                                                <label>Billing email</label>
+                                                                <input name="billing-email" placeholder="Email you used during checkout" type="email" class="square">
+                                                            </div>
+                                                            <button class="submit submit-auto-width" type="submit">Track</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="card mb-3 mb-lg-0">
+                                                    <div class="card-header">
+                                                        <h5 class="mb-0">Billing Address</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <address>3522 Interstate<br> 75 Business Spur,<br> Sault Ste. <br>Marie, MI 49783</address>
+                                                        <p>New York</p>
+                                                        <a href="#" class="btn-small">Edit</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5 class="mb-0">Shipping Address</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <address>4299 Express Lane<br>
+                                                            Sarasota, <br>FL 34249 USA <br>Phone: 1.941.227.4444</address>
+                                                        <p>Sarasota</p>
+                                                        <a href="#" class="btn-small">Edit</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>Account Details</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>Already have an account? <a href="page-login-register.html">Log in instead!</a></p>
+                                                <form method="post" name="enq">
+                                                    <div class="row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>First Name <span class="required">*</span></label>
+                                                            <input required="" class="form-control square" name="name" type="text">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label>Last Name <span class="required">*</span></label>
+                                                            <input required="" class="form-control square" name="phone">
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label>Display Name <span class="required">*</span></label>
+                                                            <input required="" class="form-control square" name="dname" type="text">
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label>Email Address <span class="required">*</span></label>
+                                                            <input required="" class="form-control square" name="email" type="email">
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label>Current Password <span class="required">*</span></label>
+                                                            <input required="" class="form-control square" name="password" type="password">
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label>New Password <span class="required">*</span></label>
+                                                            <input required="" class="form-control square" name="npassword" type="password">
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label>Confirm Password <span class="required">*</span></label>
+                                                            <input required="" class="form-control square" name="cpassword" type="password">
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Preloader Start -->
+    
+    <!-- Vendor JS-->
+    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/plugins/slick.js"></script>
+    <script src="assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="assets/js/plugins/wow.js"></script>
+    <script src="assets/js/plugins/jquery-ui.js"></script>
+    <script src="assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="assets/js/plugins/magnific-popup.js"></script>
+    <script src="assets/js/plugins/select2.min.js"></script>
+    <script src="assets/js/plugins/waypoints.js"></script>
+    <script src="assets/js/plugins/counterup.js"></script>
+    <script src="assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="assets/js/plugins/images-loaded.js"></script>
+    <script src="assets/js/plugins/isotope.js"></script>
+    <script src="assets/js/plugins/scrollup.js"></script>
+    <script src="assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
+    <!-- Template  JS -->
+    <script src="assets/js/main.js"></script>
+    <script>
+       
+        function confirmEdit() {
+            
+            return confirm("Are you sure you want to update your profile details?");
+        }
+    
+       
+        document.getElementById('editForm').addEventListener('submit', function(event) {
+            var nameField = document.getElementsByName('name')[0];
+            var phoneField = document.getElementsByName('phone')[0];
+            const name =nameField.value.trim();
+            
+            var namePattern = /^[A-Za-z\s]+$/;
+            if(name === ''){
+                document.getElementById('nameerror').textContent = 'name only be letter';
+                event.preventDefault();
+                return false;
+            }else{
+            if (!namePattern.test(nameField.value) ) {
+                // alert("Name can only contain letters and spaces.");
+                document.getElementById('nameerror').textContent = 'name only be letter';
+                event.preventDefault(); // Prevent form submission
+                return false;
+            }
+    }
+            // Ensure the phone field has exactly 10 digits
+            var phonePattern = /^[0-9]{10}$/;
+            if (!phonePattern.test(phoneField.value)) {
+                alert("Phone number must be 10 digits.");
+                event.preventDefault(); // Prevent form submission
+                return false;
+            }
+        });
+    </script>
+    
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
+</html>
