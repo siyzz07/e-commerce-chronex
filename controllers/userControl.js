@@ -631,9 +631,65 @@ const postEditUser= async (req,res)=>{
 
 
 //----------------------------------------------------  END  -----------------------------------------------------------
-//----------------------------------------------- ADDRESS ---------------------------------------------------------------
+//----------------------------------------------- SHOP ---------------------------------------------------------------
+
+const getShop=async (req,res)=>{
+  try{
+
+    // short code form the shop page 
+    const sortOption=req.query.sort;
+    let sortmethod={}
+    let selected
+    switch(sortOption){
+      case "priceinc":
+        sortmethod ={ price :1};
+        selected="Price: Low to High"
+        break;
+      case "pricedec":
+        sortmethod ={ price : -1};
+        selected="Price: High to Low"
+        break;
+      case "nameinc":
+        sortmethod ={ title : 1};
+        selected= "Name :A to Z"
+        break;
+      case "namedec":
+        sortmethod ={ title : -1};
+        selected="Name :z to A"
+        break;
+      default:
+        sortmethod={}
+        selected ="Featured"
+    }
 
 
+
+    const user=req.session.user.email 
+    const userData=await User.findOne({email:user})
+    if(userData.isBlocked){
+      req.session.destroy()
+      res.redirect('/login')
+
+    }else{
+
+    const product = await Product.find({ isBlocked: true })
+    .populate('brandName')
+    .populate('category')
+    .sort(sortmethod)
+
+   const category=await Category.find({isListed:true})
+   const brand=await Brand.find({isListed:true})
+
+
+
+    res.render("shop",{product:product,category:category,brand:brand,selected});
+}
+      
+  }catch(error){
+    console.log(error.message);
+    
+  }
+}
 
 module.exports = {
   loadLogin,
@@ -656,5 +712,6 @@ module.exports = {
   postEditUser,
   getChangePassword,
   postChangePassword,
+  getShop
  
 };

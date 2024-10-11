@@ -105,6 +105,8 @@ user_route.get('/order',userSession,orderController.getOrderHistory)
 user_route.get('/orderDetails',userSession,orderController.getOrderDeatails)
 user_route.get('/cancelOrder',orderController.cancelOrder)
 
-
+// shop page
+user_route.get('/shop',userController.getShop)
+user_route.get('/shopFilter')
 
 module.exports=user_route
