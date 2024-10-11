@@ -134,49 +134,55 @@
                                             </div>
                                             <div class="card-body">
                                                 
-                                                <form method="post" name="enq" action="/addAddress" id="addressForm">
-                                                    <div class="row">
-                                                      <div class="form-group col-md-12">
+                                              <form method="POST" action="/editAddress?id=<%= userId %>" id="addressForm">
+                                                <input type="hidden" name="_method" value="PATCH"> 
+                                                <input type="hidden" name="addressId" value="<%= address.addressData[0]._id %>"> 
+                                            
+                                                <div class="row">
+                                                    <div class="form-group col-md-12">
                                                         <label>Address</label>
                                                         <input class="form-control square" value="<%= address.addressData[0].address %>" name="address" type="text" id="address">
-                                                        <span class="error" id="addressError"></span>
-                                                      </div>
-                                                  
-                                                      <div class="form-group col-md-6">
-                                                        <label>Pincode</label>
-                                                        <input class="form-control square" value="" name="pincode" type="text" id="pincode">
-                                                        <span class="error" id="pincodeError"></span>
-                                                      </div>
-                                                  
-                                                      <div class="form-group col-md-6">
-                                                        <label>Secondary phone number</label>
-                                                        <input class="form-control square" name="sphone" id="sphone">
-                                                        <span class="error" id="sphoneError"></span>
-                                                      </div>
-                                                  
-                                                      <div class="form-group col-md-6">
-                                                        <label>Country</label>
-                                                        <input class="form-control square" name="country" type="text" id="country">
-                                                        <span class="error" id="countryError"></span>
-                                                      </div>
-                                                  
-                                                      <div class="form-group col-md-6">
-                                                        <label>State</label>
-                                                        <input class="form-control square" name="state" id="state">
-                                                        <span class="error" id="stateError"></span>
-                                                      </div>
-                                                  
-                                                      <div class="form-group col-md-12">
-                                                        <label>City</label>
-                                                        <input class="form-control square" name="city" type="text" id="city">
-                                                        <span class="error" id="cityError"></span>
-                                                      </div>
-                                                  
-                                                      <div class="col-md-12">
-                                                        <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Save</button>
-                                                      </div>
+                                                        <span id="addressError" class="error text-danger"></span> <!-- Validation message for Address -->
                                                     </div>
-                                                  </form>
+                                            
+                                                    <div class="form-group col-md-6">
+                                                        <label>Pincode</label>
+                                                        <input class="form-control square" value="<%= address.addressData[0].pincode %>" name="pincode" type="text" id="pincode">
+                                                        <span id="pincodeError" class="error text-danger"></span> <!-- Validation message for Pincode -->
+                                                    </div>
+                                            
+                                                    <div class="form-group col-md-6">
+                                                        <label>Secondary phone number</label>
+                                                        <input class="form-control square" value="<%= address.addressData[0].secphone %>" name="secphone" id="sphone">
+                                                        <span id="sphoneError" class="error text-danger"></span> <!-- Validation message for Phone -->
+                                                    </div>
+                                            
+                                                    <div class="form-group col-md-6">
+                                                        <label>Country</label>
+                                                        <input class="form-control square" value="<%= address.addressData[0].country %>" name="country" type="text" id="country">
+                                                        <span id="countryError" class="error text-danger"></span> <!-- Validation message for Country -->
+                                                    </div>
+                                            
+                                                    <div class="form-group col-md-6">
+                                                        <label>State</label>
+                                                        <input class="form-control square" value="<%= address.addressData[0].state %>" name="state" id="state">
+                                                        <span id="stateError" class="error text-danger"></span> <!-- Validation message for State -->
+                                                    </div>
+                                            
+                                                    <div class="form-group col-md-12">
+                                                        <label>City</label>
+                                                        <input class="form-control square" value="<%= address.addressData[0].city %>" name="city" type="text" id="city">
+                                                        <span id="cityError" class="error text-danger"></span> <!-- Validation message for City -->
+                                                    </div>
+                                            
+                                                    <div class="col-md-12">
+                                                        <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Save</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            
+                                            
+                                            
                                                   
                                             </div>
                                         </div>
@@ -192,6 +198,66 @@
     
     <!-- Preloader Start -->
     
+    <script>
+      const form = document.getElementById('addressForm');
+    
+      form.addEventListener('submit', function(event) {
+          // Clear all previous errors
+          document.querySelectorAll('.error').forEach(el => el.textContent = '');
+  
+          let isValid = true;
+  
+          // Get form field values
+          const address = document.getElementById('address').value.trim();
+          const pincode = document.getElementById('pincode').value.trim();
+          const sphone = document.getElementById('sphone').value.trim();
+          const country = document.getElementById('country').value.trim();
+          const state = document.getElementById('state').value.trim();
+          const city = document.getElementById('city').value.trim();
+  
+          // Validate Address (must be at least 5 characters)
+          if (address.length < 5) {
+              document.getElementById('addressError').textContent = 'Address must be at least 5 characters long';
+              isValid = false;
+          }
+  
+          // Validate Pincode (must be 4 digits)
+          if (pincode.length !== 4 || isNaN(pincode)) {
+              document.getElementById('pincodeError').textContent = 'Pincode must be exactly 4 digits';
+              isValid = false;
+          }
+  
+          // Validate Secondary Phone (must be exactly 10 digits and numeric)
+          if (sphone.length !== 10 || isNaN(sphone)) {
+              document.getElementById('sphoneError').textContent = 'Phone number must be exactly 10 digits';
+              isValid = false;
+          }
+  
+          // Validate Country
+          if (country === '') {
+              document.getElementById('countryError').textContent = 'Please enter your country';
+              isValid = false;
+          }
+  
+          // Validate State
+          if (state === '') {
+              document.getElementById('stateError').textContent = 'Please enter your state';
+              isValid = false;
+          }
+  
+          // Validate City
+          if (city === '') {
+              document.getElementById('cityError').textContent = 'Please enter your city';
+              isValid = false;
+          }
+  
+          // Prevent form submission if validation fails
+          if (!isValid) {
+              event.preventDefault();
+          }
+      });
+  </script>
+  
     <!-- Vendor JS-->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
@@ -225,9 +291,9 @@
       </style>
       
       <script>
-        const form = document.getElementById('addressForm');
+        const formdata = document.getElementById('addressForm');
       
-        form.addEventListener('submit', function(event) {
+        formdata.addEventListener('submit', function(event) {
           // Clear all previous errors
           document.querySelectorAll('.error').forEach(el => el.textContent = '');
       

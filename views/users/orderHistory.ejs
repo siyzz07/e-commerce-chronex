@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <title>chronex</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="user/assets/css/main.css">
+
+
+</head>
+
+<body>
+    
+    
+    <div class="header-bottom header-bottom-bg-color sticky-bar">
+        <div class="container">
+            <div class="header-wrap header-space-between position-relative">
+              
+                <div class="header-nav d-none d-lg-flex">
+                    <div class="main-categori-wrap d-none d-lg-block">
+                       
+                        
+                    </div> 
+
+
+                    <!-- pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp -->
+                    <div class="main-menu  main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
+                        <nav>
+                            <ul>
+                                <li><a href="/home">Home </a>
+                                    
+                                </li>
+                               
+                                <li><a href="#">Category<i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <% for(let i=0;i<category.length;i++){ %>
+                                        <li><a href="#"><%= category[i].category %></a></li>
+                                        <% } %>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Brand<i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <% for(let i=0;i<brand.length;i++){ %>
+                                            <li><a href="#"><%= brand[i].brand %></a></li>
+                                            <% } %>
+                                        
+                                    </ul>
+                                </li>   
+                                <li>
+                                    <a href="page-about.html">About</a>
+                                </li>
+                               
+                              
+                                <li>
+                                    <a href="page-contact.html">Contact</a>
+                                </li>
+
+                                <li>
+                                    <a class="active"  href="page-contact.html">Account</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="hotline d-none d-lg-block">
+                    <p><i class="fi-rs-headset"></i><span>Helpline</span> 1900 - 888 </p>
+                </div>
+                <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
+                <div class="header-action-right d-block d-lg-none">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <main class="main"></main>
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/home" rel="nofollow">Home</a>
+                <!-- <span></span> Pages -->
+                <a href="/userAccount"><span></span> Account</a>
+                <a href="#"><span></span>Orders</a>
+            </div>
+        </div>
+    </div>
+    <section class="pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 m-auto">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="dashboard-menu">
+                                <ul class="nav flex-column" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/userAccount"><i
+                                                class="fi-rs-user mr-10"></i>Profile</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#"><i
+                                                class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/address"><i class="fi-rs-marker mr-10"></i>My
+                                            Address</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/logout"><i
+                                                class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <!-- /////////////////////////////////////////////////////////////////// -->
+                        <div class="col-md-8">
+                            <section class="content-main">
+                                <% if(orders && orders.length > 0){ %>
+                                
+                                <div class="card">
+                                    <header class="card-header">
+
+                                        <h2 class="content-title card-title">Orderss</h2>
+
+                                    </header> 
+                                    <div class="card-body">
+
+                                    
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="text-align: center;"  width="20%">Product</th>
+                                                                <th style="text-align: center;" width="20%">Order Date</th>
+                                                                <th style="text-align: center;" width="20%">Total</th>
+                                                                <th style="text-align: center;" width="20%">Status</th>
+                                                                <th style="text-align: center;" width="20%">Action                                                                                                                                                                                                                                                                    </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <% for(let i=0;i<orders.length;i++) {%>
+                                                            <tr>
+                                                                <td>
+                                                                    <% for(let j=0;j<orders[i].items.length;j++){ %>
+                                                                        
+                                                                        <div class="left d-content-center" style="display: flex; justify-content: center; align-items: center;">
+                                                                            <img src="/public/product_images/<%= orders[i].items[j].product.images[0] %>"
+                                                                                 width="50" height="50" class="img-xs" alt="Item">
+                                                                        </div>
+                                                                            
+                                                                        
+                                                                        <% } %>
+                                                                    </td>
+                                                                    <td>
+                                                                       <%= orders[i].orderDate.toLocaleDateString() %> 
+                                                                    </td>
+                                                                    <td style="text-align: center;">
+                                                                        <%= orders[i].totalPrice %>
+                                                                    </td>
+                                                                    <td style="text-align: center;">
+                                                                      
+
+
+                                                                            <% if(orders[i].status === "Pending"){ %>
+                                                                                <span class="badge rounded-pill alert-success">Pending</span>
+                                                                              <% } else if(orders[i].status === "Cancelled") { %>
+                                                                                <span class="badge rounded-pill alert-danger">Candelled</span>
+                                                                              <% } else if(orders[i].status === "Shipped"){%>
+                                                                              <span class="badge rounded-pill alert-success">Shipped</span>
+                                                                              <% } else if(orders[i].status === "Delivered"){%>
+                                                                              <span class="badge rounded-pill alert-success">Delivered</span>
+                                                                              <% } else{%> 
+                                                                              <span class="badge rounded-pill alert-danger">Returned</span>
+                                                                                  <% } %>
+                                                                    </td>
+                                                                    <td style="text-align: center;" >
+                                                                        <a href="/orderDetails?orderid=<%= orders[i]._id %>" class="btn btn-md btn-primary" style="margin-bottom: 10px;">Details</a><br>
+                                                                        <a href="/cancelOrder/?orderid=<%= orders[i]._id %>" class="btn btn-md btn-primary" onclick="disableButton(this)">Cancel</a>
+
+                                                                    </td>
+                                                                </tr>
+                                                        
+
+                                                             <% } %>       
+                                                        </tbody>
+
+                                                    </table>
+                                                  
+                                                        <div class="col-md-10"
+                                                            style="text-align: center; margin: 0px 56px 60px;">
+                                                          
+                                                                <a href="/downloadinvoice/"
+                                                                    class="btn btn-md btn-primary">Download Invoice</a>
+                                                                    
+                                                                </div>
+                                                                
+                                                                
+                                                            </div> <!-- table-responsive// -->
+                                                            <!-- <a class="btn btn-primary" href="page-orders-tracking.html">View Order Tracking</a> -->
+                                                        </div> <!-- col// -->
+                                                        <div class="col-lg-1"></div>
+                                                    </div>
+                                                </div> <!-- card-body end// -->
+                                            </div> <!-- card end// -->
+                                            <% }else{ %>
+                                                 <h5 style="text-align: center;">you dont have any order !</h5>
+                                            <% } %>
+                            </section> <!-- content-main end// -->
+                           
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    
+    <!-- Preloader Start -->
+    
+    
+    
+    <script src="http://localhost:4444/user/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="http://localhost:4444/user/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="http://localhost:4444/user/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="http://localhost:4444/user/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/slick.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/wow.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/jquery-ui.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/perfect-scrollbar.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/magnific-popup.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/select2.min.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/waypoints.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/counterup.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/jquery.countdown.min.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/images-loaded.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/isotope.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/scrollup.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/jquery.vticker-min.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="http://localhost:4444/user/js/plugins/jquery.elevatezoom.js"></script>
+    <!-- Template  JS -->
+    <script src="http://localhost:4444/user/js/main.js"></script>
+    <script src="http://localhost:4444/user/js/shop.js"></script>
+    <script>
+        function disableButton(button) {
+           
+            if (confirm('Are you sure you want to cancel this order?')) {
+                
+                button.innerHTML = 'Cancelling...'; 
+                button.classList.add('disabled');   
+                button.setAttribute('disabled', 'true');  
+            } else {
+            
+                return false;
+            }
+        }
+    </script>
+    
+    </body>
+    
+    </html>

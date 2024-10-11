@@ -30,7 +30,7 @@ const adminController=require('../controllers/adminControl')
 const brandController=require('../controllers/brandControl')
 const categoryController=require('../controllers/categoryContorl')
 const productController=require('../controllers/productContorl')
-
+const orderController=require('../controllers/orderControl')
 
 // get loagin page and verify admim
 admin_route.get("/login",adminController.loadAdminLogin)
@@ -66,10 +66,10 @@ admin_route.post('/editcategory',categoryController.editCategoryPost)
 //brand page
 admin_route.get('/brand',adminSession,brandController.brand)
 
-admin_route.get('/deletebrand',brandController.deleteBrand)
-admin_route.get('/listbrand',brandController.listBrand)
-admin_route.get('/unlistbrand',brandController.unlistBrand)
-admin_route.get('/editbrand',brandController.editBrand)
+admin_route.get('/deletebrand',adminSession,brandController.deleteBrand)
+admin_route.get('/listbrand',adminSession,brandController.listBrand)
+admin_route.get('/unlistbrand',adminSession,brandController.unlistBrand)
+admin_route.get('/editbrand',adminSession,brandController.editBrand)
 
 
 admin_route.post('/editbrand',brandController.edit)
@@ -84,6 +84,13 @@ admin_route.get('/unblockproduct',productController.unblockProduct)
 admin_route.get('/editproduct',productController.editproductGet)
 admin_route.post('/editproduct',upload.array('images', 3),productController.editproductpost)
 admin_route.get('/deleteproduct',productController.deletproduct)
+
+
+//order 
+ 
+admin_route.get('/orderList',adminSession,orderController.getOrderList)
+admin_route.get('/orderDetails',adminSession,orderController.orderDeatails)
+admin_route.post('/orderUpdate',orderController.orderUpdate)
 
 
 

@@ -108,7 +108,7 @@
                                         </li>
                                        
                                         <li class="nav-item">
-                                            <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                            <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="/order" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
                                         </li>
                 
                                         <li class="nav-item">
@@ -161,7 +161,7 @@
                                                                     <a href="/editAddress?addressid=<%= userAddress.addressData[i]._id %>" style="color: rgb(17, 219, 44);" class="btn-small">Edit</a><br>
                                                                     <a href="/deleteAddress?id=<%= userAddress.addressData[i]._id %>" style="color: rgb(255, 21, 0);" class="btn-small">Delete</a>
                                                                 </div>
-                                                            </div>
+                                                            </div><br>
                                                         </div>
                                                     <% } %>
                                                 <% } else { %>

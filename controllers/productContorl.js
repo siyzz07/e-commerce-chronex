@@ -93,7 +93,7 @@ const postProduct=async(req,res)=>{
   const editproductGet=async (req,res)=>{
     try {
       const id=req.query.id;
-      const editproduct=await Product.findOne({_id:id});
+      const editproduct=await Product.findOne({_id:id}).populate('brandName');
       const category=await Category.find()
       const brand=await Brand.find()
       if(editproduct){
@@ -112,34 +112,31 @@ const postProduct=async(req,res)=>{
   
   
   //////////////////////////////////////////////////////////
-  
   const editproductpost = async (req, res) => {
     try {
-      const id=req.body.id
-   
-      let images =
-        req.files.length > 0 ? req.files.map((file) => file.filename) : undefined;
-  
-  
-      const updatedProduct = {
-        title: req.body.title,
-        description: req.body.description,
-        category: req.body.category,
-        brand: req.body.brand,
-        stock: req.body.stock,
-        price: req.body.price,
-      };
-      if (images) {
-        updatedProduct.images = images;
-      }
-      await Product.findByIdAndUpdate(id, updatedProduct);
-  
-      res.redirect("/admin/product");
+        const id = req.body.id;
+        let images = req.files.length > 0 ? req.files.map((file) => file.filename) : undefined;
+
+        const updatedProduct = {
+            title: req.body.title,
+            description: req.body.description,
+            category: req.body.category,
+            brandName: req.body.brand,
+            stock: req.body.stock,
+            price: req.body.price,
+        };
+
+        if (images) {
+            updatedProduct.images = images;
+        }
+
+        await Product.findByIdAndUpdate(id, updatedProduct);
+        res.redirect("/admin/product");
     } catch (error) {
-      console.log(error.message);
+        console.log(error.message);
     }
-  };
-  
+};
+
 
   // delete product
 const deletproduct=async (req,res)=>{

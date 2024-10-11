@@ -14,7 +14,8 @@ const category = async (req, res) => {
       const msg1 = req.flash("msg1");
       const fail = req.flash("fail");
       const msg = req.flash("msg");
-      res.render("categorys", { category: category, msg, fail, msg1 });
+      const fail2=req.flash('fail2')
+      res.render("categorys", { category: category, msg, fail, msg1 ,fail2});
     } catch (error) {
       console.log(error.message);
     }
@@ -100,6 +101,15 @@ const deletCategory = async (req, res) => {
   //------------------ POST THE EDIT CATEGORY PAGE ----------------------
   const editCategoryPost=async (req,res)=>{
     try {
+
+      const category=req.body.category
+     const check=await Category.findOne({category:category})
+    if(check){
+      req.flash('fail2','already added')
+      return res.redirect('/admin/category')
+    }      
+      
+
       const edit=await Category.findByIdAndUpdate(
         {_id:req.body.id},{
           $set:{

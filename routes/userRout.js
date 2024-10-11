@@ -79,15 +79,16 @@ user_route.put('/changePassword',userController.postChangePassword)
 user_route.get('/address',userSession,addressController.getAddress)
 user_route.get('/addAddress',userSession,addressController.getAddAddress)
 user_route.post('/addAddress',addressController.postAddAddres)
-user_route.get('/deleteAddress',addressController.deletAddress)
-user_route.get('/editAddress',addressController.editAddress)
+user_route.get('/deleteAddress',userSession,addressController.deletAddress)
+user_route.get('/editAddress',userSession,addressController.editAddress)
+user_route.post('/editAddress',addressController.postEditAddress)
 
 
 
 
 
 // cart and 
-user_route.post('/addToCart',cartController.addToCart)//this post come from the product details page
+user_route.post('/addToCart',cartController.addToCart)//this post come from the product details page 
 user_route.get('/cart',userSession,cartController.getCart)
 user_route.post('/updateCart',cartController.updateCart)
 user_route.get('/deletFromCart',cartController.deleFromCart)
@@ -98,6 +99,11 @@ user_route.get('/checkOut',userSession,orderController.getCheckOut)
 user_route.post('/submit-payment',orderController.placeOrder)
 user_route.get('/confirmorder',orderController.confirmOrder)
 
+
+// show order page
+user_route.get('/order',userSession,orderController.getOrderHistory)
+user_route.get('/orderDetails',userSession,orderController.getOrderDeatails)
+user_route.get('/cancelOrder',orderController.cancelOrder)
 
 
 

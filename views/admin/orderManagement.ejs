@@ -46,15 +46,15 @@
               <span class="text">Dashboard</span>
             </a>
           </li>
-          <li class="menu-item active ">
-            <a class="menu-link" href="#">
+          <li class="menu-item">
+            <a class="menu-link" href="product">
               <i class="icon material-icons md-shopping_bag"></i>
               <span class="text">Products</span>
             </a>
             
           </li>
-          <li class="menu-item ">
-            <a class="menu-link" href="orderList">
+          <li class="menu-item  active  ">
+            <a class="menu-link" href="#">
               <i class="icon material-icons md-shopping_cart"></i>
               <span class="text">Orders</span>
             </a>
@@ -138,16 +138,18 @@
       </header>
 
       <!-- ...................................................................... -->
-
+      
+      
       <section class="content-main">
-        <div class="content-header">
-          <h2 class="content-title">Product list</h2>
-         
-        </div>
-        <P style="color: rgb(47, 215, 38); text-align: center;"><%= msg %></P>
+          <div class="content-header">
+              <h2 class="content-title">Orders List</h2>
+              
+            </div>
+            <!-- <P style="color: rgb(47, 215, 38); text-align: center;"><%# msg %></P> -->
 
         <div class="card mb-4">
           <header class="card-header">
+            <P style="color: rgb(17, 114, 12); text-align: center;"><%= msg %></P>
             <div class="row gx-3">
               <div class="col-lg-4 col-md-6 me-auto">
                 <input
@@ -157,69 +159,61 @@
                 />
               </div>
               
-              <div class="d-gridcol-lg-4 col-md-6 me-auto"> <a href="/admin/addproduct">
+              <!-- <div class="d-gridcol-lg-4 col-md-6 me-auto"> <a href="/admin/addproduct">
                 <button  class="btn btn-primary"><i class="icon material-icons md-add_box"></i>Add Product</button></a>
-            </div>
+            </div> -->
             </div>
           </header>
           <!-- card-header end// -->
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-hover">
+                <table class="table table-hover" style="width: 100%; text-align: center;">
+                    <thead>
+                      <tr>
+                        <th style="width: 10%; text-align: center;">SI NO</th>
+                        <th style="width: 10%; text-align: center;">Name</th>
+                        <th style="width: 20%; text-align: center;">Email</th>
+                        <th style="width: 10%; text-align: center;">Total</th>
+                        <th style="width: 15%; text-align: center;">Date</th>
+                        <th style="width: 15%; text-align: center;">Status</th>
+                        <th style="width: 15%; text-align: center;">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tableDatas">
+                      <% for(let i=0; i<order.length; i++) { %>
+                        <tr>
+                          <td style="vertical-align: middle; text-align: center;"><%= i+1 %></td>
+                          <td style="vertical-align: middle; text-align: center;"><%= order[i].billingDetails.name %></td>
+                          <td style="vertical-align: middle; text-align: center;"><%= order[i].billingDetails.email %></td>
+                          <td style="vertical-align: middle; text-align: center;"><%= order[i].totalPrice %></td>
+                          <td style="vertical-align: middle; text-align: center;"><%= order[i].orderDate.toLocaleDateString() %></td>
+                          <td style="vertical-align: middle; text-align: center;">
 
-                <thead>
-                  <tr><Th>SI NO</Th>
-                    <th>Image</th>
-                    <th>Product Name</th>
-                    <th>Stock</th>
-                    <th>price</th>
-                    <th>Status</th>
-                    <th class="text-end">Action</th>
-                  </tr>
-
-                </thead>
-                <tbody id="tableDatas">
-                    <% for(let i=0;i<product.length;i++) {%>
-                  <tr>
-                    <td><%= i+1 %></td>
-                    <td style=" vertical-align: middle;">
-                        <img src="/public/product_images/<%= product[i].images[0] %>" alt="Product Image" style="width: 50px; height: 50px;" />
-                      </td>
-                    <td><%= product[i].title %></td>
-                    <td><%= product[i].stock%></td>
-                    <td><%= product[i].price%></td>
-                    <td>
-                      <% if(product[i].isBlocked){ %>
-                        <span class="badge rounded-pill alert-success">Active</span>
-                     
-                      <%} else{  %>
-                        <span class="badge rounded-pill alert-danger">Blocked</span>
-                        <% } %>
-                    </td>
-                   
-                  
-                    <td class="text-end">
-
-                      <% if(product[i].isBlocked){ %>
-                        <a href="/admin/blockproduct?id=<%= product[i]._id %>"class="btn btn-sm bg-warning btn-brand rounded font-sm mt-15">Block</a>
-                        <% }else{ %>
-                          <a href="/admin/unblockproduct?id=<%= product[i]._id %>"class="btn btn-sm bg-success btn-brand rounded font-sm mt-15">Unblock</a>
-
+                            <% if(order[i].status === "Pending"){ %>
+                              <span class="badge rounded-pill alert-success">Pending</span>
+                            <% } else if(order[i].status === "Cancelled") { %>
+                              <span class="badge rounded-pill alert-danger">Candelled</span>
+                            <% } else if(order[i].status === "Shipped"){%>
+                            <span class="badge rounded-pill alert-success">Shipped</span>
+                            <% } else if(order[i].status === "Delivered"){%>
+                            <span class="badge rounded-pill alert-success">Delivered</span>
+                            <% } else{%> 
+                            <span class="badge rounded-pill alert-danger">Returned</span>
+                                <% } %>
+                            
+                          </td>
+                          <td style="vertical-align: middle; text-align: center;">
+                            <a 
+                              href="/admin/orderDetails?id=<%= order[i]._id %>"
+                              class="btn bg-primary btn-sm btn-brand rounded font-sm mt-15">
+                              Details
+                            </a>
+                          </td>
+                        </tr>
                       <% } %>
-                      <a
-                      href="/admin/editproduct?id=<%= product[i]._id %>"
-                      class="btn  bg-primary btn-sm btn-brand rounded font-sm mt-15"
-                      >edit</a>
-                      <a
-                        href="/admin/deleteproduct?id=<%= product[i]._id %>"
-                        class="btn bg-danger btn-sm btn-brand rounded font-sm mt-15"
-                        >Delete</a
-                      >
-                    </td>
-                  </tr>
-                  <% } %>
-                </tbody>
-              </table>
+                    </tbody>
+                  </table>
+                  
               <!-- table-responsive.// -->
             </div>
           </div>

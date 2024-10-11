@@ -121,6 +121,9 @@ const deletAddress=async (req,res)=>{
     try{
         const userid=req.session.user._id
         const addressid=req.query.id
+       
+        
+            
         const deleAddress=await Address.updateOne({userId:userid},{$pull:{addressData:{_id:addressid}}})
         if (deleAddress.modifiedCount === 0) {
             req.flash('fail','cant find the address')
@@ -129,8 +132,9 @@ const deletAddress=async (req,res)=>{
             req.flash('msg','Deleted Successfully')
             res.redirect('/address')
           }
+     
       
-          
+             
     }catch(error){
         console.log(error.message);
         
@@ -142,30 +146,66 @@ const deletAddress=async (req,res)=>{
 const editAddress=async (req,res)=>{
     try{
         const addressid = req.query.addressid;
-        console.log(addressid);
+        const userId=req.session.user._id
+        if(!addressid){
+            res.redirect('/address')
+        }else{
+        const address = await Address.findOne( { 'addressData._id': addressid }, { "addressData.$": 1 }  );
         
-     
-        const address = await Address.findOne(
-          { 'addressData._id': addressid },  
-        );
-        
-        console.log(address.addressData); // This will log the specific address object that matched
+        console.log(address.addressData)
         
         
         const category=await Category.find({isListed:true})
         const brand=await Brand.find({isListed:true})
-        res.render('editAddress',{category:category,brand:brand,address:address})
+        res.render('editAddress',{category:category,brand:brand,address:address,userId})
+    }
     }catch(error){
         console.log(error.message);
         
     }
 }
 
+
+// edit  Address post 
+const postEditAddress= async (req,res)=>{
+    try {
+        const userId = req.query.id;
+        const { address, pincode, secphone, country, state, city } = req.body;
+        const check=await Address.findOne({'addressData.address':address,'addressData.city':city})
+        if(check){
+            req.flash('fail','Address is already added')
+            return  res.redirect('/address')
+        }
+
+        const updatedAddress = await Address.findOneAndUpdate(
+            { userId: userId, 'addressData._id': req.body.addressId },  
+            {
+                $set: {
+                    'addressData.$.address': address,
+                    'addressData.$.pincode': pincode,
+                    'addressData.$.secphone': secphone,
+                    'addressData.$.country': country,
+                    'addressData.$.state': state,
+                    'addressData.$.city': city,
+                },
+            },
+            { new: true }  
+        );
+
+        req.flash('msg','Address Updated Successfully')
+        res.redirect('/address'); 
+    } catch (error) {
+        console.log(error.message);
+       
+    }
+};
+
 module.exports={
     getAddAddress,
     postAddAddres,
     getAddress,
     deletAddress,
-    editAddress
+    editAddress,
+    postEditAddress
 
 }

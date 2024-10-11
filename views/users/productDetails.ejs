@@ -95,7 +95,15 @@
         </div>
     </div>
 </header>
-
+<div class="page-header breadcrumb-wrap">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="http://localhost:5000/home" rel="nofollow">Home</a>
+          <a href="#">  <span></span> Poroduct Details</a>
+        
+        </div>
+    </div>
+</div>
 
 
     <!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>88888888888888888888888888888888 -->
@@ -343,11 +351,13 @@
                                             <% if(data.stock <=0){ %>
                                                 <button style="caret-color: rgb(98, 107, 107);" type="" class="button text-secondary text-danger">Out of Stock</button>
                                                 <% }else{ %>
+                                                    <p style="color: green; text-align: center;"><%= msg %></p>
+                                                    <p style="color: rgb(255, 0, 0); text-align: center;"><%= fail%></p>
+                                                    <br>
                                                     <form action="/addToCart?id=<%= data._id %>" method="post">
                                                 <button  class="button button-add-to-cart">Add to cart</button>
                                                 <br>
-                                                <p style="color: rgb(5, 110, 0); text-align: center;"><%= msg %></p>
-                                                <p style="color: rgb(255, 0, 0); text-align: center;"><%= fail%></p>
+                                               
 
                                             </form><br>
                                                <% } %>

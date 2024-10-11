@@ -52,19 +52,16 @@ const getCheckOut=async (req,res)=>{
 
 
 // place the order from the check out page 
- 
 const placeOrder=async (req,res)=>{
     try{
         
       const  userId=req.session.user._id
 
        const {payment_option, address}=req.body;
-       console.log(address);
-       
+
        const user =await User.findOne({_id:userId})
        const shippingAddress=await Address.findOne({"addressData._id":address},{ "addressData.$": 1 } )
-       console.log("ddfdfd"+shippingAddress);
-       
+
        const cartItems = await Cart.findOne({userId:userId})
         const order =new Order({
             userId:userId,
@@ -112,35 +109,19 @@ const placeOrder=async (req,res)=>{
 }
 
 
-// const placeOrder = async (req, res) => {
-//     try {
-//         const { payment_option, address } = req.body;
-//         const userId = req.session.user._id;
-//         console.log(req.body);
-        
-
-//         // Process the order logic here
-//         // ...
-
-//         // Instead of redirecting, send a JSON response with the redirect URL
-//         res.json({ success: true, redirectUrl: '/confirmorder' });
-//     } catch (error) {
-//         console.log(error.message);
-//         res.status(500).json({ success: false, message: "Failed to place order" });
-//     }
-// };
-
 
 
 // get confirmorder page
 const confirmOrder=async (req,res)=>{
     try{
         const orderId=req.query.orderId
-        
-        const orderData=await Order.findOne({_id:orderId}).populate('userId') 
-        console.log("dfererge"+orderData);
-        
-        res.render('confirmOrder',{order:orderData})
+        if(orderId){
+            const orderData=await Order.findOne({_id:orderId}).populate('userId') 
+            res.render('confirmOrder',{order:orderData})
+        }else{
+            res.redirect('/home')
+        }
+       
 
     }catch(error){
         console.log(error.message);
@@ -150,8 +131,147 @@ const confirmOrder=async (req,res)=>{
 
 
 
+// order history
+const getOrderHistory=async (req,res)=>{
+    try{
+        const id =req.session.user._id
+       
+        
+        if(!id){
+            return res.redirect('/home')
+        }
+        const order=await Order.find({userId:id}).populate({
+            path:'items.product',
+            model:'Product'
+        })
+        const category=await Category.find({isListed:true})
+        const brand=await Brand.find({isListed:true})
+        res.render('orderHistory',{category:category,brand:brand,orders:order})
+
+    }catch(error){
+        console.log(error.message);
+        
+    }
+}
+
+
+// user can see the order details  ,from history page
+
+const getOrderDeatails=async (req,res)=>{
+    try{
+        const orderId=req.query.orderid
+        if(!orderId){
+            res.redirect('/order')
+        }
+        userId=req.session.user._id
+        const orderData=await Order.findOne({_id:orderId}).populate({
+            path:'items.product',
+            model:'Product'
+        })
+        
+        
+        const user=await User.findOne({_id:req.session.user._id})
+        const category=await Category.find({isListed:true})
+        const brand=await Brand.find({isListed:true})
+        res.render('ordreDetails',{category:category,brand:brand,order:orderData,user:user})
+    }catch(error){
+        console.log(error.message);
+        
+    }
+}
+
+// cancel the order form the order page
+const cancelOrder=async (req,res)=>{
+    try{
+        orderId=req.query.orderid
+      
+        const updatedOrder = await Order.findByIdAndUpdate(orderId, { status: 'Cancelled' });
+        res.redirect('/order')
+
+
+    }catch(error){
+        console.log(error.message);
+        
+    }
+}
+
+
+
+//--------------------------------------------------- END ------------------------------------------------------
+//---------------------------------------------------------- ADMIN SIDE ------------------------------------------------
+
+
+//get order Lits page
+const getOrderList=async (req,res) =>{
+    try{
+        
+        const order=await Order.find()
+         const msg=req.flash('msg')
+        res.render('orderManagement',{order:order,msg})
+
+    }catch(error){
+        console.log(error.message);
+        
+    }
+}
+
+
+//get order details after click details button from the order list page
+
+const orderDeatails=async (req,res)=>{
+    try{
+        const orderId=req.query.id
+        if(orderId){
+        const orderData=await Order.findOne({_id:orderId}).populate({
+            path:'items.product',
+            model:'Product'
+        })
+        const orderStatus=orderData.status
+        res.render('orderUpdate',{order:orderData,orderStatus})
+    }else{
+        res.redirect('/admin/orderList')
+    }
+    }catch(error){
+        console.log(error.message);
+        
+    }
+}
+
+
+// order update
+
+const orderUpdate=async (req,res)=>{
+    try{
+      const  orderId=req.query.id
+      console.log(orderId);
+      
+      console.log(req.body);
+      const {choice}=req.body
+      console.log(choice);
+      
+      
+        if(orderId){
+            const updatOrder=await Order.findByIdAndUpdate(orderId,{status:choice})
+            req.flash('msg','order status updated')
+            res.redirect('/admin/orderList')
+        }else{
+            res.redirect('/admin/orderList')
+        }
+
+    }catch(error){
+        console.log(error.message);
+        
+    }
+}
+
 module.exports={
     getCheckOut,
     placeOrder,
-    confirmOrder
+    confirmOrder,
+    getOrderHistory,
+    getOrderDeatails,
+    cancelOrder,
+    getOrderList,
+    orderDeatails,
+    orderUpdate
 }

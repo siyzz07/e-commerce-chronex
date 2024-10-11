@@ -162,7 +162,7 @@
                   <div class="card mb-4">
                       <div class="card-body">
                           <!-- General Info -->
-                          <div class="row">
+                          <div class="row"> 
                               <div class="col-md-3">
                                   <h6>1. General info</h6>
                               </div>
@@ -195,7 +195,7 @@
                                       <label class="form-label">Brand name</label>
                                       <select class="form-select" id="brand" name="brand">
                                           <% brand.forEach(row => { %>
-                                              <option value="<%= row._id %>" <% if (row._id == product.brand) { %> selected <% } %>><%= row.brand %></option>
+                                              <option value="<%= row._id %>" <% if (row._id == product.brandName) { %> selected <% } %>><%= row.brand %></option>
                                           <% }); %>
                                       </select>
                                       <span id="brand-error" class="error-message" style="color: red;"></span>
@@ -228,10 +228,10 @@
                                   <div class="mb-4">
                                       <label class="form-label">Category</label>
                                       <select class="form-select" id="category" name="category">
-                                          <% category.forEach(row => { %>
-                                              <option value="<%= row._id %>" <% if (row._id == product.category) { %> selected <% } %>><%= row.category %></option>
-                                          <% }); %>
-                                      </select>
+                                        <% category.forEach(row => { %>
+                                            <option value="<%= row._id %>" <% if (row._id == product.category) { %> selected <% } %>><%= row.category %></option>
+                                        <% }); %>
+                                    </select>
                                       <span id="category-error" class="error-message" style="color: red;"></span>
                                   </div>
                               </div>
@@ -246,7 +246,9 @@
                               <div class="col-md-9">
                                   <div class="mb-4">
                                       <label class="form-label">Images</label>
-                                      <input class="form-control" id="images" type="file" name="images" multiple>
+                                      <input class="form-control" id="images" type="file" name="images" multiple accept=".jpg, .jpeg, .png">
+
+                                      <!-- <input class="form-control" id="images" type="file" name="images" multiple> -->
                                       <img style="width: 50px; height: 50px;" src="/public/product_images/<%= product.images[0] %>" alt="">
                                       <img style="width: 50px; height: 50px;" src="/public/product_images/<%= product.images[1] %>" alt="">
                                       <img style="width: 50px; height: 50px;" src="/public/product_images/<%= product.images[2] %>" alt="">

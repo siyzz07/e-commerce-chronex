@@ -111,7 +111,7 @@ const insertUser = async (req, res) => {
     const existUser = await User.findOne({ email: req.body.email });
 
     //check user already exist or not
-    if (existUser) {
+    if (existUser && existUser.isVerified == true) {
       req.flash("fail", "user already exist");
       res.redirect("/signup");
     } else {
@@ -203,6 +203,11 @@ const otpVarificationCheck = async (req, res) => {
       req.flash("fail", "fill the signup detials");
       res.redirect("/signup");
     } else {
+
+      console.log(user.otpexpire);
+      console.log(new Date());
+      
+      
   
       if (user.otpexpire < new Date()) {
         req.flash("fail", "otp expired");
@@ -381,7 +386,9 @@ const postotpcheck=async (req,res)=>{
     
 
 
-    if(userOtp.otpexpire < new Date()){   
+    if(userOtp.otpexpire < new Date()){  
+
+      await UserOtpStore.deleteMany({userId:userid}) 
       req.flash('fail','otpexpired')
       res.redirect('/forgotemail')
      
@@ -472,7 +479,7 @@ const loadHome = async (req, res) => {
 
     }else{
 
-    const product = await Product.find({ isBlocked: true }).populate('brandName')
+    const product = await Product.find({ isBlocked: true }).populate('brandName').populate('category')
    const category=await Category.find({isListed:true})
    const brand=await Brand.find({isListed:true})
     res.render("home",{product:product,category:category,brand:brand});

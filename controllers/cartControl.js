@@ -81,6 +81,7 @@ const updateCart=async (req,res)=>{
 
         const { items } = req.body;         
         const userid=req.session.user._id;
+      
         // console.log(userid);
         // console.log(items);
         
