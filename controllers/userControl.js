@@ -115,7 +115,9 @@ const insertUser = async (req, res) => {
       req.flash("fail", "user already exist");
       res.redirect("/signup");
     } else {
-
+          if(existUser && existUser.isVerified == false){
+            await User.findByIdAndDelete(existUser._id)
+          }
       //   check password and confirm passwords are same
       if (password != confirmpassword) {
         req.flash("fail2", "confirm password is incorrect");
@@ -204,12 +206,11 @@ const otpVarificationCheck = async (req, res) => {
       res.redirect("/signup");
     } else {
 
-      console.log(user.otpexpire);
-      console.log(new Date());
+     
       
       
   
-      if (user.otpexpire < new Date()) {
+      if (userOtp.otpexpire < new Date()) {
         req.flash("fail", "otp expired");
         res.redirect(`/otp?id=${id}`);
       } else {
