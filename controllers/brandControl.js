@@ -12,7 +12,8 @@ const brand = async (req, res) => {
       const msg1 = req.flash("msg1");
       const fail = req.flash("fail");
       const msg = req.flash("msg");
-      res.render("brand", { brand: brand, msg, fail, msg1 });
+      const fail2=req.flash('fail2')
+      res.render("brand", { brand: brand, msg, fail, msg1,fail2 });
     } catch (error) {
       console.log(error.message);
     }
@@ -99,6 +100,16 @@ const editBrand = async (req, res) => {
   //----------------- POST THE EDIT PAGE -------------------------
 const edit = async (req, res) => {
     try {
+
+      const brand =req.body.brand
+      const check=await Brand.findOne({brand:brand})
+      if(check){
+        req.flash('fail2','already added')
+        return res.redirect('/admin/brand')
+
+      }
+
+
       const edit = await Brand.findByIdAndUpdate(
         { _id: req.body.id },
         {

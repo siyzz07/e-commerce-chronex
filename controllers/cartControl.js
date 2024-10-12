@@ -13,7 +13,7 @@ const { productDetails } = require('./userControl')
         const  userId=req.session.user._id
             const procuct = await Product.findOne({_id:productId})
             const price=procuct.price
-            console.log(procuct);
+            // console.log(procuct);
             
             let cart=await Cart.findOne({userId:userId})
             if(!cart){
@@ -86,7 +86,7 @@ const updateCart=async (req,res)=>{
         // console.log(items);
         
         const totalPrice=items.reduce((total,item)=>total+ parseInt(item.subtotal),0)
-        console.log(totalPrice);
+        // console.log(totalPrice);
         
         items.forEach(async item => {
             const { productId, quantity, subtotal } = item;
@@ -119,7 +119,7 @@ const deleFromCart=async (req,res)=>{
     try{
         const userId=req.session.user._id
         const productId=req.query.id
-        console.log(productId);
+        // console.log(productId);
         
         const deletproduct=await Cart.updateOne({userId},{$pull:{items:{product:productId}}})
         if(deletproduct.modifiedCount !== 0){

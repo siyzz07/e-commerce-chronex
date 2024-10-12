@@ -108,11 +108,11 @@
                             <div class="dashboard-menu">
                                 <ul class="nav flex-column" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="/profile"><i
+                                        <a class="nav-link" href="/userAccount"><i
                                                 class="fi-rs-user mr-10"></i>Profile</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link active" href="/home/account/myOrders"><i
+                                        <a class="nav-link" href="/order"><i
                                                 class="fi-rs-shopping-bag mr-10"></i>Orders</a>
                                     </li>
                                     <li class="nav-item">
@@ -354,11 +354,19 @@
                                                                    <b style="font-weight: bold;">Shipping :</b>free <br> 
                                                                    <b style="font-weight: bold;">Grand Total:</b><%= order.totalPrice%> <br>
                                                                    <b style="font-weight: bold;">Status :</b>
-                                                                   <% if(order.status === 'pending'){ %>
-                                                                   <span class="badge rounded-pill alert-success">Pending</span>
-                                                                   <% }else{ %>
-                                                                   <span class="badge rounded-pill alert-danger">Cancelled</span>
-                                                                   <% } %>
+
+                                                                   <% if(order.status === "Pending"){ %>
+                                                                    <span class="badge rounded-pill alert-success">Pending</span>
+                                                                  <% } else if(order.status === "Cancelled") { %>
+                                                                    <span class="badge rounded-pill alert-danger">Candelled</span>
+                                                                  <% } else if(order.status === "Shipped"){%>
+                                                                  <span class="badge rounded-pill alert-success">Shipped</span>
+                                                                  <% } else if(order.status === "Delivered"){%>
+                                                                  <span class="badge rounded-pill alert-success">Delivered</span>
+                                                                  <% } else{%> 
+                                                                  <span class="badge rounded-pill alert-danger">Returned</span>
+                                                                      <% } %>
+
                                                                    <br>
                                                                 </p>
                                                             </div>

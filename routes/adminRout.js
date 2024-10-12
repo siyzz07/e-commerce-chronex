@@ -81,7 +81,7 @@ admin_route.get('/addproduct',adminSession,productController.getAddProuduct)
 admin_route.post('/addproduct',upload.array('images', 3),productController.postProduct)
 admin_route.get('/blockproduct',productController.blockProduct)
 admin_route.get('/unblockproduct',productController.unblockProduct)
-admin_route.get('/editproduct',productController.editproductGet)
+admin_route.get('/editproduct',adminSession,productController.editproductGet)
 admin_route.post('/editproduct',upload.array('images', 3),productController.editproductpost)
 admin_route.get('/deleteproduct',productController.deletproduct)
 

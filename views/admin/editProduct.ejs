@@ -195,7 +195,9 @@
                                       <label class="form-label">Brand name</label>
                                       <select class="form-select" id="brand" name="brand">
                                           <% brand.forEach(row => { %>
-                                              <option value="<%= row._id %>" <% if (row._id == product.brandName) { %> selected <% } %>><%= row.brand %></option>
+                                             
+                                              
+                                              <option value="<%= row._id %>" <% if (row._id.toString() == product.brandName._id.toString()) { %> selected <% } %>><%= row.brand %></option>
                                           <% }); %>
                                       </select>
                                       <span id="brand-error" class="error-message" style="color: red;"></span>
@@ -229,7 +231,7 @@
                                       <label class="form-label">Category</label>
                                       <select class="form-select" id="category" name="category">
                                         <% category.forEach(row => { %>
-                                            <option value="<%= row._id %>" <% if (row._id == product.category) { %> selected <% } %>><%= row.category %></option>
+                                            <option value="<%= row._id %>" <% if (row._id.toString() == product.category.toString()) { %> selected <% } %>><%= row.category %></option>
                                         <% }); %>
                                     </select>
                                       <span id="category-error" class="error-message" style="color: red;"></span>

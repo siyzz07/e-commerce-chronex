@@ -163,7 +163,7 @@ const getOrderDeatails=async (req,res)=>{
         if(!orderId){
             res.redirect('/order')
         }
-        userId=req.session.user._id
+       const userId=req.session.user._id
         const orderData=await Order.findOne({_id:orderId}).populate({
             path:'items.product',
             model:'Product'
@@ -183,7 +183,7 @@ const getOrderDeatails=async (req,res)=>{
 // cancel the order form the order page
 const cancelOrder=async (req,res)=>{
     try{
-        orderId=req.query.orderid
+      const  orderId=req.query.orderid
       
         const updatedOrder = await Order.findByIdAndUpdate(orderId, { status: 'Cancelled' });
         res.redirect('/order')
@@ -243,11 +243,11 @@ const orderDeatails=async (req,res)=>{
 const orderUpdate=async (req,res)=>{
     try{
       const  orderId=req.query.id
-      console.log(orderId);
+    //   console.log(orderId);
       
-      console.log(req.body);
+    //   console.log(req.body);
       const {choice}=req.body
-      console.log(choice);
+    //   console.log(choice);
       
       
         if(orderId){

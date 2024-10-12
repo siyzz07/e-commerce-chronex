@@ -152,7 +152,7 @@ const editAddress=async (req,res)=>{
         }else{
         const address = await Address.findOne( { 'addressData._id': addressid }, { "addressData.$": 1 }  );
         
-        console.log(address.addressData)
+        // console.log(address.addressData)
         
         
         const category=await Category.find({isListed:true})

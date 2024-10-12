@@ -115,8 +115,8 @@ const insertUser = async (req, res) => {
       req.flash("fail", "user already exist");
       res.redirect("/signup");
     } else {
-          if(existUser && existUser.isVerified == false){
-            await User.findByIdAndDelete(existUser._id)
+          if(existUser && existUser.isVerified == false){////////////////
+            await User.findByIdAndDelete(existUser._id)////////////////
           }
       //   check password and confirm passwords are same
       if (password != confirmpassword) {
@@ -548,10 +548,10 @@ const account=async (req,res)=>{
 const postEditUser= async (req,res)=>{
   try {    
     let id=req.body.id
-    console.log("ewewe"+id);
+    // console.log("ewewe"+id);
     
     const user=await User.findOne({_id:id})
-    console.log(user);
+    // console.log(user);
     
     if(user){      
       const update= await User.findOneAndUpdate(
