@@ -2,6 +2,9 @@ const Product = require("../models/porduct");
 const Category = require("../models/category");
 const Brand = require("../models/brand");
 
+
+
+
 // get product page
 const getProduct = async (req, res) => {
   try {
@@ -12,6 +15,8 @@ const getProduct = async (req, res) => {
     console.log(error.message);
   }
 };
+
+
 
 // add porduct page get
 const getAddProuduct = async (req, res) => {
@@ -25,6 +30,8 @@ const getAddProuduct = async (req, res) => {
     console.log(error.message);
   }
 };
+
+
 
 // post add product, inset new product
 const postProduct = async (req, res) => {
@@ -77,7 +84,9 @@ const unblockProduct = async (req, res) => {
   }
 };
 
-//------------------------------------------------edit product
+
+
+//----------------------edit product
 
 // edit product get page
 const editproductGet = async (req, res) => {

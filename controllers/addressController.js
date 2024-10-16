@@ -21,7 +21,7 @@ const Brand=require('../models/brand')
 //     }
 //   }
 
-// get address page
+// ---------------------- get address page -------------------------
 const getAddress = async (req, res) => {
     try {
         const userId = req.session.user._id;
@@ -46,7 +46,7 @@ const getAddress = async (req, res) => {
 };
 
 
-//add address page get
+//----------------- add address page get ------------------------
 const getAddAddress=async (req,res)=>{
     try{
         const id=req.query.id
@@ -67,7 +67,7 @@ const getAddAddress=async (req,res)=>{
 }
 
 
-// post addAddress
+// -------------------- post addAddress ---------------
 const postAddAddres=async (req,res)=>{
     try{
       const userid=req.session.user._id
@@ -116,7 +116,7 @@ const postAddAddres=async (req,res)=>{
 }
 
 
-//delete address
+//-----------------------delete address------------------------
 const deletAddress=async (req,res)=>{
     try{
         const userid=req.session.user._id
@@ -142,7 +142,7 @@ const deletAddress=async (req,res)=>{
 }
 
 
-// edit address get page
+// -----------edit address get page----------------------
 const editAddress=async (req,res)=>{
     try{
         const addressid = req.query.addressid;
@@ -166,7 +166,7 @@ const editAddress=async (req,res)=>{
 }
 
 
-// edit  Address post 
+// --------- edit  Address post ------------------- 
 const postEditAddress= async (req,res)=>{
     try {
         const userId = req.query.id;

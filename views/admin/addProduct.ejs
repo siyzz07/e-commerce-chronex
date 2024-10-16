@@ -23,6 +23,8 @@
     <!-- <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg"> -->
     <!-- Template CSS -->
     <link href="assets/css/main.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 </head>
 
 <body>
@@ -247,13 +249,23 @@
                               <div class="col-md-3">
                                   <h6>4. Media</h6>
                               </div>
+
                               <div class="col-md-9">
-                                  <div class="mb-4">
-                                      <label class="form-label">Images</label>
-                                      <input class="form-control" type="file" name="images" multiple id="images" accept="image/*">
-                                      <span class="error" id="images-error" style="color: rgb(255, 23, 23); display: none;"></span>
-                                  </div>
-                              </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Images</label>
+                                    <input class="form-control" type="file" name="images" multiple id="images" accept="image/*" onchange="handleFiles(event)">
+                                    <span class="error" id="images-error" style="color: rgb(255, 23, 23); display: none;"></span>
+                                </div>
+                            
+                              
+                                <div id="imagePreview" class="row"></div>
+                            
+                               
+                                <div id="cropModal" style="display: none">
+                                    <img id="croppingImage" style="max-width: 100%" />
+                                    <button type="button" id="cropButton" onclick="cropImage()">Crop Image</button>
+                                </div>
+                            </div>
                           </div>
       
                       </div>
@@ -370,6 +382,95 @@ function validateForm() {
 
       </script>
       
+
+
+      <script>
+        let cropper;
+        let currentFile;
+        let currentImgElement;
+        let filesArray = []; 
+        let croppedFileIndex; 
+    
+        function handleFiles(event) {
+            const imagePreviewContainer = document.getElementById("imagePreview");
+            imagePreviewContainer.innerHTML = "";
+    
+            const files = event.target.files;
+            filesArray = Array.from(files);
+    
+            if (files) {
+                Array.from(files).forEach((file, index) => {
+                    const reader = new FileReader();
+    
+                    reader.onload = (e) => {
+                        currentFile = file;
+                        const img = document.createElement("img");
+                        img.src = e.target.result;
+                        img.style.width = "100px";
+                        img.style.marginRight = "10px";
+                        img.style.cursor = "pointer";
+                        img.onclick = () => openCropper(e.target.result, img, index); 
+                        imagePreviewContainer.appendChild(img);
+                    };
+    
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+    
+        function openCropper(imageSrc, imgElement, index) {
+            const cropModal = document.getElementById("cropModal");
+            const croppingImage = document.getElementById("croppingImage");
+    
+            currentImgElement = imgElement;
+            croppedFileIndex = index;
+    
+            croppingImage.src = imageSrc;
+            cropModal.style.display = "block";
+    
+            if (cropper) {
+                cropper.destroy();
+            }
+    
+            cropper = new Cropper(croppingImage, {
+                aspectRatio: 1,
+                viewMode: 2,
+            });
+        }
+    
+        function cropImage() {
+            const canvas = cropper.getCroppedCanvas();
+    
+            canvas.toBlob((blob) => {
+                const croppedFile = new File([blob], currentFile.name, { type: 'image/png' });
+    
+                filesArray[croppedFileIndex] = croppedFile; 
+    
+                // Now, reassign all files (including cropped) to the input field
+                const dataTransfer = new DataTransfer();
+                
+                filesArray.forEach((file) => {
+                    dataTransfer.items.add(file); 
+                });
+    
+                const fileInput = document.getElementById('images');
+                fileInput.files = dataTransfer.files; 
+    
+                currentImgElement.src = URL.createObjectURL(croppedFile);
+    
+        
+                document.getElementById("cropModal").style.display = "none";
+    
+            
+                cropper.destroy();
+                cropper = null;
+            }, 'image/png');
+        }
+    </script>
+
+
+
+
 </body>
 
 

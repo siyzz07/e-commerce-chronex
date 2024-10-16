@@ -100,6 +100,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
+                            
                             <table class="table shopping-summery text-center clean">
 
                                 <P style="color: rgb(47, 215, 38); text-align: center;"><%= msg %></P>
@@ -458,6 +459,8 @@
                                 </div>
                             </div> -->
                             <div style="align-content: center;"  class="col-lg-6 col-md-12">
+                                <% if(!cartData || cartData.items.length == 0 ||cartData.totalPrice==0 ) {%>
+                                    <% }else{ %>
                                 <div class="border p-md-4 p-30 border-radius cart-totals">
                                     <div class="heading_s1 mb-3">
                                         <h4>Cart Totals</h4>
@@ -480,8 +483,10 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                   
                                     <a href="/checkOut" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
-                                </div>
+                                            <% } %>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -552,7 +557,7 @@
 
             // Send AJAX request to update the cart on the server
             $.ajax({
-                url: '/updateCart', // Replace with your server endpoint
+                url: '/updateCart', 
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ items: cartItems }),
@@ -586,7 +591,7 @@
                 // Save updated quantity to local storage
                 localStorage.setItem(`cart_${productId}`, newQty);
                 
-                // Optionally, you can also update the subtotal array here for immediate effect
+                // Optionally, can also update the subtotal array here for immediate effect
             } else {
                 $stockMessage.text('limit reached').show();
             }
@@ -599,9 +604,9 @@
             const currentQty = parseInt($qtyVal.text());
             const price = parseFloat($this.closest('tr').find('.item-price').text());
             const $stockMessage = $this.closest('td').find('.stock-message');
-            const productId = $this.data('product-id'); // Get the product ID
+            const productId = $this.data('product-id'); 
 
-            if (currentQty > 1) { // Assuming a minimum quantity of 1
+            if (currentQty > 1) { 
                 $stockMessage.hide(); // Hide any previous message
                 const newQty = currentQty - 1;
                 $qtyVal.text(newQty);

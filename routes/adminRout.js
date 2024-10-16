@@ -87,7 +87,6 @@ admin_route.get('/deleteproduct',productController.deletproduct)
 
 
 //order 
- 
 admin_route.get('/orderList',adminSession,orderController.getOrderList)
 admin_route.get('/orderDetails',adminSession,orderController.orderDeatails)
 admin_route.post('/orderUpdate',orderController.orderUpdate)

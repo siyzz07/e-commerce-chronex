@@ -1,6 +1,11 @@
 const express=require('express')
+const session = require('express-session');
     const app=express()
 require('dotenv').config();
+
+const passport = require('passport');
+require('./config/passportConfig')
+
 
 const methodOverride = require('method-override');
 // Middleware to handle PUT and DELETE methods from forms
@@ -41,6 +46,18 @@ app.use("/",userRoute)
 const adminRoute=require('./routes/adminRout')
 app.use('/admin',adminRoute)
 
+
+// -------------google auth----------
+
+// app.use(session({
+//     secret: 'your_secret_key',
+//     resave: false,
+//     saveUninitialized: false,
+//   }));
+
+  // Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 const PORT=process.env.PORT || 5000

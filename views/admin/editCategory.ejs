@@ -161,6 +161,8 @@
                            
 
                             <form id="editCategoryForm" action="/admin/editcategory" method="post" onsubmit="return validateForm()">
+                           
+                                <input type="hidden" name="_method" value="PATCH">
                               <div class="mb-4">
                                   <input type="hidden" value="<%= data._id %>" class="form-control" name="id" />
                               </div>  

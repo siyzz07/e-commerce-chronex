@@ -6,7 +6,7 @@ const { productDetails } = require('./userControl')
 
 
 
-//add product to cart from product page click add to cart
+//add product to cart from product details  page click add to cart
     const addToCart=async (req,res)=>{
         try{
         const  productId=req.query.id;
@@ -43,7 +43,7 @@ const { productDetails } = require('./userControl')
                 })
             }
             await cart.save()
-            req.flash('msg','product added')
+            req.flash('msg','product added to cart')
             res.redirect(`/productdetails?id=${productId}`)
             
         }catch(error){
@@ -51,6 +51,61 @@ const { productDetails } = require('./userControl')
             
         }
     }
+
+
+
+
+
+
+
+//add product to cart from product wishlist page click add to cart
+const addToCartFromWishlist=async (req,res)=>{
+    try{
+    const  productId=req.query.id;
+    const  userId=req.session.user._id
+        const procuct = await Product.findOne({_id:productId})
+        const price=procuct.price
+        // console.log(procuct);
+        
+        let cart=await Cart.findOne({userId:userId})
+        if(!cart){
+            cart=new Cart({
+                userId:userId,
+
+                items:[
+                    {
+                    product:productId,
+                    price:price,
+                    quantity:1
+                    }
+                ]
+
+            })
+        }else{
+            const existCart=await Cart.findOne({userId:userId,'items.product':productId})
+        
+            if(existCart){
+                req.flash('fail','product already added')
+                return res.redirect(`/wishlist`)
+            }
+            cart.items.push({
+                product:productId,
+                price:price,
+                quantity:1
+            })
+        }
+        await cart.save()
+        req.flash('msg','product added to cart')
+        res.redirect(`/wishlist`)
+        
+    }catch(error){
+        console.log(error.message);
+        
+    }
+}
+
+
+
 
 
 
@@ -156,4 +211,5 @@ module.exports={
     updateCart,
     deleFromCart,
     // getCheckOut
+    addToCartFromWishlist
 }

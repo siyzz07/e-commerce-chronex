@@ -145,53 +145,48 @@
   </div>
 
   <div class="right">
-   <form action="/register" method="post" onsubmit="return validateForm()">
-    <h1>SIGN-UP</h1>
-
-    <p style="color: rgb(255, 23, 23); text-align: center;"><%= fail %></p>
-
-    <label for="name">
-        <input type="text" name="name" id="name" minlength="3" maxlength="50">
-        <span>FULL NAME</span>
-        <span class="error-message" id="name-error" style="color: rgb(255, 23, 23); display: none;"></span>
-    </label>
-
-    <label for="email">
-        <input type="email" name="email" id="email">
-        <span>EMAIL</span>
-        <span class="error-message" id="email-error" style="color: rgb(255, 23, 23); display: none;"></span>
-    </label>
-
-    <label for="phone">
-        <input type="tel" name="phone" id="phone" pattern="[0-9]{10}">
-        <span>PHONE</span>
-        <span class="error-message" id="phone-error" style="color: rgb(255, 23, 23); display: none;"></span>
-    </label>
-
-    <label for="password">
-        <input type="password" name="password" id="password" minlength="4">
-        <span>PASSWORD</span>
-        <span class="error-message" id="password-error" style="color: rgb(255, 23, 23); display: none;"></span>
-    </label>
-
-    <p style="color: rgb(255, 23, 23); text-align: center;"><%= fail2 %></p>
-
-    <label for="confirmpassword">
-        <input type="password" name="confirmpassword" id="confirmpassword" minlength="4">
-        <span>CONFIRM PASSWORD</span>
-        <span class="error-message" id="confirmpassword-error" style="color: rgb(255, 23, 23); display: none;"></span>
-    </label>
-
-    <input type="submit" value="Create Account">
-    <p>If you have an account? &nbsp;&nbsp;<a href="/login">Login</a></p>
-       
-        <!-- goooogle -->
-        <!-- <a href="/auth/google" style="display: block; text-align: center; margin-top: 20px;">
-            <button style="background-color: #4285F4; color: white; padding: 10px; border: none; cursor: pointer;">
-              Sign up with Google
-            </button>
-          </a> -->
+    <form action="/register" method="post" onsubmit="return validateForm()">
+        <h1>SIGN-UP</h1>
+    
+        <p style="color: rgb(255, 23, 23); text-align: center;"><%= fail %></p>
+    
+        <label for="name">
+            <input type="text" name="name" id="name" minlength="3" maxlength="50">
+            <span>FULL NAME</span>
+            <span class="error-message" id="name-error" style="color: rgb(255, 23, 23); display: none;"></span>
+        </label>
+    
+        <label for="email">
+            <input type="email" name="email" id="email">
+            <span>EMAIL</span>
+            <span class="error-message" id="email-error" style="color: rgb(255, 23, 23); display: none;"></span>
+        </label>
+    
+        <label for="phone">
+            <input type="tel" name="phone" id="phone" pattern="[0-9]{10}">
+            <span>PHONE</span>
+            <span class="error-message" id="phone-error" style="color: rgb(255, 23, 23); display: none;"></span>
+        </label>
+    
+        <label for="password">
+            <input type="password" name="password" id="password" minlength="4">
+            <span>PASSWORD</span>
+            <span class="error-message" id="password-error" style="color: rgb(255, 23, 23); display: none;"></span>
+        </label>
+    
+        <p style="color: rgb(255, 23, 23); text-align: center;"><%= fail2 %></p>
+    
+        <label for="confirmpassword">
+            <input type="password" name="confirmpassword" id="confirmpassword" minlength="4">
+            <span>CONFIRM PASSWORD</span>
+            <span class="error-message" id="confirmpassword-error" style="color: rgb(255, 23, 23); display: none;"></span>
+        </label>
+    
+        <input type="submit" value="Create Account">
+        <p>If you have an account? &nbsp;&nbsp;<a href="/login">Login</a></p>
+    
     </form>
+    
     
 
       <!-- goooogle -->
@@ -203,58 +198,63 @@
 <%- include('../layout/footer.ejs') %>
 
 <script>
-    function validateForm() {
-        // Clear previous error messages
-        document.querySelectorAll('.error-message').forEach(function (el) {
-            el.style.display = 'none';
-        });
+function validateForm() {
+    // Clear previous error messages
+    document.querySelectorAll('.error-message').forEach(function (el) {
+        el.style.display = 'none';
+    });
 
-        let valid = true;
+    let valid = true;
 
-        // Validate name
-        const name = document.getElementById('name').value;
-        if (name.length < 3 || name.length > 50) {
-            document.getElementById('name-error').innerText = 'Name must be between 3 and 50 characters.';
-            document.getElementById('name-error').style.display = 'block';
-            valid = false;
-        }
-
-        // Validate email
-        const email = document.getElementById('email').value;
-        const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-        if (!emailPattern.test(email)) {
-            document.getElementById('email-error').innerText = 'Please enter a valid email address.';
-            document.getElementById('email-error').style.display = 'block';
-            valid = false;
-        }
-
-        // Validate phone
-        const phone = document.getElementById('phone').value;
-        if (!/^\d{10}$/.test(phone)) {
-            document.getElementById('phone-error').innerText = 'Phone number must be 10 digits.';
-            document.getElementById('phone-error').style.display = 'block';
-            valid = false;
-        }
-
-        // Validate password
-        const password = document.getElementById('password').value;
-        if (password.length < 4) {
-            document.getElementById('password-error').innerText = 'Password must be at least 4 characters.';
-            document.getElementById('password-error').style.display = 'block';
-            valid = false;
-        }
-
-        // Validate confirm password
-        const confirmPassword = document.getElementById('confirmpassword').value;
-        if (confirmPassword !== password) {
-            document.getElementById('confirmpassword-error').innerText = 'Both Passwords do not match.';
-            document.getElementById('confirmpassword-error').style.display = 'block';
-            valid = false;
-        }
-
-        return valid;
+    // Validate name
+    const name = document.getElementById('name').value.trim();
+    const namePattern = /^[a-zA-Z\s]+$/;
+    if (name.length < 3 || name.length > 50 || !namePattern.test(name)) {
+        document.getElementById('name-error').innerText = 'Name must be between 3 and 50 characters and contain only letters.';
+        document.getElementById('name-error').style.display = 'block';
+        valid = false;
     }
+
+    // Validate email
+    const email = document.getElementById('email').value;
+    const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+    if (!emailPattern.test(email)) {
+        document.getElementById('email-error').innerText = 'Please enter a valid email address.';
+        document.getElementById('email-error').style.display = 'block';
+        valid = false;
+    }
+
+    // Validate phone
+    const phone = document.getElementById('phone').value;
+    if (!/^\d{10}$/.test(phone)) {
+        document.getElementById('phone-error').innerText = 'Phone number must be 10 digits.';
+        document.getElementById('phone-error').style.display = 'block';
+        valid = false;
+    }
+
+   
+   // Validate password
+const password = document.getElementById('password').value;
+const passwordPattern = /^[a-zA-Z0-9]+$/; // Only letters and numbers
+if (password.length < 4 || /\s/.test(password) || !passwordPattern.test(password)) {
+    document.getElementById('password-error').innerText = 'Password have atleast 4 characters, contain only letters and numbers.';
+    document.getElementById('password-error').style.display = 'block';
+    valid = false;
+}
+
+// Validate confirm password
+const confirmPassword = document.getElementById('confirmpassword').value;
+if (confirmPassword !== password) {
+    document.getElementById('confirmpassword-error').innerText = 'Both passwords do not match.';
+    document.getElementById('confirmpassword-error').style.display = 'block';
+    valid = false;
+}
+
+
+    return valid;
+}
 </script>
+
 
   
 

@@ -162,7 +162,7 @@
                                                                 </address>
                                                                     
                                                                     <a href="/editAddress?addressid=<%= userAddress.addressData[i]._id %>" style="color: rgb(17, 219, 44);" class="btn-small">Edit</a><br>
-                                                                    <a href="/deleteAddress?id=<%= userAddress.addressData[i]._id %>" style="color: rgb(255, 21, 0);" class="btn-small">Delete</a>
+                                                                    <a href="/deleteAddress?id=<%= userAddress.addressData[i]._id %>" style="color: rgb(255, 21, 0);" class="btn-small" onclick="return onConfrom()">Delete</a>
                                                                 </div>
                                                             </div><br>
                                                         </div>
@@ -212,7 +212,11 @@
     <!-- Template  JS -->
     <script src="assets/js/main.js"></script>
    
-    
+ <script>
+    function onConfrom(){
+        return confirm('are you sure! you want to delete your address')
+    }
+ </script>
 </body>
 
 

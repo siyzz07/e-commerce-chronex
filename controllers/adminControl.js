@@ -92,7 +92,7 @@ const userData = async (req, res) => {
 };
 
 
-//delete user form the userlist page after clicing the delet button
+//----------- delete user form the userlist page after clicing the delet button ------------
 const deleteUser = async (req, res) => {
   try {
     const id = req.query.id;
@@ -106,7 +106,7 @@ const deleteUser = async (req, res) => {
 };
 
 
-// unblock user
+// ------------------- unblock user ------------------
 const unblockuser = async (req, res) => {
   try {
     const id = req.query.id;
@@ -118,7 +118,7 @@ const unblockuser = async (req, res) => {
 };
 
 
-//block user
+//----------------- block user -----------------------
 const blockuser = async (req, res) => {
   try {
     const id = req.query.id;

@@ -10,7 +10,7 @@ const multerStorage = multer.diskStorage({
   }
 });
 
-// Use multerStorage instead of storage
+// Use multerStorage instead of storage n
 const upload = multer({ storage: multerStorage });
 
 module.exports = upload;

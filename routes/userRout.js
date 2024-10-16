@@ -1,6 +1,8 @@
 const express = require('express')
 const session=require('express-session')
 const userSession=require('../middlewares/userSession')
+// const ensureAuthenticated  = require('../middleware/authMiddleware');  // Import middleware
+const passport = require('passport');
 const user_route=express();
 
 user_route.set("view engine","ejs");
@@ -31,6 +33,7 @@ const userController=require("../controllers/userControl");
 const addressController=require("../controllers/addressController")
 const orderController=require('../controllers/orderControl')
 const cartController=require('../controllers/cartControl')
+const wishlistContoller=require('../controllers/wishlistControll')
 
 
 // login page
@@ -104,9 +107,28 @@ user_route.get('/confirmorder',orderController.confirmOrder)
 user_route.get('/order',userSession,orderController.getOrderHistory)
 user_route.get('/orderDetails',userSession,orderController.getOrderDeatails)
 user_route.get('/cancelOrder',orderController.cancelOrder)
+user_route.post('/returnProduct',orderController.retrunProduct)
 
 // shop page
 user_route.get('/shop',userSession,userController.getShop)
+
+
+
+// google auth
+
+// Route to initiate Google login
+user_route.get('/google',passport.authenticate('google', { scope: ['profile','email'],prompt: 'select_account' }));
+// Route to handle Google callback (after Google login)
+user_route.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), userController.googleAuth);
+
+
+
+
+// wishlist
+user_route.get('/addToWishlist',wishlistContoller.addWishlist)//add to wish list from product page
+user_route.get('/wishlist',wishlistContoller.getWishlist)
+user_route.get('/addWishlistToCart',cartController.addToCartFromWishlist)// from the wishlist .add wish list product to cart .//is controller is written in cartcontroller 
+user_route.get('/deleteFromWishlist',wishlistContoller.deleFromWishlist)
 
 
 module.exports=user_route

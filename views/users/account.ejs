@@ -171,12 +171,13 @@
                                     </div>
                                 </form>
                                 
+                                <% if(user.password){ %>
 
                                     <div class="form-group">
                                         <a href="/changePassword?id=<%= user._id %>"> <button type="" class="btn btn-fill-out btn-block hover-up" >Change Password</button></a>
                                      </div>
                                    
-
+                                     <% } %>
 
 
                                     <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
@@ -376,17 +377,16 @@
                 return false;
             }else{
             if (!namePattern.test(nameField.value) ) {
-                // alert("Name can only contain letters and spaces.");
+           
                 document.getElementById('nameerror').textContent = 'name only be letter';
-                event.preventDefault(); // Prevent form submission
+                event.preventDefault();
                 return false;
             }
     }
-            // Ensure the phone field has exactly 10 digits
             var phonePattern = /^[0-9]{10}$/;
             if (!phonePattern.test(phoneField.value)) {
                 alert("Phone number must be 10 digits.");
-                event.preventDefault(); // Prevent form submission
+                event.preventDefault(); 
                 return false;
             }
         });

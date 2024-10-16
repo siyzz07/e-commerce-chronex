@@ -184,7 +184,12 @@ const getOrderDeatails=async (req,res)=>{
 const cancelOrder=async (req,res)=>{
     try{
       const  orderId=req.query.orderid
-      
+      const order=await Order.findOne({_id:orderId})
+      for(let item of order.items){
+        await Product.findByIdAndUpdate(item.product._id,{
+            $inc:{stock: item.quantity}
+          })
+       }
         const updatedOrder = await Order.findByIdAndUpdate(orderId, { status: 'Cancelled' });
         res.redirect('/order')
 
@@ -192,6 +197,34 @@ const cancelOrder=async (req,res)=>{
     }catch(error){
         console.log(error.message);
         
+    }
+}
+
+
+const retrunProduct=async (req,res)=>{
+    try{
+
+
+        const  orderId=req.query.orderid
+        
+        const  reason=req.body.reason
+        
+        const order=await Order.findOne({_id:orderId})
+        for(let item of order.items){
+        await Product.findByIdAndUpdate(item.product._id,{
+            $inc:{stock: item.quantity}
+
+          })
+       }
+        const updatedOrder = await Order.findByIdAndUpdate(orderId, { status: 'Returned', returnReason:reason });
+
+
+        res.redirect('/order')
+
+
+
+    }catch(error){
+        console.log(error.message)
     }
 }
 
@@ -271,6 +304,9 @@ module.exports={
     getOrderHistory,
     getOrderDeatails,
     cancelOrder,
+    retrunProduct,
+    // ---end----
+    //---admin----  
     getOrderList,
     orderDeatails,
     orderUpdate

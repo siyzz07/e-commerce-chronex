@@ -4,64 +4,58 @@ const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const moment = require("moment");
 const { log } = require("console");
-const Product=require('../models/porduct')
-const Category=require('../models/category')
-const Brand=require('../models/brand')
-const UserOtpStore=require('../models/userOtpVerification')
-
-
-
-
-
-
+const Product = require("../models/porduct");
+const Category = require("../models/category");
+const Brand = require("../models/brand");
+const UserOtpStore = require("../models/userOtpVerification");
+const Passport = require("passport"); //google auth
+const googleStrategy = require("passport-google-oauth20").Strategy; //google auth
 
 //-------------------------------------------------- LOGIN PAGE --------------------------------------------------------------------------
 
 //  for load login page
 const loadLogin = async (req, res) => {
   try {
-    if(req.session.user){
-      res.redirect('/home')
-    }else{
-    const fail = req.flash("fail");
-    const success = req.flash("success");
-    res.render("login", { success, fail });
-  }
+    if (req.session.user) {
+      res.redirect("/home");
+    } else {
+      const fail = req.flash("fail");
+      const success = req.flash("success");
+      res.render("login", { success, fail });
+    }
   } catch (error) {
     console.log(error.message);
   }
 };
 
-
 //login verification
 const verifyUser = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    const email=req.body.email
+    const email = req.body.email;
 
     if (user && user.isVerified == true) {
-      if(user.isBlocked == false){
-      const matchPassword = await bcrypt.compare(
-        req.body.password,
-        user.password
-      );
-      if (matchPassword) {
-        req.session.user= {email: user.email ,_id: user._id }
-
-    
-        
-        
-        
-        
-        res.redirect("/home");
+      if (user.isBlocked == false) {
+        if (user.password) {
+          const matchPassword = await bcrypt.compare(
+            req.body.password,
+            user.password
+          );
+          if (matchPassword) {
+            req.session.user = { email: user.email, _id: user._id };
+            res.redirect("/home");
+          } else {
+            req.flash("fail", "invalied password");
+            res.redirect("/login");
+          }
+        } else {
+          req.flash("fail", "use to login with google");
+          res.redirect("/login");
+        }
       } else {
-        req.flash("fail", "invalied password");
+        req.flash("fail", "Your account blocked by admin");
         res.redirect("/login");
       }
-    }else{
-      req.flash('fail','Your account blocked by admin')
-      res.redirect('/login')
-    }
     } else {
       req.flash("fail", "invalied email");
       res.redirect("/login");
@@ -83,26 +77,23 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-
 //---------------------------------------------------------------  END  -----------------------------------------------------------------
 //------------------------------------ SIGNUP PAGE -- OTP -- RESENT OTP ----------------------------------------------------------
 
 // for load sign up page
 const loadSignup = async (req, res) => {
   try {
-    if(req.session.user){
-      res.redirect('/home')
-    }else{
-    const fail = req.flash("fail");
-    const fail2 = req.flash("fail2");
-    res.render("signup", { fail2, fail });
+    if (req.session.user) {
+      res.redirect("/home");
+    } else {
+      const fail = req.flash("fail");
+      const fail2 = req.flash("fail2");
+      res.render("signup", { fail2, fail });
     }
   } catch (error) {
     console.log(error.message);
   }
 };
-
-
 
 // for inser users form  sign_up page
 const insertUser = async (req, res) => {
@@ -115,9 +106,10 @@ const insertUser = async (req, res) => {
       req.flash("fail", "user already exist");
       res.redirect("/signup");
     } else {
-          if(existUser && existUser.isVerified == false){////////////////
-            await User.findByIdAndDelete(existUser._id)////////////////
-          }
+      if (existUser && existUser.isVerified == false) {
+        ////////////////
+        await User.findByIdAndDelete(existUser._id); ////////////////
+      }
       //   check password and confirm passwords are same
       if (password != confirmpassword) {
         req.flash("fail2", "confirm password is incorrect");
@@ -125,7 +117,6 @@ const insertUser = async (req, res) => {
       } else {
         const hasedpassword = await bcrypt.hash(password, 10); //hash password
         const otp = crypto.randomInt(100000, 999999).toString(); //generate random otp
-
 
         const user = new User({
           name: req.body.name,
@@ -136,18 +127,15 @@ const insertUser = async (req, res) => {
         });
 
         const userData = await user.save();
-       const  userDataId=userData._id
+        const userDataId = userData._id;
 
+        const storeOtp = await new UserOtpStore({
+          userId: userDataId,
+          otp: otp,
+          otpexpire: Date.now() + 300000,
+        });
+        await storeOtp.save();
 
-          const storeOtp=await new  UserOtpStore({
-            userId:userDataId,
-            otp:otp,
-            otpexpire:Date.now()+300000
-
-          })
-          await storeOtp.save()
-        
-          
         //send OTP to user's email
         await transporter.sendMail({
           from: "testbrocamp@gmail.com",
@@ -155,7 +143,6 @@ const insertUser = async (req, res) => {
           subject: "Secure Your Account with This Code",
           text: `your OTP is ${otp}`,
         });
-
 
         // Redirect to OTP verification page, passing the email
         res.redirect(`/otp?id=${userDataId}`);
@@ -166,66 +153,51 @@ const insertUser = async (req, res) => {
   }
 };
 
-
-
-
 // for load otp varification
 const otpVarification = async (req, res) => {
   try {
-    if(req.session.user){
-      res.redirect('/home')
-    }else{
-    const id=req.query.id;
-    if(id){   
-    const fail = req.flash("fail");
-    res.render("OTPverification", { fail, id });
-  }else{
-    res.redirect('/signup')
-  }
-}
+    if (req.session.user) {
+      res.redirect("/home");
+    } else {
+      const id = req.query.id;
+      if (id) {
+        const fail = req.flash("fail");
+        res.render("OTPverification", { fail, id });
+      } else {
+        res.redirect("/signup");
+      }
+    }
   } catch (error) {
     console.log(error.message);
   }
 };
 
-
-
 //in otp vatification page chek the two otp's are same or not
 const otpVarificationCheck = async (req, res) => {
-  
   try {
-    const id=req.body.id
+    const id = req.body.id;
     // console.log(id);
-    
-    const user = await User.findOne({ _id: id});  
-    const userOtp=await UserOtpStore.findOne({userId:id})
+
+    const user = await User.findOne({ _id: id });
+    const userOtp = await UserOtpStore.findOne({ userId: id });
 
     if (!user) {
-        
       req.flash("fail", "fill the signup detials");
       res.redirect("/signup");
     } else {
-
-     
-      
-      
-  
       if (userOtp.otpexpire < new Date()) {
         req.flash("fail", "otp expired");
         res.redirect(`/otp?id=${id}`);
       } else {
-
         if (userOtp.otp == req.body.userotp) {
-          
           // Mark the user as verified if OTP is correct and not expired && delete the otp form the the otp store database
-          await User.updateOne({_id:id},{isVerified:true})
-          await UserOtpStore.deleteMany({userId:id})
+          await User.updateOne({ _id: id }, { isVerified: true });
+          await UserOtpStore.deleteMany({ userId: id });
 
           // Redirect to success page or login page after verification
           req.flash("success", "your account is created ");
           res.redirect("/login");
         } else {
-          
           req.flash("fail", "invalid otp");
           res.redirect(`/otp?id=${id}`);
         }
@@ -236,16 +208,12 @@ const otpVarificationCheck = async (req, res) => {
   }
 };
 
-
-
-
-
 // resend otp
 const resendOtp = async (req, res) => {
   try {
-    const id=req.query.id
-    const userOtp = await UserOtpStore.findOne({ userId:id });
-    const user=await User.findOne({_id:id})
+    const id = req.query.id;
+    const userOtp = await UserOtpStore.findOne({ userId: id });
+    const user = await User.findOne({ _id: id });
     if (!userOtp) {
       req.flash("fail", "User not found");
       return res.redirect("/signup");
@@ -253,7 +221,6 @@ const resendOtp = async (req, res) => {
 
     // Generate new OTP and update expiry time
     const newOtp = crypto.randomInt(100000, 999999).toString();
-    
 
     userOtp.otp = newOtp;
     userOtp.otpexpire = Date.now() + 300000;
@@ -266,7 +233,7 @@ const resendOtp = async (req, res) => {
       subject: "Resend OTP",
       text: `Your new OTP is ${newOtp}`,
     });
-    
+
     res.redirect(`/otp?id=${id}`);
   } catch (error) {
     console.log(error.message);
@@ -276,193 +243,159 @@ const resendOtp = async (req, res) => {
 //-------------------------------------------------------  END  -----------------------------------------------------------
 //---------------------------------------------------  LOGOUT  ----------------------------------------------------------------------
 
-const logout= async (req,res)=>{
+const logout = async (req, res) => {
   try {
-    
-    req.session.destroy()
-  res.redirect('/login')
+    req.session.destroy();
+    res.redirect("/login");
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
 //--------------------------------------------------------------------  END  -----------------------------------------------------------
 //-------------------------------------------------  FORGOT PASSWORD  ----------------------------------------------------------------------------
 
-
 //  get email check page
-const getforgotPassword=async(req,res)=>{
-
+const getforgotPassword = async (req, res) => {
   try {
-    if (req.session.user){
-      res.redirect('/home')
-    }else{
-    const fail=req.flash('fail')
-    res.render('forgotPassword',{fail})
-  }
+    if (req.session.user) {
+      res.redirect("/home");
+    } else {
+      const fail = req.flash("fail");
+      res.render("forgotPassword", { fail });
+    }
   } catch (error) {
     console.log(error.message);
   }
-}
-
+};
 
 //  post email check page
-const postforgotPassword=async(req,res)=>{
+const postforgotPassword = async (req, res) => {
   try {
-    
-      const user=await User.findOne({email:req.body.email})
-      if(!user || user.isVerified == false){
-        req.flash('fail','you dont have an account,please signup')
-        res.redirect('/login')
-      }else{
-        
-        const email=req.body.email
-        const existUser = await User.findOne({ email: req.body.email });
-        const otp1 = crypto.randomInt(100000, 999999).toString(); //generate random otp
+    const user = await User.findOne({ email: req.body.email });
+    if (!user || user.isVerified == false) {
+      req.flash("fail", "you dont have an account,please signup");
+      res.redirect("/login");
+    } else {
+      const email = req.body.email;
+      const existUser = await User.findOne({ email: req.body.email });
+      const otp1 = crypto.randomInt(100000, 999999).toString(); //generate random otp
 
-        const storeOtp=await new UserOtpStore({
-              userId:existUser._id,
-              otp:otp1,
-              otpexpire:Date.now()+300000
-        })
-        await storeOtp.save()
+      const storeOtp = await new UserOtpStore({
+        userId: existUser._id,
+        otp: otp1,
+        otpexpire: Date.now() + 300000,
+      });
+      await storeOtp.save();
 
-          //send OTP to user's email
-          await transporter.sendMail({
-            from: "testbrocamp@gmail.com",
-            to: req.body.email,
-            subject: "Secure Your Account with This Code",
-            text: `your OTP for reset  password ${otp1}`,
-          });
-        
-          
-          res.redirect(`/otpcheck?email=${email}`);
+      //send OTP to user's email
+      await transporter.sendMail({
+        from: "testbrocamp@gmail.com",
+        to: req.body.email,
+        subject: "Secure Your Account with This Code",
+        text: `your OTP for reset  password ${otp1}`,
+      });
 
-      }
-    
+      res.redirect(`/otpcheck?email=${email}`);
+    }
   } catch (error) {
     console.log(error.message);
   }
-
-}
-
+};
 
 // get otp check page
-const getotpcheck=async (req,res)=>{
+const getotpcheck = async (req, res) => {
   try {
-
-      if(req.session.user){
-        res.redirect('/home')
-      }else{
-
-
-    const email=req.query.email
-    if(email){
-
-    res.render('forgotpassOTP',{email:email})
-  }else{
-    res.redirect('/login')
-  }}
-
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-//post otp checkpage
-const postotpcheck=async (req,res)=>{
-  
-  
-  
-  try {
-    const email=req.body.email
-    // console.log(email);
-    
-    const user = await User.findOne({ email:email });
-    // console.log(user);
-    
-    const userid=user._id
-    const userOtp=await UserOtpStore.findOne({userId:userid})
-    // console.log(userOtp);
-    
-
-
-    if(userOtp.otpexpire < new Date()){  
-
-      await UserOtpStore.deleteMany({userId:userid}) 
-      req.flash('fail','otpexpired')
-      res.redirect('/forgotemail')
-     
-      
-    }else{
-      if(userOtp.otp == req.body.otp){
-        
-        await UserOtpStore.deleteMany({userId:userid})
-        res.redirect(`/setpassword?email=${email}`)
-      }else{
-        await UserOtpStore.deleteMany({userId:userid})
-        req.flash('fail','otp not correct start again')
-        res.redirect(`/forgotemail`)
+    if (req.session.user) {
+      res.redirect("/home");
+    } else {
+      const email = req.query.email;
+      if (email) {
+        res.render("forgotpassOTP", { email: email });
+      } else {
+        res.redirect("/login");
       }
     }
-  
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
+//post otp checkpage
+const postotpcheck = async (req, res) => {
+  try {
+    const email = req.body.email;
+    // console.log(email);
+
+    const user = await User.findOne({ email: email });
+    // console.log(user);
+
+    const userid = user._id;
+    const userOtp = await UserOtpStore.findOne({ userId: userid });
+    // console.log(userOtp);
+
+    if (userOtp.otpexpire < new Date()) {
+      await UserOtpStore.deleteMany({ userId: userid });
+      req.flash("fail", "otpexpired");
+      res.redirect("/forgotemail");
+    } else {
+      if (userOtp.otp == req.body.otp) {
+        await UserOtpStore.deleteMany({ userId: userid });
+        res.redirect(`/setpassword?email=${email}`);
+      } else {
+        await UserOtpStore.deleteMany({ userId: userid });
+        req.flash("fail", "otp not correct start again");
+        res.redirect(`/forgotemail`);
+      }
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 // get set password page
-const getSetPassword=async (req,res)=>{
+const getSetPassword = async (req, res) => {
   try {
-
-    if (req.session.user){
-      res.redirect('/home')
-    }else{
-
-    const email=req.query.email
-    if(email){
-      const fail=req.flash('fail')
-    res.render('setpassword',{fail,email})
-  }else{
-    res.redirect('/login')
-  }
-  }
+    if (req.session.user) {
+      res.redirect("/home");
+    } else {
+      const email = req.query.email;
+      if (email) {
+        const fail = req.flash("fail");
+        res.render("setpassword", { fail, email });
+      } else {
+        res.redirect("/login");
+      }
+    }
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
 //post set password
-const postSetPassword=async (req,res)=>{
-  
+const postSetPassword = async (req, res) => {
   try {
-    const email=req.body.email
-    if(req.body.password == req.body.conformpassword){
-  
-      const password=req.body.password
-      const user=await User.findOne({email:email})
-      
+    const email = req.body.email;
+    if (req.body.password == req.body.conformpassword) {
+      const password = req.body.password;
+      const user = await User.findOne({ email: email });
+
       const hasedpassword = await bcrypt.hash(password, 10); //hash password
-      user.password=hasedpassword
-    
-      await user.save()
-     
-      req.flash('success','password changed ')
-      res.redirect('/login')
+      user.password = hasedpassword;
 
+      await user.save();
 
+      req.flash("success", "password changed ");
+      res.redirect("/login");
+    } else {
+      req.flash("fail", "password and conform Passwords are not correct");
 
-    }else{
-      req.flash('fail','password and conform Passwords are not correct')
-      
-      res.redirect(`/setpassword?email=${email}`)
+      res.redirect(`/setpassword?email=${email}`);
     }
-
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
 //-------------------------------------------------------  END  -----------------------------------------------------------
 
@@ -470,21 +403,24 @@ const postSetPassword=async (req,res)=>{
 
 //load home
 const loadHome = async (req, res) => {
-  
   try {
-    const user=req.session.user.email 
-    const userData=await User.findOne({email:user})
-    if(userData.isBlocked){
-      req.session.destroy()
-      res.redirect('/login')
-
-    }else{
-
-    const product = await Product.find({ isBlocked: true }).populate('brandName').populate('category')
-   const category=await Category.find({isListed:true})
-   const brand=await Brand.find({isListed:true})
-    res.render("home",{product:product,category:category,brand:brand});
-}
+    const user = req.session.user.email;
+    const userData = await User.findOne({ email: user });
+    if (userData.isBlocked) {
+      req.session.destroy();
+      res.redirect("/login");
+    } else {
+      const product = await Product.find({ isBlocked: true })
+        .populate("brandName")
+        .populate("category");
+      const category = await Category.find({ isListed: true });
+      const brand = await Brand.find({ isListed: true });
+      res.render("home", {
+        product: product,
+        category: category,
+        brand: brand,
+      });
+    }
   } catch (error) {
     console.log(error.message);
   }
@@ -495,26 +431,32 @@ const loadHome = async (req, res) => {
 //------------------------------------------- PRODUCT DETAILS -----------------------------------------------------------------
 
 //load product details page
-const productDetails=async (req,res)=>{
-
+const productDetails = async (req, res) => {
   try {
-    const id=req.query.id;
-    const productData=await Product.findOne({_id:id}).populate('brandName').populate('category')
-    const category=await Category.find({isListed:true})
-    const brand=await Brand.find({isListed:true})
- 
-    if(productData){
-      const msg=req.flash('msg')
-      const fail=req.flash('fail')
-      res.render('productDetails',{data:productData,brand:brand,category:category,msg,fail})
-    }else{
-      res.redirect('/home')
+    const id = req.query.id;
+    const productData = await Product.findOne({ _id: id })
+      .populate("brandName")
+      .populate("category");
+    const category = await Category.find({ isListed: true });
+    const brand = await Brand.find({ isListed: true });
+
+    if (productData) {
+      const msg = req.flash("msg");
+      const fail = req.flash("fail");
+      res.render("productDetails", {
+        data: productData,
+        brand: brand,
+        category: category,
+        msg,
+        fail,
+      });
+    } else {
+      res.redirect("/home");
     }
-    
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
 //----------------------------------------------------  END  -----------------------------------------------------------
 
@@ -522,174 +464,181 @@ const productDetails=async (req,res)=>{
 
 //user accoutprofile page get
 
-const account=async (req,res)=>{
-
+const account = async (req, res) => {
   try {
-    const email=req.session.user.email 
+    const email = req.session.user.email;
 
+    const user = await User.findOne({ email: email });
 
-    
-     const user=await User.findOne({email:email})
+    const category = await Category.find({ isListed: true });
+    const brand = await Brand.find({ isListed: true });
 
-    const category=await Category.find({isListed:true})
-    const brand=await Brand.find({isListed:true})
-
-    const msg=req.flash('msg')
-     res.render("account",{category:category,brand:brand,user:user,msg});
-    
+    const msg = req.flash("msg");
+    res.render("account", {
+      category: category,
+      brand: brand,
+      user: user,
+      msg,
+    });
   } catch (error) {
     console.log(error.message);
   }
-
-}
-
+};
 
 //edit the user data
-const postEditUser= async (req,res)=>{
-  try {    
-    let id=req.body.id
-    // console.log("ewewe"+id);
-    
-    const user=await User.findOne({_id:id})
-    // console.log(user);
-    
-    if(user){      
-      const update= await User.findOneAndUpdate(
-        {  _id:id},
-        {
-          $set:{
-            name:req.body.name,
-            phone:req.body.phone,
-            email:req.body.email
-          }
-        }
-      )
-      
-      if(update){
-        req.flash('msg','updated successfully')
-        res.redirect('/userAccount')
-      }
-    }else{
-      res.redirect('/userAccount')
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
-  
-}
-
- // get change password page
- const getChangePassword=async (req,res)=>{
-   try {
-     const id=req.query.id
-     if(id){
-
-     const user=await User.findOne({_id:id})
-     const category=await Category.find({isListed:true})
-     const brand=await Brand.find({isListed:true})
-
-     const fail=req.flash('fail')
- 
-     res.render('changePassword',{category:category,brand:brand,user:user,fail})
-    }else{
-      res.redirect('/userAccount')
-    }
-   } catch (error) {
-     console.log(error.message);
-   }
- }
-
- //post change password 
- const postChangePassword=async (req,res)=>{
+const postEditUser = async (req, res) => {
   try {
-   const id=req.body.id
-   const user=await User.findOne({_id:id})
-   const matchPassword = await bcrypt.compare(
-    req.body.oldpass,
-    user.password
-  )
-  if(matchPassword){
-    if (req.body.newpass == req.body.confirmpass){
-        const password=req.body.newpass
-        const hasedpassword=await bcrypt.hash(password,10);
-        user.password=hasedpassword
+    let id = req.body.id;
+    // console.log("ewewe"+id);
 
-        await user.save()
-        req.flash('msg','Password Changed')
-        res.redirect('/userAccount')
+    const user = await User.findOne({ _id: id });
+    // console.log(user);
+
+    if (user) {
+      const update = await User.findOneAndUpdate(
+        { _id: id },
+        {
+          $set: {
+            name: req.body.name,
+            phone: req.body.phone,
+            email: req.body.email,
+          },
+        }
+      );
+
+      if (update) {
+        req.flash("msg", "updated successfully");
+        res.redirect("/userAccount");
+      }
+    } else {
+      res.redirect("/userAccount");
     }
-  }else{
-    req.flash("fail","Current Password is Wrong ")
-    res.redirect(`/changePassword?id=${id}`)
-  }
-   
   } catch (error) {
     console.log(error.message);
   }
- }
-  
+};
 
+// get change password page
+const getChangePassword = async (req, res) => {
+  try {
+    const id = req.query.id;
+    if (id) {
+      const user = await User.findOne({ _id: id });
+      const category = await Category.find({ isListed: true });
+      const brand = await Brand.find({ isListed: true });
+
+      const fail = req.flash("fail");
+
+      res.render("changePassword", {
+        category: category,
+        brand: brand,
+        user: user,
+        fail,
+      });
+    } else {
+      res.redirect("/userAccount");
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//post change password
+const postChangePassword = async (req, res) => {
+  try {
+    const id = req.body.id;
+    const user = await User.findOne({ _id: id });
+    const matchPassword = await bcrypt.compare(req.body.oldpass, user.password);
+    if (matchPassword) {
+      if (req.body.newpass == req.body.confirmpass) {
+        const password = req.body.newpass;
+        const hasedpassword = await bcrypt.hash(password, 10);
+        user.password = hasedpassword;
+
+        await user.save();
+        req.flash("msg", "Password Changed");
+        res.redirect("/userAccount");
+      }
+    } else {
+      req.flash("fail", "Current Password is Wrong ");
+      res.redirect(`/changePassword?id=${id}`);
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 //----------------------------------------------------  END  -----------------------------------------------------------
 //----------------------------------------------- SHOP ---------------------------------------------------------------
 
-const getShop=async (req,res)=>{
-  try{
-
-    // short code form the shop page 
-    const sortOption=req.query.sort;
-    let sortmethod={}
-    let selected
-    switch(sortOption){
+const getShop = async (req, res) => {
+  try {
+    // short code form the shop page
+    const sortOption = req.query.sort;
+    let sortmethod = {};
+    let selected;
+    switch (sortOption) {
       case "priceinc":
-        sortmethod ={ price :1};
-        selected="Price: Low to High"
+        sortmethod = { price: 1 };
+        selected = "Price: Low to High";
         break;
       case "pricedec":
-        sortmethod ={ price : -1};
-        selected="Price: High to Low"
+        sortmethod = { price: -1 };
+        selected = "Price: High to Low";
         break;
       case "nameinc":
-        sortmethod ={ title : 1};
-        selected= "Name :A to Z"
+        sortmethod = { title: 1 };
+        selected = "Name :A to Z";
         break;
       case "namedec":
-        sortmethod ={ title : -1};
-        selected="Name :z to A"
+        sortmethod = { title: -1 };
+        selected = "Name :z to A";
         break;
       default:
-        sortmethod={}
-        selected ="Featured"
+        sortmethod = {};
+        selected = "Featured";
     }
 
+    const user = req.session.user.email;
+    const userData = await User.findOne({ email: user });
+    if (userData.isBlocked) {
+      req.session.destroy();
+      res.redirect("/login");
+    } else {
+      const product = await Product.find({ isBlocked: true })
+        .populate("brandName")
+        .populate("category")
+        .sort(sortmethod);
 
+      const category = await Category.find({ isListed: true });
+      const brand = await Brand.find({ isListed: true });
 
-    const user=req.session.user.email 
-    const userData=await User.findOne({email:user})
-    if(userData.isBlocked){
-      req.session.destroy()
-      res.redirect('/login')
-
-    }else{
-
-    const product = await Product.find({ isBlocked: true })
-    .populate('brandName')
-    .populate('category')
-    .sort(sortmethod)
-
-   const category=await Category.find({isListed:true})
-   const brand=await Brand.find({isListed:true})
-
-
-
-    res.render("shop",{product:product,category:category,brand:brand,selected});
-}
-      
-  }catch(error){
+      res.render("shop", {
+        product: product,
+        category: category,
+        brand: brand,
+        selected,
+      });
+    }
+  } catch (error) {
     console.log(error.message);
-    
   }
-}
+};
+// ------------------------------------- GOOGLE AUTH ----------------------------------
+
+// This handles redirection after successful Google authentication
+googleAuth = (req, res) => {
+  if (req.user) {
+    const useremail = req.user.email;
+    req.session.user = { email: req.user.email, _id: req.user._id };
+
+    return res.redirect("/home");
+  } else {
+    return res.redirect("/login");
+  }
+};
+
+// ------------------------------------- END ----------------------------------
 
 module.exports = {
   loadLogin,
@@ -712,6 +661,7 @@ module.exports = {
   postEditUser,
   getChangePassword,
   postChangePassword,
-  getShop
- 
+  getShop,
+  googleAuth,
+  /////////////////
 };
