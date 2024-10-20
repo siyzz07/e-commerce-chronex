@@ -628,14 +628,23 @@ const getShop = async (req, res) => {
 
 // This handles redirection after successful Google authentication
 googleAuth = (req, res) => {
-  if (req.user) {
-    const useremail = req.user.email;
-    req.session.user = { email: req.user.email, _id: req.user._id };
+  try{
 
-    return res.redirect("/home");
-  } else {
-    return res.redirect("/login");
+    if (req.user) {
+      const useremail = req.user.email;
+      req.session.user = { email: req.user.email, _id: req.user._id };
+  
+      return res.redirect("/home");
+    } else {
+      return res.redirect("/login");
+    }
+
+
+  }catch(error){
+    console.log(error.message);
+    
   }
+ 
 };
 
 // ------------------------------------- END ----------------------------------

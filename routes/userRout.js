@@ -116,9 +116,9 @@ user_route.get('/shop',userSession,userController.getShop)
 
 // google auth
 
-// Route to initiate Google login
+//initiate Google login
 user_route.get('/google',passport.authenticate('google', { scope: ['profile','email'],prompt: 'select_account' }));
-// Route to handle Google callback (after Google login)
+// handle Google callback =======after Google login
 user_route.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), userController.googleAuth);
 
 
@@ -126,9 +126,9 @@ user_route.get('/auth/google/callback', passport.authenticate('google', { failur
 
 // wishlist
 user_route.get('/addToWishlist',wishlistContoller.addWishlist)//add to wish list from product page
-user_route.get('/wishlist',wishlistContoller.getWishlist)
-user_route.get('/addWishlistToCart',cartController.addToCartFromWishlist)// from the wishlist .add wish list product to cart .//is controller is written in cartcontroller 
-user_route.get('/deleteFromWishlist',wishlistContoller.deleFromWishlist)
+user_route.get('/wishlist',userSession,wishlistContoller.getWishlist)
+user_route.get('/addWishlistToCart',userSession,cartController.addToCartFromWishlist)// from the wishlist .add wish list product to cart .//is controller is written in cartcontroller 
+user_route.get('/deleteFromWishlist',userSession,wishlistContoller.deleFromWishlist)
 
 
 module.exports=user_route

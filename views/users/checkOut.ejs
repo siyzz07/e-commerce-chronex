@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:06 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Evara - eCommerce HTML Template</title>
+    <title>Chronex</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +14,7 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="user/assets/imgs/theme/favicon.svg">
+
     <!-- Template CSS -->
     <link rel="stylesheet" href="user/assets/css/main.css">
 </head>
@@ -841,8 +841,91 @@
 
                     </div>
 
-
+                    
+                    
+                    
+                    
+                    
+                    
                     <div class="col-md-6">
+                        
+                        
+                        <!-- ============================== couupen ================== -->
+
+                        <div class="col-lg-12">
+                            <div class="toggle_info">
+                                <span><i class="fi-rs-label mr-10"></i>
+                                <span class="text-muted">Have a coupon?</span>
+                                <a href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your code</a></span>
+                            </div>
+                            <div class="panel-collapse collapse coupon_form" id="coupon">
+                                <div class="panel-body">
+                                    <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
+                                    <form method="post">
+                                        <div class="form-group mb-3">
+                                            <input type="text" class="form-control" placeholder="Enter Coupon Code...">
+                                        </div>
+                                        <div class="form-group d-flex">
+                                            
+                                            <button data-target="#exampleModal" data-toggle="modal"  class="btn btn-md   me-2" type="button" name="get_coupon">Get Coupon</button>
+                                            
+                                            <button class="btn btn-md btn-success me-2" type="submit" name="apply_coupon">Apply Coupon</button>
+                                      
+                                            <button class="btn btn-md  " type="button" name="delete_coupon">Delete Coupon</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                         <br>
+
+
+
+<!-- ============================ couopen s in modal====================== -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Available Coupens</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+    
+        <div class="modal-body">
+            <% for(let i=0;i<coupen.length;i++){ %>
+                <%= coupen[i].coupenCode %>
+                <hr>
+                <% } %>
+
+
+
+        </div>
+       
+        
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
                         <div class="order_review">
                             <div class="mb-20">
                                 <h4>Your Orders</h4>
@@ -875,6 +958,12 @@
                                             <th>SubTotal</th>
                                             <td class="product-subtotal" colspan="2">$<%= cart.totalPrice %></td>
                                         </tr>
+
+                                        <tr>
+                                            <th>Discount</th>
+                                            <td class="product-subtotal" colspan="2">$<%= cart.discount %></td>
+                                        </tr>
+
                                         <tr>
                                             <th>Shipping</th>
                                             <td colspan="2"><em>Free Shipping</em></td>
@@ -1102,6 +1191,10 @@ document.getElementById('submitPayment').addEventListener('click', () => {
     <!-- Template  JS -->
     <script src="user/assets/js/main.js"></script>
     <script src="user/assets/js/shop.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 
 

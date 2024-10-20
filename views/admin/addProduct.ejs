@@ -369,12 +369,26 @@ function validateForm() {
         }
 
         // Validate images
-        const images = document.getElementById('images').files;
-        if (images.length < 3) {
-            document.getElementById('images-error').innerText = '3 image is required.';
+const images = document.getElementById('images').files;
+if (images.length < 3) {
+    document.getElementById('images-error').innerText = 'At least 3 images are required.';
+    document.getElementById('images-error').style.display = 'block';
+    valid = false;
+} else {
+    for (let i = 0; i < images.length; i++) {
+        const file = images[i];
+        const fileType = file.type;
+        
+        // Check if the file is an image
+        if (!fileType.startsWith('image/')) {
+            document.getElementById('images-error').innerText = 'Only image files are allowed.';
             document.getElementById('images-error').style.display = 'block';
             valid = false;
+            break;
         }
+    }
+}
+
 
         return valid;
       }

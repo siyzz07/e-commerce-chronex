@@ -12,19 +12,10 @@ const Brand = require("../models/brand");
 const addWishlist=async (req,res)=>{
     try{
         
-     const userId=req.session.user._id
-        console.log("1zz"+userId);
-        
-      const productId=req.query.id;
-
-    console.log("2zzz"+productId);
-    
-        
+     const userId=req.session.user._id  
+      const productId=req.query.id; 
 
         let wishlist=await Wishlist.findOne({userId:userId})
-        console.log("3zzz"+wishlist);
-        
-
         if(!wishlist){
 
             wishlist=new Wishlist({

@@ -6,6 +6,7 @@ const Product=require('../models/porduct')
 const Address=require('../models/address')
 const { use } = require('bcrypt/promises')
 const User=require('../models/userModels')
+const Coupen=require('../models/coupen')
 
 
 
@@ -21,6 +22,10 @@ const getCheckOut=async (req,res)=>{
 
       const  userId=req.session.user._id
         const cartProduct=await Cart.findOne({userId:userId}).populate('items.product') 
+
+        const totalPrice=cartProduct.totalPrice
+
+        const coupen=await Coupen.find({minAmountPurchase:{$lte:totalPrice}})
         
         
         if(cartProduct){
@@ -31,7 +36,7 @@ const getCheckOut=async (req,res)=>{
         const address=await Address.findOne({userId:userId})
         // console.log(address);
         
-        res.render('checkOut',{category:category,brand:brand,cart:cartProduct,address:address||{ addressData: [] },userId})
+        res.render('checkOut',{category:category,brand:brand,cart:cartProduct,address:address||{ addressData: [] },userId,coupen})
     }else{
         req.flash('fail','update cart')
         res.redirect('/cart')
