@@ -3,6 +3,7 @@ const Category=require('../models/category')
 const Brand=require('../models/brand')
 const Product=require('../models/porduct')
 const { productDetails } = require('./userControl')
+const Coupen=require('../models/coupen')
 
 
 
@@ -158,7 +159,7 @@ const updateCart=async (req,res)=>{
             )
         });
         
-        const cartItem=await Cart.updateOne({userId:userid},{totalPrice:totalPrice})
+        const cartItem=await Cart.updateOne({userId:userid},{totalPrice:totalPrice,totalWithDiscount:totalPrice,discount:0})
        
     
     }catch(error){
@@ -192,18 +193,10 @@ const deleFromCart=async (req,res)=>{
 }
 
 
-// load checkoup page
-// const getCheckOut=async (req,res)=>{
-//     try{
-//         const cartProduct=await Cart.findOne({userId:userId}).populate('items.product')
-//         const category=await Category.find({isListed:true})
-//         const brand=await Brand.find({isListed:true})
-//         res.render('checkOut',{category:category,brand:brand,cart:cartProduct})
-//     }catch(error){
-//         console.log(error.message);
-        
-//     }
-// }
+
+
+
+
 
 module.exports={
     getCart,
@@ -211,5 +204,6 @@ module.exports={
     updateCart,
     deleFromCart,
     // getCheckOut
-    addToCartFromWishlist
+    addToCartFromWishlist,
+    
 }

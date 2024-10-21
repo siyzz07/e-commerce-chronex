@@ -24,6 +24,13 @@
           type:Number,
           default:0,
       },
+      discount:{
+        type:Number
+      },
+      totalWithDiscount:{
+        type:Number
+      },
+
       status:{
           type:String,
           enum:["Pending", "Shipped", "Delivered", "Cancelled", "Returned"],

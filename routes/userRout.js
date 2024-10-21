@@ -34,6 +34,7 @@ const addressController=require("../controllers/addressController")
 const orderController=require('../controllers/orderControl')
 const cartController=require('../controllers/cartControl')
 const wishlistContoller=require('../controllers/wishlistControll')
+const coupenController=require('../controllers/coupenController')
 
 
 // login page
@@ -129,6 +130,14 @@ user_route.get('/addToWishlist',wishlistContoller.addWishlist)//add to wish list
 user_route.get('/wishlist',userSession,wishlistContoller.getWishlist)
 user_route.get('/addWishlistToCart',userSession,cartController.addToCartFromWishlist)// from the wishlist .add wish list product to cart .//is controller is written in cartcontroller 
 user_route.get('/deleteFromWishlist',userSession,wishlistContoller.deleFromWishlist)
+
+
+
+// coupen
+user_route.post('/applyCoupen',coupenController.applyCoupen)
+user_route.get('/deletCoupen',coupenController.deletCoupen)
+
+
 
 
 module.exports=user_route

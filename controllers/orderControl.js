@@ -19,24 +19,55 @@ const Coupen=require('../models/coupen')
 // load checkoup page  from user side
 const getCheckOut=async (req,res)=>{
     try{
+        const  userId=req.session.user._id
+        
 
-      const  userId=req.session.user._id
+      
+
+     
         const cartProduct=await Cart.findOne({userId:userId}).populate('items.product') 
-
+        const total=cartProduct.totalPrice
         const totalPrice=cartProduct.totalPrice
+            let addedCoupen
+            if(req.query.coupenName){
+                addedCoupen=req.query.coupenName
+            }
+            console.log(addedCoupen);
+            
+        // const coupen=await Coupen.find({minAmountPurchase:{$lte:totalPrice}, usedBy: { $nin: [userId] } })
+        
+        const coupen = await Coupen.find({
+            minAmountPurchase: { $lte: totalPrice }, 
+            usedBy: { $nin: [userId] },
+             coupenCode: { $ne: addedCoupen }  
+        });
 
-        const coupen=await Coupen.find({minAmountPurchase:{$lte:totalPrice}})
-        
-        
+
+        const msg=req.flash('msg')
+        const fail=req.flash('fail')
+
+        if(!req.query.coupenName){
+
+            const coupenInCart=await Cart.updateOne({userId:userId},{$set:{discount:0,totalWithDiscount:total}})
+
+        }
+       
+
+
         if(cartProduct){
         if(cartProduct.items.length !== 0 ){
             if(cartProduct.totalPrice !=0){
         const category=await Category.find({isListed:true})
         const brand=await Brand.find({isListed:true})
         const address=await Address.findOne({userId:userId})
-        // console.log(address);
         
-        res.render('checkOut',{category:category,brand:brand,cart:cartProduct,address:address||{ addressData: [] },userId,coupen})
+                let coupenName
+        if(req.query.coupenName){
+             coupenName=req.query.coupenName
+
+        }
+        
+        res.render('checkOut',{category:category,brand:brand,cart:cartProduct,address:address||{ addressData: [] },userId,coupen,coupenName,msg,fail})
     }else{
         req.flash('fail','update cart')
         res.redirect('/cart')
@@ -62,7 +93,15 @@ const placeOrder=async (req,res)=>{
         
       const  userId=req.session.user._id
 
-       const {payment_option, address}=req.body;
+      const { payment_option, address, couponName } = req.body;
+       const coupenAddUser = await Coupen.updateOne(
+        { coupenCode: couponName }, 
+        {
+            $push: { usedBy: userId },  
+            $inc: { usedCount: 1 }      
+        }
+    );
+    
 
        const user =await User.findOne({_id:userId})
        const shippingAddress=await Address.findOne({"addressData._id":address},{ "addressData.$": 1 } )
@@ -88,6 +127,8 @@ const placeOrder=async (req,res)=>{
                 state: shippingAddress.addressData[0].state,
                 city: shippingAddress.addressData[0].city,
               },
+              discount:cartItems.discount,
+              totalWithDiscount:cartItems.totalWithDiscount,
               paymentMethod:payment_option,
               paymentStatus:'pending',
               status:'Pending'
@@ -232,6 +273,14 @@ const retrunProduct=async (req,res)=>{
         console.log(error.message)
     }
 }
+
+
+
+
+
+
+
+
 
 
 

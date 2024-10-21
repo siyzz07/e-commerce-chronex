@@ -94,9 +94,9 @@ admin_route.post('/orderUpdate',orderController.orderUpdate)
 
 
 // coupen 
-admin_route.get('/coupen',coupenController.getCoupenPage)
-admin_route.get('/addCoupen',coupenController.getAddCoupen)
+admin_route.get('/coupen',adminSession,coupenController.getCoupenPage)
+admin_route.get('/addCoupen',adminSession,coupenController.getAddCoupen)
 admin_route.post('/addCoupen',coupenController.postAddCoupen)
-admin_route.get('/deleteCoupen',coupenController.deleteCoupen)
+admin_route.get('/deleteCoupen',adminSession,coupenController.deleteCoupen)
 
 module.exports=admin_route

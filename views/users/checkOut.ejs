@@ -849,7 +849,8 @@
                     
                     <div class="col-md-6">
                         
-                        
+                        <P style="color:green; text-align: center;"><%= msg %></P>
+                        <P style="color:red; text-align: center;"><%= fail %></P>
                         <!-- ============================== couupen ================== -->
 
                         <div class="col-lg-12">
@@ -858,22 +859,37 @@
                                 <span class="text-muted">Have a coupon?</span>
                                 <a href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your code</a></span>
                             </div>
+
+                            <% if(coupenName){ %>
+                                <p style="color: rgb(38, 38, 185); font-size:17px;">The Coupen you Applied :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-size: 18px; color: rgb(43, 43, 126);"><%= coupenName %></span> </p>
+                                <input type="hidden"  value="<%= coupenName %>" class="form-control" id="couponNameInput" name="couponCodee" placeholder="Enter Coupon Code...">
+                                <% } else{%>
+                                    <p style="color: rgb(38, 38, 185); font-size:17px;">You did't applied any Coupen</p>
+                                    <% } %>
+                            
                             <div class="panel-collapse collapse coupon_form" id="coupon">
                                 <div class="panel-body">
                                     <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
-                                    <form method="post">
+
+                                    
+                                    <form action="/applyCoupen?cartId=<%= cart._id %>" method="post">
                                         <div class="form-group mb-3">
-                                            <input type="text" class="form-control" placeholder="Enter Coupon Code...">
+                                            <input type="text" class="form-control" id="couponCode" name="couponCode" placeholder="Enter Coupon Code...">
+                                            
                                         </div>
                                         <div class="form-group d-flex">
+                                            <button data-target="#exampleModal" data-toggle="modal" class="btn btn-md me-2" type="button" name="get_coupon">Get Coupon</button>
                                             
-                                            <button data-target="#exampleModal" data-toggle="modal"  class="btn btn-md   me-2" type="button" name="get_coupon">Get Coupon</button>
                                             
-                                            <button class="btn btn-md btn-success me-2" type="submit" name="apply_coupon">Apply Coupon</button>
-                                      
-                                            <button class="btn btn-md  " type="button" name="delete_coupon">Delete Coupon</button>
+                                            <button class="btn btn-md me-2" id="applyCouponButton" type="submit" name="coupen" style="display:none;">Apply Coupon</button>
+                                            
+                                        <% if(coupenName) {%>
+                                            
+                                            <a href="/deletCoupen"><button class="btn btn-md" type="button" name="delete_coupon">Delete Coupon</button></a>
+                                            <% } %>
                                         </div>
                                     </form>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -898,16 +914,11 @@
     
         <div class="modal-body">
             <% for(let i=0;i<coupen.length;i++){ %>
-                <%= coupen[i].coupenCode %>
+                <p style="font-size: large; color: #198754;"><%= coupen[i].coupenCode %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp; <span style="font-size: 15px;color: #8d8686;"><%= coupen[i].description %></span></p> 
                 <hr>
                 <% } %>
-
-
-
         </div>
        
-        
-        
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
          
@@ -970,7 +981,7 @@
                                         </tr>
                                         <tr>
                                             <th>Total</th>
-                                            <td colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900">$<%= cart.totalPrice %></span></td>
+                                            <td colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900">$<%= cart.totalWithDiscount %></span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1127,10 +1138,15 @@
 //  }
 // });
 
+
+
+
+
 document.getElementById('submitPayment').addEventListener('click', () => {
     const selectedOption = document.querySelector('input[name="payment_option"]:checked');
     const selectedAddress = document.querySelector('input[name="address"]:checked');
-
+    const couponName = document.getElementById('couponNameInput') ? document.getElementById('couponNameInput').value.trim() : null; // Trim input
+  
     if (selectedOption && selectedAddress) {
         const paymentMethod = selectedOption.value;
         const address = selectedAddress.value;
@@ -1144,13 +1160,14 @@ document.getElementById('submitPayment').addEventListener('click', () => {
             body: JSON.stringify({ 
                 payment_option: paymentMethod,
                 address: address,
-                productids: productIds 
+                productids: productIds,
+                couponName: couponName  // Pass couponName here
             }),
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Redirect to the confirmation page using the URL from the response
+                // Redirect to the confirmation page
                 window.location.href = data.redirectUrl;
             } else {
                 console.error('Error:', data.message);
@@ -1169,7 +1186,78 @@ document.getElementById('submitPayment').addEventListener('click', () => {
 
 
 
-     </script>
+
+
+
+
+
+
+// document.getElementById('submitPayment').addEventListener('click', () => {
+//     const selectedOption = document.querySelector('input[name="payment_option"]:checked');
+//     const selectedAddress = document.querySelector('input[name="address"]:checked');
+//     const couponName = document.getElementById('couponNameInput') ? document.getElementById('couponNameInput').value : null; // Retrieve coupon name if available
+  
+  
+//     if (selectedOption && selectedAddress) {
+//         const paymentMethod = selectedOption.value;
+//         const address = selectedAddress.value;
+//         const productIds = Array.from(document.querySelectorAll('.product-id')).map(input => input.value);
+
+//         fetch('/submit-payment', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({ 
+//                 payment_option: paymentMethod,
+//                 address: address,
+//                 productids: productIds ,
+//                 couponName: couponName 
+//             }),
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//             if (data.success) {
+//                 // Redirect to the confirmation page using the URL from the response
+//                 window.location.href = data.redirectUrl;
+//             } else {
+//                 console.error('Error:', data.message);
+//                 document.getElementById('wrong').textContent = 'Error placing order!';
+//             }
+//         })
+//         .catch((error) => {
+//             console.error('Error:', error);
+//             document.getElementById('wrong').textContent = 'Error placing order!';
+//         });
+//     } else {
+//         document.getElementById('wrong').textContent = 'Invalid! Check your payment method and shipping address.';
+//     }
+// });
+
+//      </script>
+
+// <script>
+    // Get the coupon code input and the Apply Coupon button
+    const couponCodeInput = document.getElementById('couponCode');
+    const applyCouponButton = document.getElementById('applyCouponButton');
+
+    // Add event listener to monitor changes in the coupon code input
+    couponCodeInput.addEventListener('input', function() {
+        // Show the Apply button if the input is not empty, otherwise hide it
+        if (couponCodeInput.value.trim() !== "") {
+            applyCouponButton.style.display = "inline-block"; // Show button
+        } else {
+            applyCouponButton.style.display = "none"; // Hide button
+        }
+    });
+</script>
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        const couponInput = document.getElementById('couponCode');
+        couponInput.value = couponInput.value.trim();  // Trim the input value
+    });
+</script>
+
     <script src="user/assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="user/assets/js/vendor/jquery-3.6.0.min.js"></script>
     <script src="user/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
