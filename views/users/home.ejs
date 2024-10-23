@@ -196,13 +196,13 @@
                                 <div class="header-action-icon-2">
                                     <a href="/wishlist">
                                         <img class="svgInject" alt="Evara" src="user/assets/imgs/theme/icons/icon-heart.svg">
-                                      
+                                        <span class="pro-count blue"><%= wishlist && wishlist.items ? wishlist.items.length : 0 %></span>
                                     </a>
                                 </div>
                                 <div class="header-action-icon-2">
                                     <a class="mini-cart-icon" href="/cart">
                                         <img alt="Evara" src="user/assets/imgs/theme/icons/icon-cart.svg">
-                                        <!-- <span class="pro-count blue">66</span> -->
+                                        <span class="pro-count blue"><%= cart && cart.items ? cart.items.length : 0 %></span>
                                     </a>
                                    
                                 </div>
@@ -272,7 +272,7 @@
                         </div>
                     </div>
                     <div class="hotline d-none d-lg-block">
-                        <p><i class="fi-rs-headset"></i><span>Helpline</span> 1900 - 888 </p>
+             
                     </div>
                     <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
                     <div class="header-action-right d-block d-lg-none">

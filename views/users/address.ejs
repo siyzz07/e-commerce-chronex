@@ -77,7 +77,7 @@
                     </div>
                 </div>
                 <div class="hotline d-none d-lg-block">
-                    <p><i class="fi-rs-headset"></i><span>Helpline</span> 1900 - 888 </p>
+                 
                 </div>
                 <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
                 <div class="header-action-right d-block d-lg-none">
@@ -116,6 +116,11 @@
                 
                                         <li class="nav-item">
                                             <a class="nav-link active" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " href="wallet"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
+                                                <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
+                                              </svg> &nbsp; Wallet</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="page-login-register.html"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
@@ -162,7 +167,7 @@
                                                                 </address>
                                                                     
                                                                     <a href="/editAddress?addressid=<%= userAddress.addressData[i]._id %>" style="color: rgb(17, 219, 44);" class="btn-small">Edit</a><br>
-                                                                    <a href="/deleteAddress?id=<%= userAddress.addressData[i]._id %>" style="color: rgb(255, 21, 0);" class="btn-small" onclick="return onConfrom()">Delete</a>
+                                                                    <a href="javascript:void(0)" style="color: rgb(255, 21, 0);" class="btn-small" onclick="showCustomAlert('<%= userAddress.addressData[i]._id %>')">Delete</a>
                                                                 </div>
                                                             </div><br>
                                                         </div>
@@ -171,7 +176,12 @@
                                                     <p>No addresses found for this user.</p>
                                                 <% } %>
                                                 
-
+<!-- ============================= custom alert========================= -->
+<div id="customAlert" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; padding:20px; border:1px solid #333; z-index:9999; border-radius:10px; box-shadow:0 0 15px rgba(0,0,0,0.3); width: 300px; height: 200px; text-align:center;">
+    <p>Are you sure you want to delete this address?</p>
+    <button id="confirmDelete" class="btn-small" style="background-color:red;color:white;padding:10px;margin-right:10px;">Yes</button>
+    <button onclick="closeCustomAlert()" class="btn-small" style="background-color:green;color:white;padding:10px;">No</button>
+</div>
                                          
                                             
                                          
@@ -212,11 +222,18 @@
     <!-- Template  JS -->
     <script src="assets/js/main.js"></script>
    
- <script>
-    function onConfrom(){
-        return confirm('are you sure! you want to delete your address')
-    }
- </script>
+    <script>
+        function showCustomAlert(id) {
+            document.getElementById("customAlert").style.display = "block";
+            document.getElementById("confirmDelete").onclick = function() {
+                window.location.href = `/deleteAddress?id=${id}`;
+            };
+        }
+    
+        function closeCustomAlert() {
+            document.getElementById("customAlert").style.display = "none";
+        }
+    </script>
 </body>
 
 

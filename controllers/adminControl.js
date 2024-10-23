@@ -136,7 +136,6 @@ const blockuser = async (req, res) => {
 
 
 
-
 module.exports = {
   loadAdminLogin,
   adminVerify,

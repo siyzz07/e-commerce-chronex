@@ -28,13 +28,14 @@ user_route.use(express.json())
 user_route.use(express.urlencoded({extended:true}));
 
 
-//--------------- CONTROLLER ------------------------
+//------------------ CONTROLLER ------------------------
 const userController=require("../controllers/userControl");
 const addressController=require("../controllers/addressController")
 const orderController=require('../controllers/orderControl')
 const cartController=require('../controllers/cartControl')
 const wishlistContoller=require('../controllers/wishlistControll')
 const coupenController=require('../controllers/coupenController')
+const walletController=require('../controllers/walletControll')
 
 
 // login page
@@ -137,6 +138,13 @@ user_route.get('/deleteFromWishlist',userSession,wishlistContoller.deleFromWishl
 user_route.post('/applyCoupen',coupenController.applyCoupen)
 user_route.get('/deletCoupen',coupenController.deletCoupen)
 
+
+// razorpay
+user_route.post('/createOrder', orderController.createOrder);
+user_route.post('/verifyPayment',orderController.verifyPayment);
+
+//wallet
+user_route.get('/wallet',walletController.getWallet)
 
 
 

@@ -23,7 +23,7 @@ const brand = async (req, res) => {
 
   //------------------- ADD BRANDS IN BRAND PAGE -----------------------------
 const addBrand = async (req, res) => {
-    const brandcheck = await Brand.findOne({ brand: req.body.brand });
+    const brandcheck = await Brand.findOne({ brand: req.body.brandtoLowerCase() });
     try {
       if (brandcheck) {
         req.flash("fail", "Bradn already added");
@@ -102,7 +102,7 @@ const edit = async (req, res) => {
     try {
 
       const brand =req.body.brand
-      const check=await Brand.findOne({brand:brand})
+      const check=await Brand.findOne({brand:brand.toLowerCase()})
       if(check){
         req.flash('fail2','already added')
         return res.redirect('/admin/brand')

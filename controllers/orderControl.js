@@ -7,8 +7,10 @@ const Address=require('../models/address')
 const { use } = require('bcrypt/promises')
 const User=require('../models/userModels')
 const Coupen=require('../models/coupen')
-
-
+const googleStrategy = require("passport-google-oauth20").Strategy; //google auth
+const razorpayInstance=require('../config/razorpayConfig')//rezorpay
+const Transaction=require('../models/transaction')
+const Wallet=require('../models/wallet')
 
 
 
@@ -231,6 +233,38 @@ const cancelOrder=async (req,res)=>{
     try{
       const  orderId=req.query.orderid
       const order=await Order.findOne({_id:orderId})
+        
+        
+      if(order.paymentMethod == "Razorpay"){
+
+    
+
+        const wallet =await Wallet.findOne({userId:order.userId})
+        if(!wallet){
+            wallet =new Wallet({
+                userId:userId,
+                balace:0
+            })
+            await wallet.save()
+        }
+        const refundAmount =  order.totalWithDiscount
+        let userId=order.userId
+      
+       const transaction = new Transaction({
+        userId:userId,
+        amount: refundAmount,
+        status: "Success",
+        type: "Credited",
+      });
+      await transaction.save();
+
+      wallet.balance += refundAmount
+      await wallet.save()
+
+      }
+
+
+
       for(let item of order.items){
         await Product.findByIdAndUpdate(item.product._id,{
             $inc:{stock: item.quantity}
@@ -246,14 +280,15 @@ const cancelOrder=async (req,res)=>{
     }
 }
 
-
+//  return product
 const retrunProduct=async (req,res)=>{
     try{
 
 
         const  orderId=req.query.orderid
-        
         const  reason=req.body.reason
+
+        
         
         const order=await Order.findOne({_id:orderId})
         for(let item of order.items){
@@ -262,6 +297,28 @@ const retrunProduct=async (req,res)=>{
 
           })
        }
+       let wallet =await Wallet.findOne({userId:order.userId})
+       let userId=order.userId
+
+       if(!wallet){
+        wallet =new Wallet({
+            userId:userId,
+            balace:0
+        })
+        await wallet.save()
+    }
+       const refundAmount =  order.totalWithDiscount
+       const transaction = new Transaction({
+        userId:userId,
+        amount: refundAmount,
+        status: "Success",
+        type: "Credited",
+      });
+      await transaction.save();
+
+      wallet.balance += refundAmount
+      await wallet.save()
+
         const updatedOrder = await Order.findByIdAndUpdate(orderId, { status: 'Returned', returnReason:reason });
 
 
@@ -276,6 +333,106 @@ const retrunProduct=async (req,res)=>{
 
 
 
+/// -----------------razorpay-------------------------
+
+const createOrder = async (req, res) => {
+
+  
+    const options = {
+      amount: req.body.amount * 100, // Convert to paisa
+      currency: "INR",
+      receipt: "order_rcptid_11"
+    };
+  
+    try {
+  
+      const order = await razorpayInstance.orders.create(options);
+    
+      res.json(order);
+    } catch (error) {
+      console.error("Error creating order:", error); // Log any errors
+      res.status(500).send({ error: 'Failed to create Razorpay order' });
+    }
+  };
+  
+  
+  const verifyPayment = async (req, res) => {
+  
+  
+    const { razorpay_payment_id } = req.body;
+  
+    try {
+       
+        const payment = await razorpayInstance.payments.fetch(razorpay_payment_id);
+  
+        if (payment.status === 'captured') {
+  
+   
+        const  userId=req.session.user._id
+  
+        const { payment_option, address, couponName } = req.body;
+         const coupenAddUser = await Coupen.updateOne(
+          { coupenCode: couponName }, 
+          {
+              $push: { usedBy: userId },  
+              $inc: { usedCount: 1 }      
+          }
+      );
+      
+  
+         const user =await User.findOne({_id:userId})
+         const shippingAddress=await Address.findOne({"addressData._id":address},{ "addressData.$": 1 } )
+  
+         const cartItems = await Cart.findOne({userId:userId})
+          const order =new Order({
+              userId:userId,
+              items:cartItems.items.map((item)=>({
+                  product:item.product._id,
+                  price:item.price,
+                  quantity:item.quantity
+  
+              })),
+              totalPrice:cartItems.totalPrice,
+              billingDetails:{
+                  name:user.name,
+                  email: user.email,
+                  phno: user.phone,
+                  address:shippingAddress.addressData[0].address,
+                  secPnoe: shippingAddress.addressData[0].secphone,
+                  pincode: shippingAddress.addressData[0].pincode,
+                  country: shippingAddress.addressData[0].country,
+                  state: shippingAddress.addressData[0].state,
+                  city: shippingAddress.addressData[0].city,
+                },
+                discount:cartItems.discount,
+                totalWithDiscount:cartItems.totalWithDiscount,
+                paymentMethod:payment_option,
+                paymentStatus:'pending',
+                status:'Pending'
+          
+              });
+  
+              await order.save()
+              
+              
+              
+              for(let item of cartItems.items){
+                  await Product.findByIdAndUpdate(item.product._id,{
+                      $inc:{stock:-item.quantity}
+                  })
+              }
+  
+              await Cart.findOneAndDelete({ userId });
+            res.json({ success: true, redirectUrl: `/confirmorder?orderId=${order._id}`}); // Redirect to success page
+        } else {
+            res.json({ success: false, redirectUrl: '/payment/fail' }); // Redirect to failure page
+        }
+    } catch (error) {
+        console.error("Error fetching payment details:", error);
+        res.status(500).send({ error: 'Failed to verify payment' });
+    }
+  };
+
 
 
 
@@ -289,18 +446,43 @@ const retrunProduct=async (req,res)=>{
 
 
 //get order Lits page
-const getOrderList=async (req,res) =>{
-    try{
+// const getOrderList=async (req,res) =>{
+//     try{
         
-        const order=await Order.find()
-         const msg=req.flash('msg')
-        res.render('orderManagement',{order:order,msg})
+//         const order=await Order.find()
+//          const msg=req.flash('msg')
+//         res.render('orderManagement',{order:order,msg})
 
-    }catch(error){
-        console.log(error.message);
+//     }catch(error){
+//         console.log(error.message);
         
+//     }
+// }
+
+
+const getOrderList = async (req, res) => {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      
+      const limit = 5; 
+      const skip = (page - 1) * limit;
+  
+      const orders = await Order.find().skip(skip).limit(limit);
+      const totalOrders = await Order.countDocuments();
+      const totalPages = Math.ceil(totalOrders / limit);
+      const msg = req.flash('msg');
+      res.render('orderManagement', {
+        order: orders,
+        msg: msg,
+        currentPage: page,
+        totalPages: totalPages
+      });
+  
+    } catch (error) {
+      console.log(error.message);
     }
-}
+  };
+  
 
 
 //get order details after click details button from the order list page
@@ -352,6 +534,7 @@ const orderUpdate=async (req,res)=>{
 }
 
 module.exports={
+//------user--------
     getCheckOut,
     placeOrder,
     confirmOrder,
@@ -359,8 +542,10 @@ module.exports={
     getOrderDeatails,
     cancelOrder,
     retrunProduct,
-    // ---end----
-    //---admin----  
+    verifyPayment,
+    createOrder,
+// -----end------
+//-----admin------  
     getOrderList,
     orderDeatails,
     orderUpdate

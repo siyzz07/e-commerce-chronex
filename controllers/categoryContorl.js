@@ -25,7 +25,7 @@ const category = async (req, res) => {
   //------------------------- ADD CATEGORY IN CATEGORY PAGE ---------------------
 
 const addCategory = async (req, res) => {
-    const category = await Category.findOne({ category: req.body.category });
+    const category = await Category.findOne({ category: req.body.category.toLowerCase() });
   
     try {
       if (category) {
@@ -103,7 +103,7 @@ const deletCategory = async (req, res) => {
     try {
 
       const category=req.body.category
-     const check=await Category.findOne({category:category})
+     const check=await Category.findOne({category:category.toLowerCase()})
     if(check){
       req.flash('fail2','already added')
       return res.redirect('/admin/category')

@@ -8,8 +8,12 @@ const Product = require("../models/porduct");
 const Category = require("../models/category");
 const Brand = require("../models/brand");
 const UserOtpStore = require("../models/userOtpVerification");
+const Cart=require('../models/cart')
+const Wishlist=require('../models/wishlist')
 const Passport = require("passport"); //google auth
 const googleStrategy = require("passport-google-oauth20").Strategy; //google auth
+const razorpayInstance=require('../config/razorpayConfig')//rezorpay
+const Coupen=require('../models/coupen')
 
 //-------------------------------------------------- LOGIN PAGE --------------------------------------------------------------------------
 
@@ -405,11 +409,17 @@ const postSetPassword = async (req, res) => {
 const loadHome = async (req, res) => {
   try {
     const user = req.session.user.email;
+    const userId=req.session.user._id;
+   
     const userData = await User.findOne({ email: user });
     if (userData.isBlocked) {
       req.session.destroy();
       res.redirect("/login");
     } else {
+
+      const cart=await Cart.findOne({userId:userId})
+
+      const wishlist=await Wishlist.findOne({userId:userId})
       const product = await Product.find({ isBlocked: true })
         .populate("brandName")
         .populate("category");
@@ -419,6 +429,8 @@ const loadHome = async (req, res) => {
         product: product,
         category: category,
         brand: brand,
+        cart,
+        wishlist,
       });
     }
   } catch (error) {
@@ -649,6 +661,119 @@ googleAuth = (req, res) => {
 
 // ------------------------------------- END ----------------------------------
 
+// ------------------------------------ RAZORPAY ----------------------------------------------
+
+
+const createOrder = async (req, res) => {
+
+  
+  const options = {
+    amount: req.body.amount * 100, // Convert to paisa
+    currency: "INR",
+    receipt: "order_rcptid_11"
+  };
+
+  try {
+
+    const order = await razorpayInstance.orders.create(options);
+  
+    res.json(order);
+  } catch (error) {
+    console.error("Error creating order:", error); // Log any errors
+    res.status(500).send({ error: 'Failed to create Razorpay order' });
+  }
+};
+
+
+const verifyPayment = async (req, res) => {
+
+
+  const { razorpay_payment_id } = req.body;
+
+  try {
+     
+      const payment = await razorpayInstance.payments.fetch(razorpay_payment_id);
+
+      if (payment.status === 'captured') {
+
+        console.log("sddsffsdfsdfdsfdsddsfsdfsdfsffa",req.body);
+               
+      const  userId=req.session.user._id
+
+      const { payment_option, address, couponName } = req.body;
+       const coupenAddUser = await Coupen.updateOne(
+        { coupenCode: couponName }, 
+        {
+            $push: { usedBy: userId },  
+            $inc: { usedCount: 1 }      
+        }
+    );
+    
+
+       const user =await User.findOne({_id:userId})
+       const shippingAddress=await Address.findOne({"addressData._id":address},{ "addressData.$": 1 } )
+
+       const cartItems = await Cart.findOne({userId:userId})
+        const order =new Order({
+            userId:userId,
+            items:cartItems.items.map((item)=>({
+                product:item.product._id,
+                price:item.price,
+                quantity:item.quantity
+
+            })),
+            totalPrice:cartItems.totalPrice,
+            billingDetails:{
+                name:user.name,
+                email: user.email,
+                phno: user.phone,
+                address:shippingAddress.addressData[0].address,
+                secPnoe: shippingAddress.addressData[0].secphone,
+                pincode: shippingAddress.addressData[0].pincode,
+                country: shippingAddress.addressData[0].country,
+                state: shippingAddress.addressData[0].state,
+                city: shippingAddress.addressData[0].city,
+              },
+              discount:cartItems.discount,
+              totalWithDiscount:cartItems.totalWithDiscount,
+              paymentMethod:payment_option,
+              paymentStatus:'pending',
+              status:'Pending'
+        
+            });
+
+            await order.save()
+            
+            console.log(order,"sddsfsdfsafsdfdsfdsfwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+            
+            
+            for(let item of cartItems.items){
+                await Product.findByIdAndUpdate(item.product._id,{
+                    $inc:{stock:-item.quantity}
+                })
+            }
+
+
+
+
+
+          res.json({ success: true, redirectUrl: '/payment/success' }); // Redirect to success page
+      } else {
+          res.json({ success: false, redirectUrl: '/payment/fail' }); // Redirect to failure page
+      }
+  } catch (error) {
+      console.error("Error fetching payment details:", error);
+      res.status(500).send({ error: 'Failed to verify payment' });
+  }
+};
+
+
+// --------------------------------------------- END ----------------------------------
+
+// offfffffffffffffffffffffffffffffffffffffffffffer
+
+
+
 module.exports = {
   loadLogin,
   loadSignup,
@@ -673,4 +798,5 @@ module.exports = {
   getShop,
   googleAuth,
   /////////////////
+
 };

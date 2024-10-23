@@ -177,7 +177,7 @@
                 <table class="table table-hover" style="width: 100%; text-align: center;">
                     <thead>
                       <tr>
-                        <th style="width: 10%; text-align: center;">SI NO</th>
+                        
                         <th style="width: 10%; text-align: center;">Name</th>
                         <th style="width: 20%; text-align: center;">Email</th>
                         <th style="width: 10%; text-align: center;">Total</th>
@@ -189,7 +189,7 @@
                     <tbody id="tableDatas">
                       <% for(let i=0; i<order.length; i++) { %>
                         <tr>
-                          <td style="vertical-align: middle; text-align: center;"><%= i+1 %></td>
+                          
                           <td style="vertical-align: middle; text-align: center;"><%= order[i].billingDetails.name %></td>
                           <td style="vertical-align: middle; text-align: center;"><%= order[i].billingDetails.email %></td>
                           <td style="vertical-align: middle; text-align: center;"><%= order[i].totalPrice %></td>
@@ -227,26 +227,33 @@
           <!-- card-body end// -->
         </div>
         <!-- card end// -->
-        <!-- <div class="pagination-area mt-15 mb-50">
+        <div class="pagination-area mt-15 mb-50">
           <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-start">
-              <li class="page-item active">
-                <a class="page-link" href="#">01</a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">02</a></li>
-              <li class="page-item"><a class="page-link" href="#">03</a></li>
-              <li class="page-item">
-                <a class="page-link dot" href="#">...</a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">16</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#"
-                  ><i class="material-icons md-chevron_right"></i
-                ></a>
-              </li>
+              <!-- Previous button -->
+              <% if (currentPage > 1) { %>
+                <li class="page-item">
+                  <a class="page-link" href="?page=<%= currentPage - 1 %>"><i class="material-icons md-chevron_left"></i></a>
+                </li>
+              <% } %>
+        
+              <!-- Page numbers -->
+              <% for (let i = 1; i <= totalPages; i++) { %>
+                <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                  <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                </li>
+              <% } %>
+        
+              <!-- Next button -->
+              <% if (currentPage < totalPages) { %>
+                <li class="page-item">
+                  <a class="page-link" href="?page=<%= currentPage + 1 %>"><i class="material-icons md-chevron_right"></i></a>
+                </li>
+              <% } %>
             </ul>
           </nav>
-        </div> -->
+        </div>
+        
       </section>
       <!-- content-main end// -->
     

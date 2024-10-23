@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>chronex</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="user/assets/css/main.css">
+</head>
+<body>
+    <div class="header-bottom header-bottom-bg-color sticky-bar">
+        <div class="container">
+            <div class="header-wrap header-space-between position-relative">
+                <div class="header-nav d-none d-lg-flex">
+                    <!-- Main Menu -->
+                    <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
+                        <nav>
+                            <ul>
+                                <li><a href="/home">Home</a></li>
+                                <li><a href="/shop">Shop</a></li>
+                                <li><a href="#">Category<i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <% for(let i=0; i<category.length; i++) { %>
+                                            <li><a href="#"><%= category[i].category %></a></li>
+                                        <% } %>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Brand<i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <% for(let i=0; i<brand.length; i++) { %>
+                                            <li><a href="#"><%= brand[i].brand %></a></li>
+                                        <% } %>
+                                    </ul>
+                                </li>
+                                <li><a href="page-about.html">About</a></li>
+                                <li><a href="page-contact.html">Contact</a></li>
+                                <li><a class="active" href="page-contact.html">Account</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="hotline d-none d-lg-block">
+                  
+                </div>
+                <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
+            </div>
+        </div>
+    </div>
+
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="/home" rel="nofollow">Home</a>
+                    <a href="/userAccount"><span></span> Account</a>
+                    <a href="#"><span></span> Orders</a>
+                </div>
+            </div>
+        </div>
+
+        <section class="pt-150 pb-150">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 m-auto">
+                        <div class="row">
+                            <!-- Sidebar Menu -->
+                            <div class="col-md-4">
+                                <div class="dashboard-menu">
+                                    <ul class="nav flex-column" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/userAccount"><i class="fi-rs-user mr-10"></i>Profile</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " href="/orders"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/address"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link active" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
+                                                <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
+                                              </svg> &nbsp; Wallet</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/logout"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Orders Section -->
+                            <div class="col-md-8">
+                                <section class="content-main">
+                              
+                                        <div class="card">
+                                            <header class="card-header">
+                                                <h2 class="content-title card-title">Wallet</h2><br>
+                                                <h5 class="content-title card-title">Name :</h5>
+                                                <h5 class="content-title card-title">Amount :</h5>
+                                            </header>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="text-align: center;" >Date</th>
+                                                                <th style="text-align: center;" >Amount</th>
+                                                                <th style="text-align: center;" >Status</th>
+                                                                <th style="text-align: center;" >Type</th>
+                                                               
+                                                               
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <% for(let i=0 ;i<transaction.length;i++) {%>
+                                                                <tr style="text-align: center;">
+                                                                    <td> <%= transaction[i].date.toLocaleDateString() %></td>
+                                                                    <td><%= transaction[i].amount  %></td>
+                                                                
+                                                                    <td ><%= transaction[i].status  %>  </td>
+                                                                    <td ><%= transaction[i].type  %>   </td>
+                                                                    
+                                                                </tr>
+                                                         <% } %>
+                                                        </tbody>
+                                                    </table>
+                                                    <!-- <div class="col-md-10" style="text-align: center; margin: 0px 56px 60px;">
+                                                        <a href="/downloadinvoice/" class="btn btn-md btn-primary">Download Invoice</a>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- JS and jQuery Scripts -->
+    <!-- <script src="http://localhost:4444/user/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="http://localhost:4444/user/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="http://localhost:4444/user/js/vendor/bootstrap.bundle.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        function onconfirm() {
+            return confirm('Are you sure you want to cancel your order?');
+        }
+    </script>
+</body>
+</html>

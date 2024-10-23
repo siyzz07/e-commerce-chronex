@@ -32,6 +32,7 @@ const categoryController=require('../controllers/categoryContorl')
 const productController=require('../controllers/productContorl')
 const orderController=require('../controllers/orderControl')
 const coupenController=require('../controllers/coupenController')
+const offerController=require('../controllers/offerController')
 
 // get loagin page and verify admim
 admin_route.get("/login",adminController.loadAdminLogin)
@@ -98,5 +99,11 @@ admin_route.get('/coupen',adminSession,coupenController.getCoupenPage)
 admin_route.get('/addCoupen',adminSession,coupenController.getAddCoupen)
 admin_route.post('/addCoupen',coupenController.postAddCoupen)
 admin_route.get('/deleteCoupen',adminSession,coupenController.deleteCoupen)
+
+
+// offer
+admin_route.get('/offer',offerController.offer)
+admin_route.get('/addOffer',offerController.addOffer)
+admin_route.post('/addOffer',offerController.postAddOffer)
 
 module.exports=admin_route

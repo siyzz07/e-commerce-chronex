@@ -77,7 +77,7 @@
                     </div>
                 </div>
                 <div class="hotline d-none d-lg-block">
-                    <p><i class="fi-rs-headset"></i><span>Helpline</span> 1900 - 888 </p>
+               
                 </div>
                 <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
                 <div class="header-action-right d-block d-lg-none">
@@ -178,7 +178,7 @@
                                                     <div class="text">
                                                         <h6 class="mb-1">Order info</h6>
                                                         <p class="mb-1">
-                                                            Shipping: Fargo express <br> Pay method:COD
+                                                            Shipping: Fargo express <br> Pay method:<%= order.paymentMethod %>
                                                          
                                                            
                                                         </p>
@@ -351,8 +351,9 @@
                                                                 <!-- <h6 class="mb-1">Deliver to</h6> -->
                                                                 <p class="mb-1">
                                                                    <b style="font-weight: bold;">Total Price :</b><%= order.totalPrice%> <br> 
-                                                                   <b style="font-weight: bold;">Shipping :</b>free <br> 
-                                                                   <b style="font-weight: bold;">Grand Total:</b><%= order.totalPrice%> <br>
+                                                                   <b style="font-weight: bold;">Shipping :</b>free <br>
+                                                                   <b style="font-weight: bold;">Discount :</b><%= order.discount%> <br> 
+                                                                   <b style="font-weight: bold;">Grand Total:</b><%= order.totalWithDiscount%> <br>
                                                                    <b style="font-weight: bold;">Status :</b>
 
                                                                    <% if(order.status === "Pending"){ %>
