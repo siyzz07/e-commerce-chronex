@@ -127,7 +127,7 @@ user_route.get('/auth/google/callback', passport.authenticate('google', { failur
 
 
 // wishlist
-user_route.get('/addToWishlist',wishlistContoller.addWishlist)//add to wish list from product page
+user_route.get('/addToWishlist',userSession,wishlistContoller.addWishlist)//add to wish list from product page
 user_route.get('/wishlist',userSession,wishlistContoller.getWishlist)
 user_route.get('/addWishlistToCart',userSession,cartController.addToCartFromWishlist)// from the wishlist .add wish list product to cart .//is controller is written in cartcontroller 
 user_route.get('/deleteFromWishlist',userSession,wishlistContoller.deleFromWishlist)
@@ -136,7 +136,7 @@ user_route.get('/deleteFromWishlist',userSession,wishlistContoller.deleFromWishl
 
 // coupen
 user_route.post('/applyCoupen',coupenController.applyCoupen)
-user_route.get('/deletCoupen',coupenController.deletCoupen)
+user_route.get('/deletCoupen',userSession,coupenController.deletCoupen)
 
 
 // razorpay
@@ -144,7 +144,11 @@ user_route.post('/createOrder', orderController.createOrder);
 user_route.post('/verifyPayment',orderController.verifyPayment);
 
 //wallet
-user_route.get('/wallet',walletController.getWallet)
+user_route.get('/wallet',userSession,walletController.getWallet)
+
+
+// search 
+user_route.get('/search',userController.search)
 
 
 

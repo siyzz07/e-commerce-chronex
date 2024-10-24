@@ -770,7 +770,11 @@ const verifyPayment = async (req, res) => {
 
 // --------------------------------------------- END ----------------------------------
 
-// offfffffffffffffffffffffffffffffffffffffffffffer
+
+
+const search=async (req,res)=>{
+  
+}
 
 
 
@@ -798,5 +802,5 @@ module.exports = {
   getShop,
   googleAuth,
   /////////////////
-
+search
 };
