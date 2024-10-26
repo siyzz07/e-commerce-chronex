@@ -28,7 +28,7 @@ const getCheckOut = async (req, res) => {
     if (req.query.coupenName) {
       addedCoupen = req.query.coupenName;
     }
-    console.log(addedCoupen);
+   
 
     // const coupen=await Coupen.find({minAmountPurchase:{$lte:totalPrice}, usedBy: { $nin: [userId] } })
 

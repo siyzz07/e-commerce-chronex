@@ -132,10 +132,11 @@ const productSchema = new mongoose.Schema({
   },
   offerPrice: {
     type: Number,
-    default: 0, // Default to 0 in case there's no discount
+    default: 0, 
   },
   offerPercentage: {
     type: Number,
+    default:0,
   },
   offerId: {
     type: mongoose.Schema.Types.ObjectId,

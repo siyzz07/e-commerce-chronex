@@ -34,6 +34,11 @@ const offerSchema=new mongoose.Schema({
         type: Boolean,
         default: true,
       },
+      
+    isEnded: {
+        type: Boolean,
+        default:false,
+      },
 },
 { timestamps: true }
 );

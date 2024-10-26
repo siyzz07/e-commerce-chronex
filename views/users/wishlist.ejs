@@ -88,7 +88,7 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="index.html" rel="nofollow">Home</a>
+                    <a href="home" rel="nofollow">Home</a>
                     <span></span> Wishlist
                 </div>
             </div>
@@ -115,54 +115,57 @@
                                     </thead>
                                     <tbody>
                                         <% for(let i = 0; i < product.items.length; i++){ %>
-                                        <tr>
-                                            <td><%= i+1 %></td>
-                                            <td class="image product-thumbnail">
-                                                <img src="/public/product_images/<%= product.items[i].product.images[0] %>" alt="#">
-                                            </td>
-                                            <td class="product-des product-name">
-                                                <h5 class="product-name">
-                                                    <a href="shop-product-right.html"><%= product.items[i].product.title %></a>
-                                                </h5>
-                                                <p class="font-xs">
-                                                    <%= product.items[i].product.description %><br> distingy magndapibus.
-                                                </p>
-                                            </td>
-                                            <td class="price" data-title="Price">
-                                                <span>$<%= product.items[i].product.price %></span>
-                                            </td>
-                                            <td class="text-center" data-title="Stock">
-                                                <span class="color3 font-weight-bold">
-                                                    <% if (product.items[i].product.stock > 0){ %>
-                                                        In Stock
-                                                    <% }else{ %>
-                                                        <span style="color:red;"> Out of Stock</span>
-                                                    <% } %>
-                                                </span>
-                                            </td>
-                                            <td class="text-right" data-title="Cart">
-                                                <% if (product.items[i].product.stock > 0){ %>
-                                                 
-                                                <a href="/addWishlistToCart?id=<%= product.items[i].product._id %>"><button class="btn btn-sm"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button></a>
-                                                <% } %>
-                                            </td>
-                                            <td class="action" data-title="Remove">
-                                                <a href="/deleteFromWishlist?id=<%= product.items[i].product._id   %>"><i class="fi-rs-trash"></i></a>
-                                            </td>
-                                        </tr>
+                                            <% if (product.items[i].product) { %> <!-- Check if the product exists -->
+                                                <tr>
+                                                    <td><%= i+1 %></td>
+                                                    <td class="image product-thumbnail">
+                                                        <img src="/public/product_images/<%= product.items[i].product.images[0] %>" alt="#">
+                                                    </td>
+                                                    <td class="product-des product-name">
+                                                        <h5 class="product-name">
+                                                            <a href="shop-product-right.html"><%= product.items[i].product.title %></a>
+                                                        </h5>
+                                                        <p class="font-xs">
+                                                            <%= product.items[i].product.description %>
+                                                        </p>
+                                                    </td>
+                                                    <td class="price" data-title="Price">
+                                                        <span>$<%= product.items[i].product.price %></span>
+                                                    </td>
+                                                    <td class="text-center" data-title="Stock">
+                                                        <span class="color3 font-weight-bold">
+                                                            <% if(!product.items[i].product.isBlocked || !product.items[i].product.category.isListed || !product.items[i].product.brandName.isListed ) { %>
+                                                                <span style="color:red;">Product Unavailable</span>
+                                                                <% }else{ %>
+                                                            <% if (product.items[i].product.stock > 0){ %>
+                                                                In Stock
+                                                            <% } else { %>
+                                                                <span style="color:red;"> Out of Stock</span>
+                                                            <% }} %>
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-right" data-title="Cart">
+                                                        <% if(!product.items[i].product.isBlocked || !product.items[i].product.category.isListed || !product.items[i].product.brandName.isListed ) { %>
+
+                                                            <% }else{ %>
+                                                        <% if (product.items[i].product.stock > 0){ %>
+                                                            <a href="/addWishlistToCart?id=<%= product.items[i].product._id %>">
+                                                                <button class="btn btn-sm"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
+                                                            </a>
+                                                        <% } }%>
+                                                    </td>
+                                                    <td class="action" data-title="Remove">
+                                                        <a href="/deleteFromWishlist?id=<%= product.items[i].product._id %>">
+                                                            <i class="fi-rs-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
                                         <% } %>
                                     </tbody>
+                                    
                                 </table>
                             <% } else { %>
-
-
-
-
-
-
-
-
-
 
                                 <div style="display: flex; justify-content: center; align-items: center; height: 50vh; flex-direction: column;">
                                     <span style="text-align: center;">

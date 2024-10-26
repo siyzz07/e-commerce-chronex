@@ -1,0 +1,328 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-4.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>chronex</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    
+    <!-- Template CSS -->
+    <link href="assets/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+      <div class="aside-top">
+        <a href="index.html" class="brand-wrap">
+          <img
+            src="images/logo_image.png"
+            class="logo"
+            alt="Evara Dashboard"
+          />
+        </a>
+        <div>
+          <button class="btn btn-icon btn-aside-minimize">
+            <i class="text-muted material-icons md-menu_open"></i>
+          </button>
+        </div>
+      </div>
+      <nav>
+        <ul class="menu-aside">
+          <li class="menu-item">
+            <a class="menu-link" href="dashboard">
+              <i class="icon material-icons md-home"></i>
+              <span class="text">Dashboard</span>
+            </a>
+          </li>
+          <li class="menu-item ">
+            <a class="menu-link" href="#">
+              <i class="icon material-icons md-shopping_bag"></i>
+              <span class="text">Products</span>
+            </a>
+            
+          </li>
+          <li class="menu-item ">
+            <a class="menu-link" href="orderList">
+              <i class="icon material-icons md-shopping_cart"></i>
+              <span class="text">Orders</span>
+            </a>
+            </li>
+            <li class="menu-item ">
+                <a class="menu-link" href="userdata">
+                  <i class="icon material-icons md-person"></i>
+                  <span class="text">Users</span>
+                </a>
+              </li>
+              <li class="menu-item ">
+                <a class="menu-link" href="category">
+                  <i class="icon material-icons md-add_box"></i>
+                  <span class="text">Catagories</span>
+                </a>
+             
+              </li>
+              <li class="menu-item ">
+                <a class="menu-link" href="brand">
+                  <i class="icon material-icons md-stars"></i>
+                  <span class="text">Brand</span>
+                </a>
+              </li>
+              <li class="menu-item ">
+                <a class="menu-link" href="offer">
+                  <i class="icon material-icons md-monetization_on"></i>
+                  <span class="text">Offers</span>
+                </a>
+               
+              </li>
+              <li class="menu-item active  ">
+                <a class="menu-link" href="#">
+                  <i class="icon material-icons md-monetization_on"></i>
+                  <span class="text">Coupen</span>
+                </a>
+               
+              </li>
+              <li class="menu-item ">
+                <a class="menu-link" href="#">
+                  <i class="icon material-icons md-person"></i>
+                  <span class="text">Banners</span>
+                </a>
+              </li>
+          
+              <li class="menu-item  ">
+                <a class="menu-link" href="salesReport">
+                    <i class="icon material-icons md-store"></i>
+                  <span class="text">Sales Report</span>
+                </a>
+              </li>
+        
+         
+          
+         
+          
+        </ul>
+      
+       
+        <br />
+        <br />
+      </nav>
+    </aside>
+   
+    <main class="main-wrap">
+        <header class="main-header navbar">
+            <div class="col-search">
+                <form class="searchform">
+                    <div class="input-group">
+                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
+                    </div>
+                    <datalist id="search_terms">
+                        <option value="Products">
+                        <option value="New orders">
+                        <option value="Apple iphone">
+                        <option value="Ahmed Hassan">
+                    </datalist>
+                </form>
+            </div>
+            
+        </header>
+        <section class="content-main">
+            <div class="row">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title"> Edit Offer</h2>
+                    </div>
+         
+                </div>
+                .............
+                <div class="col-lg-9">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <form action="/admin/editOffer/<%= offer._id %>" method="post" onsubmit="return validateForm()">
+                            <input type="hidden" name="_method" value="PATCH">
+                          
+                                <div class="mb-4">
+                                    <label for="coupon_code" class="form-label">Offer name</label>
+                                    <input type="text" placeholder="enter offer name" value="<%= offer.offerName %>" class="form-control" name="offerName" id="offername">
+                                    <span id="code-error" style="color: red;"></span>
+                                </div>
+                            
+                                <div class="mb-4">
+                                    <label for="offerType" class="form-label">Discount Type</label>
+                                    <select id="offerType" name="offerType" class="form-select" onchange="toggleApplicableFields()" required>
+                                        <option value="product" <% if (offer.offerType === "product") { %> selected <% } %>>Product</option>
+                                        <option value="category" <% if (offer.offerType === "category") { %> selected <% } %>>Category</option>
+                                    </select>
+                                </div>
+                            
+                                <!-- Discount Percentage and Date Fields -->
+                                <div class="mb-4">
+                                    <label for="percentage" class="form-label">Discount (%)</label>
+                                    <input type="text" value="<%= offer.discountPercentage %>" placeholder="Enter percentage" class="form-control" name="discountPercentage" id="percentage">
+                                    <span id="price-error" style="color: red;"></span>
+                                </div>
+                            
+                                <div class="row mb-4">
+                                    <div class="col-lg-6">
+                                        <label class="form-label">End Date</label>
+                                        <input type="date" value="<%= new Date(offer.endDate).toISOString().slice(0, 10) %>" class="form-control" name="endDate" required>
+                                        <span id="description-error" style="color: red;"></span>
+                                    </div>
+                                </div>
+                            
+                                <!-- Applicable Products -->
+                                <div id="applicableProducts" class="mb-4 hidden">
+                                    <label class="form-label h5">Applicable Products</label>
+                                    <% if (products && products.length > 0) { %>
+                                        <div class="list-group border rounded p-2" style="max-height: 200px; overflow-y: auto;">
+                                            <% products.forEach(product => { %>
+                                                <div class="form-check list-group-item d-flex justify-content-between align-items-center">
+                                                    <input class="form-check-input" type="checkbox" name="applicableProducts[]" value="<%= product._id %>" id="product-<%= product._id %>"
+                                                           <% if (offer.applicableProducts && offer.applicableProducts.includes(product._id.toString())) { %> checked <% } %>>
+                                                    <label class="form-check-label" for="product-<%= product._id %>"><%= product.title %></label>
+                                                </div>
+                                            <% }); %>
+                                        </div>
+                                    <% } else { %>
+                                        <div class="alert alert-warning mt-2" role="alert">No applicable products available.</div>
+                                    <% } %>
+                                </div>
+                            
+                                <!-- Applicable Categories -->
+                                <div id="applicableCategories" class="mb-4 hidden">
+                                    <label class="form-label h5">Applicable Categories</label>
+                                    <% if (categories && categories.length > 0) { %>
+                                        <div class="list-group border rounded p-2" style="max-height: 200px; overflow-y: auto;">
+                                            <% categories.forEach(category => { %>
+                                                <div class="form-check list-group-item d-flex justify-content-between align-items-center">
+                                                    <input class="form-check-input" type="checkbox" name="applicableCategories[]" value="<%= category._id %>" id="category-<%= category._id %>"
+                                                           <% if (offer.applicableCategories && offer.applicableCategories.includes(category._id.toString())) { %> checked <% } %>>
+                                                    <label class="form-check-label" for="category-<%= category._id %>"><%= category.category %></label>
+                                                </div>
+                                            <% }); %>
+                                        </div>
+                                    <% } else { %>
+                                        <div class="alert alert-warning mt-2" role="alert">No applicable categories available.</div>
+                                    <% } %>
+                                </div>
+                            
+                                <!-- Submit Button -->
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">Add</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+        </section> 
+        
+    </main>
+       
+    </main>
+    <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/vendors/select2.min.js"></script>
+    <script src="assets/js/vendors/perfect-scrollbar.js"></script>
+    <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="assets/js/main.js" type="text/javascript"></script>
+    <script>
+        function toggleApplicableFields() {
+            const offerType = document.getElementById('offerType').value;
+            const applicableProducts = document.getElementById('applicableProducts');
+            const applicableCategories = document.getElementById('applicableCategories');
+            
+            // Show or hide sections based on selected offer type
+            if (offerType === 'product') {
+                applicableProducts.classList.remove('hidden');
+                applicableCategories.classList.add('hidden');
+            } else if (offerType === 'category') {
+                applicableProducts.classList.add('hidden');
+                applicableCategories.classList.remove('hidden');
+            }
+        }
+    
+        // Trigger the function when the page loads to show the correct section
+        document.addEventListener("DOMContentLoaded", function() {
+            toggleApplicableFields();
+        });
+    </script>
+    
+    
+    <script>
+        function validateForm() {
+          let offerName = document.getElementById("offername").value.trim();
+          let discountPercentage = document.getElementById("percentage").value.trim();
+          let endDate = new Date(document.getElementsByName("endDate")[0].value);
+          let currentDate = new Date();
+          let applicableProducts = document.querySelectorAll('input[name="applicableProducts[]"]:checked').length;
+          let applicableCategories = document.querySelectorAll('input[name="applicableCategories[]"]:checked').length;
+      
+          // Clear previous error messages
+          document.getElementById('code-error').innerText = '';
+          document.getElementById('price-error').innerText = '';
+          document.getElementById('description-error').innerText = '';
+      
+          // Offer name validation: check for empty or only space
+          if (!offerName) {
+            document.getElementById('code-error').innerText = "Offer name cannot be empty or contain only spaces.";
+            return false;
+          }
+      
+          // Discount percentage validation: must be a number between 1 and 100
+          let percentage = parseInt(discountPercentage);
+          if (isNaN(percentage) || percentage < 1 || percentage > 100) {
+            document.getElementById('price-error').innerText = "Discount percentage must be a number between 1 and 100.";
+            return false;
+          }
+      
+          // End date validation: must be in the future
+          if (!endDate || endDate <= currentDate) {
+            document.getElementById('description-error').innerText = "End date must be a future date.";
+            return false;
+          }
+      
+          // Check if at least one product or category is selected
+          if (applicableProducts === 0 && applicableCategories === 0) {
+            document.getElementById('description-error').innerText = "At least one applicable product or category must be selected.";
+            return false;
+          }
+      
+          return true; // Allow form submission if all validations pass
+        }
+      </script>
+      <script>
+        let initialData = {};
+      
+        window.onload = function() {
+          initialData = {
+            offerName: document.getElementById("offername").value,
+            offerType: document.getElementById("offerType").value,
+            discountPercentage: document.getElementById("percentage").value,
+            endDate: document.querySelector("[name='endDate']").value,
+            applicableProducts: Array.from(document.querySelectorAll("input[name='applicableProducts[]']:checked")).map(el => el.value),
+            applicableCategories: Array.from(document.querySelectorAll("input[name='applicableCategories[]']:checked")).map(el => el.value),
+          };
+        };
+      </script>
+      
+
+
+
+
+
+
+
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-4.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
+</html>

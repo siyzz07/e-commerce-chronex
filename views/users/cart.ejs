@@ -118,6 +118,8 @@
                                 </thead>
                                 <tbody>
                                     <% cartData.items.forEach(item => { %>
+                                        <% if(item.product.isBlocked ){  %>
+                                            
                                         <tr>
                                             <td class="image product-thumbnail"><img src="/public/product_images/<%= item.product.images[0] %>" alt="#"></td>
                                         
@@ -148,7 +150,7 @@
                                            <td class="action" data-title="Remove"><a href="/deletFromCart?id=<%= item.product._id %>" class="text-muted"><i class="fi-rs-trash"></i></a></td>
                                         </tr>
                                         
-                                    <% }) %>
+                                    <%} }) %>
                                     <tr>
                                         <td colspan="6" class="text-end">
                                             <a href="#" class="text-muted"> <i class="fi-rs-cross-small"></i> Clear Cart</a>

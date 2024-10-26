@@ -7,9 +7,9 @@ const passport = require('passport');
 require('./config/passportConfig')
 
 
-const methodOverride = require('method-override');
-// Middleware to handle PUT and DELETE methods from forms
-app.use(methodOverride('_method'));
+    const methodOverride = require('method-override');
+    // Middleware to handle PUT and DELETE methods from forms
+    app.use(methodOverride('_method'));
 
 const mongoose = require("mongoose");
 mongoose

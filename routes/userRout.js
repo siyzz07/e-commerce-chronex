@@ -148,7 +148,7 @@ user_route.get('/wallet',userSession,walletController.getWallet)
 
 
 // search 
-user_route.get('/search',userController.search)
+// user_route.get('/search',userController.search)
 
 
 

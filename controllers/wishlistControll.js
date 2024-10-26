@@ -66,11 +66,18 @@ const getWishlist=async (req,res)=>{
         
         const category=await Category.find({isListed:true})
         const brand=await Brand.find({isListed:true})
-        const wishlist=await Wishlist.findOne({userId:userId}).populate('items.product')
+        const wishlist = await Wishlist.findOne({ userId: userId })
+            .populate({
+              path: 'items.product',
+              populate: [
+                { path: 'category', model: 'Catetgory' },    
+                { path: 'brandName', model: 'Brand' }       
+              ]
+            });
         const fail=req.flash('fail')
         const msg=req.flash('msg')
         
-        res.render('wishlist',{category:category,brand:brand ,product:wishlist||{items:[]},fail,msg})
+        res.render('wishlist',{category:category,brand:brand ,product:wishlist||0,fail,msg})
     }catch(error){
         console.log(error.message);
         

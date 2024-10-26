@@ -13,7 +13,8 @@ const Wishlist=require('../models/wishlist')
 const Passport = require("passport"); //google auth
 const googleStrategy = require("passport-google-oauth20").Strategy; //google auth
 const razorpayInstance=require('../config/razorpayConfig')//rezorpay
-const Coupen=require('../models/coupen')
+const Coupen=require('../models/coupen');
+const Offer = require("../models/offer");
 
 //-------------------------------------------------- LOGIN PAGE --------------------------------------------------------------------------
 
@@ -406,37 +407,146 @@ const postSetPassword = async (req, res) => {
 //------------------------------------------------- HOME PAGE --------------------------------------------------------
 
 //load home
+// const loadHome = async (req, res) => {
+//   try {
+
+    
+//     const user = req.session.user.email;
+//     const userId=req.session.user._id;
+   
+//     const userData = await User.findOne({ email: user });
+//     if (userData.isBlocked) {
+//       req.session.destroy();
+//       res.redirect("/login");
+//     } else {
+
+//       const cart=await Cart.findOne({userId:userId})
+
+//       const wishlist=await Wishlist.findOne({userId:userId})
+//       const category = await Category.find({ isListed: true });
+//       const brand = await Brand.find({ isListed: true });
+//       const searchTerm = req.query.search;
+//       console.log(searchTerm);
+      
+//      if(req.query){
+      
+//       const searchCriteria = {
+//         isPublished: true,
+//         $or: [
+//           { title: { $regex: searchTerm, $options: 'i' } }, 
+//           { description: { $regex: searchTerm, $options: 'i' } } 
+//         ],
+//       };
+//       const product = await Product.find(searchCriteria)
+//       .populate("brandName")
+//       .populate("category");
+//      }else{
+//       const product = await Product.find({ isBlocked: true })
+//       .populate("brandName")
+//       .populate("category");
+//      }
+
+
+
+
+
+
+    
+//       res.render("home", {
+//         product: product,
+//         category: category,
+//         brand: brand,
+//         cart,
+//         wishlist,
+//       });
+//     }
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// };
+
+
 const loadHome = async (req, res) => {
   try {
     const user = req.session.user.email;
-    const userId=req.session.user._id;
-   
+    const userId = req.session.user._id;
+
     const userData = await User.findOne({ email: user });
     if (userData.isBlocked) {
       req.session.destroy();
-      res.redirect("/login");
-    } else {
-
-      const cart=await Cart.findOne({userId:userId})
-
-      const wishlist=await Wishlist.findOne({userId:userId})
-      const product = await Product.find({ isBlocked: true })
-        .populate("brandName")
-        .populate("category");
-      const category = await Category.find({ isListed: true });
-      const brand = await Brand.find({ isListed: true });
-      res.render("home", {
-        product: product,
-        category: category,
-        brand: brand,
-        cart,
-        wishlist,
-      });
+      return res.redirect("/login");
     }
+
+    const cart = await Cart.findOne({ userId: userId });
+    const wishlist = await Wishlist.findOne({ userId: userId });
+    const category = await Category.find({ isListed: true });
+    const brand = await Brand.find({ isListed: true });
+
+    let product;
+    let noProduct = '';
+    
+    const searchTerm = req.query.search;
+    const categoryFilter = req.query.category; // Get selected category from query params
+
+    // Building search criteria
+    let searchCriteria = { isPublished: true };
+
+    if (searchTerm && searchTerm.trim() !== "") {
+      searchCriteria.$or = [
+        { title: { $regex: String(searchTerm), $options: 'i' } },
+        { description: { $regex: String(searchTerm), $options: 'i' } }
+      ];
+    }
+
+    if (categoryFilter && categoryFilter.trim() !== "") {
+      searchCriteria.category = categoryFilter; // Add category filter to search criteria
+    }
+
+    // Fetch products based on search criteria
+    product = await Product.find(searchCriteria)
+      .populate("brandName")
+      .populate("category");
+
+
+      // check the offer exxixt or not //  if the offer exist check the time is corrrecrt
+    //   for (const products of product) {
+    //     const foundOffer = await Offer.findOne({ _id: product.offerId });
+    //     if (foundOffer) {
+          
+    //     } else {
+
+    //       let price=products.price
+
+
+    //       products.offerId=null
+    //       products.isDiscounted=false
+    //       products.offerPrice=price
+    //       products.offerPercentage=0
+
+    //       await products.save()
+    //     }
+    // }
+
+    // Check if no product is found
+    if (!product || product.length === 0) {
+      noProduct = `No products found for ${searchTerm || ""}`;
+    }
+
+    // Render the home page
+    res.render("home", {
+      product: product,
+      category: category,
+      brand: brand,
+      cart,
+      wishlist,
+      noProduct
+    });
+
   } catch (error) {
     console.log(error.message);
   }
 };
+
 
 //-------------------------------------------------------  END  -----------------------------------------------------------
 
@@ -583,12 +693,71 @@ const postChangePassword = async (req, res) => {
 //----------------------------------------------------  END  -----------------------------------------------------------
 //----------------------------------------------- SHOP ---------------------------------------------------------------
 
+// const getShop = async (req, res) => {
+//   try {
+//     const sortOption = req.query.sort;
+//     let sortmethod = {};
+//     let selected;
+//     switch (sortOption) {
+//       case "priceinc":
+//         sortmethod = { price: 1 };
+//         selected = "Price: Low to High";
+//         break;
+//       case "pricedec":
+//         sortmethod = { price: -1 };
+//         selected = "Price: High to Low";
+//         break;
+//       case "nameinc":
+//         sortmethod = { title: 1 };
+//         selected = "Name :A to Z";
+//         break;
+//       case "namedec":
+//         sortmethod = { title: -1 };
+//         selected = "Name :z to A";
+//         break;
+//       default:
+//         sortmethod = {};
+//         selected = "Featured";
+//     }
+
+//     const user = req.session.user.email;
+//     const userData = await User.findOne({ email: user });
+//     if (userData.isBlocked) {
+//       req.session.destroy();
+//       res.redirect("/login");
+//     } else {
+//       const product = await Product.find({ isBlocked: true })
+//         .populate("brandName")
+//         .populate("category")
+//         .sort(sortmethod);
+
+//       const category = await Category.find({ isListed: true });
+//       const brand = await Brand.find({ isListed: true });
+
+//       res.render("shop", {
+//         product: product,
+//         category: category,
+//         brand: brand,
+//         selected,
+//       });
+//     }
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// };
+
+
+
 const getShop = async (req, res) => {
   try {
-    // short code form the shop page
     const sortOption = req.query.sort;
+    const searchTerm = req.query.search;
+    const categoryFilter = req.query.category; 
+    let noProduct = '';
     let sortmethod = {};
     let selected;
+
+    // Sorting logic
     switch (sortOption) {
       case "priceinc":
         sortmethod = { price: 1 };
@@ -600,42 +769,72 @@ const getShop = async (req, res) => {
         break;
       case "nameinc":
         sortmethod = { title: 1 };
-        selected = "Name :A to Z";
+        selected = "Name: A to Z";
         break;
       case "namedec":
         sortmethod = { title: -1 };
-        selected = "Name :z to A";
+        selected = "Name: Z to A";
         break;
       default:
         sortmethod = {};
         selected = "Featured";
     }
 
+    // User session check
     const user = req.session.user.email;
     const userData = await User.findOne({ email: user });
+
     if (userData.isBlocked) {
       req.session.destroy();
-      res.redirect("/login");
-    } else {
-      const product = await Product.find({ isBlocked: true })
-        .populate("brandName")
-        .populate("category")
-        .sort(sortmethod);
-
-      const category = await Category.find({ isListed: true });
-      const brand = await Brand.find({ isListed: true });
-
-      res.render("shop", {
-        product: product,
-        category: category,
-        brand: brand,
-        selected,
-      });
+      return res.redirect("/login");
     }
+
+    // Search criteria
+    let searchCriteria = { isBlocked: true };
+
+    if (searchTerm && searchTerm.trim() !== "") {
+      searchCriteria = {
+        isPublished: true,
+        $or: [
+          { title: { $regex: String(searchTerm), $options: 'i' } },
+          { description: { $regex: String(searchTerm), $options: 'i' } }
+        ],
+      };
+    }
+
+    // Category 
+    if (categoryFilter && categoryFilter.trim() !== "") {
+      searchCriteria.category = categoryFilter;
+    }
+
+    
+    const product = await Product.find(searchCriteria)
+      .populate("brandName")
+      .populate("category")
+      .sort(sortmethod);
+
+    
+    if (!product || product.length === 0) {
+      noProduct = `No products found for: ${searchTerm || "your search criteria"}`;
+    }
+
+
+    const category = await Category.find({ isListed: true });
+    const brand = await Brand.find({ isListed: true });
+
+    res.render("shop", {
+      product: product,
+      category: category,
+      brand: brand,
+      selected,
+      noProduct
+    });
   } catch (error) {
     console.log(error.message);
   }
 };
+
+
 // ------------------------------------- GOOGLE AUTH ----------------------------------
 
 // This handles redirection after successful Google authentication

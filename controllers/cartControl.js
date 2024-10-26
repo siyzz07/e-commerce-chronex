@@ -117,7 +117,20 @@ const getCart =async (req,res)=>{
         userId=req.session.user._id
         const category=await Category.find({isListed:true})
         const brand=await Brand.find({isListed:true})
-        const cartData=await Cart.findOne({userId:userId}).populate('items.product')
+        // const cartData=await Cart.findOne({userId:userId}).populate('items.product')
+
+
+        const cartData = await Cart.findOne({ userId: userId })
+        .populate({
+          path: 'items.product',
+          populate: [
+            { path: 'category', model: 'Catetgory' },    
+            { path: 'brandName', model: 'Brand' }       
+          ]
+        });
+
+
+
         const msg=req.flash('msg')
         const fail=req.flash('fail')
     

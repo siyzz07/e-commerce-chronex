@@ -186,7 +186,7 @@
                     </div>
                     <div class="header-right">
                         <div class="search-style-2">
-                            <form action="/search" method="get">  
+                            <form action="/home" method="get">  
                                 <input type="text" name="search" placeholder="Search for items...">
                             </form>
                         </div>
@@ -242,7 +242,7 @@
                                     <li><a href="#">Category<i class="fi-rs-angle-down"></i></a>
                                         <ul class="sub-menu">
                                             <% for(let i=0;i<category.length;i++){ %>
-                                            <li><a href="#"><%= category[i].category %></a></li>
+                                            <li><a href="/home?category=<%= category[i]._id %>"><%= category[i].category %></a></li>
                                             <% } %>
                                         </ul>
                                     </li>
@@ -411,13 +411,10 @@
                         <div class="widget-category mb-30">
                             <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
                             <ul class="categories">
-                                <li><a href="shop-grid-right.html">Shoes & Bags</a></li>
-                                <li><a href="shop-grid-right.html">Blouses & Shirts</a></li>
-                                <li><a href="shop-grid-right.html">Dresses</a></li>
-                                <li><a href="shop-grid-right.html">Swimwear</a></li>
-                                <li><a href="shop-grid-right.html">Beauty</a></li>
-                                <li><a href="shop-grid-right.html">Jewelry & Watch</a></li>
-                                <li><a href="shop-grid-right.html">Accessories</a></li>
+                                <!-- <li><a href="shop-grid-right.html">Shoes & Bags</a></li> -->
+                                <% for(let i=0;i<category.length;i++){ %>
+                                    <li><a href="/home?category=<%= category[i]._id %>"><%= category[i].category %></a></li>
+                                    <% } %>
                             </ul>
                         </div>
                          <div class="widget-category mb-30">
@@ -468,7 +465,7 @@
                         <div class="tab-content wow fadeIn animated" id="myTabContent">
                             <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
                                 <div class="row product-grid-4">
-
+                                        <p style="color:#088178;font-size: x-large;"> <%= noProduct %></p>
 <!-- ========================================================= ================--><% for(let i=0;i<product.length;i++){ %> 
                                  <% if(product[i].brandName.isListed == false ||product[i].category.isListed == false ){%>
                                     <% }else{ %>

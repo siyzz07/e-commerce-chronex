@@ -48,17 +48,17 @@ admin_route.get('/dashboard',adminSession,adminController.dashboard)
 
 //user data page 
 admin_route.get('/userdata',adminSession,adminController.userData)
-admin_route.get('/deleteuser',adminController.deleteUser)
-admin_route.get('/unblockuser',adminController.unblockuser)
-admin_route.get('/blockuser',adminController.blockuser)
+admin_route.get('/deleteuser',adminSession,adminController.deleteUser)
+admin_route.get('/unblockuser',adminSession,adminController.unblockuser)
+admin_route.get('/blockuser',adminSession,adminController.blockuser)
 
 
 // category page
 admin_route.get('/category',adminSession,categoryController.category)
-admin_route.get('/deletecategory',categoryController.deletCategory)
-admin_route.get('/listcategory',categoryController.listCategory)
-admin_route.get('/editcategory',categoryController.loadEditCategory)
-admin_route.get('/unlistcategory',categoryController.unlistCategory)
+admin_route.get('/deletecategory',adminSession,categoryController.deletCategory)
+admin_route.get('/listcategory',adminSession,categoryController.listCategory)
+admin_route.get('/editcategory',adminSession,categoryController.loadEditCategory)
+admin_route.get('/unlistcategory',adminSession,categoryController.unlistCategory)
 
 admin_route.post('/addcategory',categoryController.addCategory)
 admin_route.post('/editcategory',categoryController.editCategoryPost)
@@ -102,8 +102,19 @@ admin_route.get('/deleteCoupen',adminSession,coupenController.deleteCoupen)
 
 
 // offer
-admin_route.get('/offer',offerController.offer)
-admin_route.get('/addOffer',offerController.addOffer)
+admin_route.get('/offer',adminSession,offerController.offer)
+admin_route.get('/addOffer',adminSession,offerController.addOffer)
 admin_route.post('/addOffer',offerController.postAddOffer)
+admin_route.get('/editOffer',adminSession,offerController.editOfferGet)
+admin_route.post('/editOffer/:id',offerController.editOffer)
+admin_route.get('/unlistOffer',adminSession,offerController.unlistOffer)
+admin_route.get('/listOffer',adminSession,offerController.listOffer)
+
+
+
+// sales Report
+// admin_route.get('/ssalesReportss',adminController.salesReportGet)
+admin_route.get('/salesReport',adminSession,adminController.salesReportGet)
+
 
 module.exports=admin_route
