@@ -163,10 +163,11 @@
                                     <div class="col-md-3 col-6">
                                         <select class="form-select" id="report-type" onchange="toggleDateFields()">
                                             <option value="All" <% if(reportType == 'All'){ %>selected<% } %>>All</option>
+                                            <option value="Today" <% if(reportType == 'Today'){ %>selected<% } %>>Today</option>
                                             <option value="Weekly" <% if(reportType == 'Weekly'){ %>selected<% } %>>Weekly</option>
                                             <option value="Monthly" <% if(reportType == 'Monthly'){ %>selected<% } %> >Monthly</option>
                                             <option value="Yearly" <% if(reportType == 'Yearly'){ %>selected<% } %>>Yearly</option>
-                                            <option value="custom"<% if(reportType == 'Custom date'){ %>selected<% } %>>Custom date</option>
+                                            <option value="custom"<% if(reportType == 'custom'){ %>selected<% } %>>Custom date</option>
                                         </select>
                                     </div>
                                 
@@ -369,6 +370,9 @@
             </div> -->
        
     </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
     <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="assets/js/vendors/select2.min.js"></script>
@@ -412,35 +416,34 @@
 
 
 <script>
-    async function exportToPDF() {
-       try {
-      
-        async function exportToPDF() {
-   const { jsPDF } = window.jspdf;  
-   let doc = new jsPDF();
-   const table = document.getElementById("report-table");
+   async function exportToPDF() {
+   try {
+      const { jsPDF } = window.jspdf; 
+      const doc = new jsPDF(); 
 
-   // Use html2canvas to capture the table as an image
-   await html2canvas(table, { scale: 2 }).then((canvas) => {
+      
+      const table = document.getElementById("report-table");
+
+     
+      const canvas = await html2canvas(table, { scale: 2 });
       const imgData = canvas.toDataURL("image/png");
+
+      
       const imgProps = doc.getImageProperties(imgData);
       const pdfWidth = doc.internal.pageSize.getWidth();
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
+     
       doc.text("Sales Report", 14, 15);
       doc.addImage(imgData, "PNG", 0, 20, pdfWidth, pdfHeight);
-      doc.save("Sales_Report.pdf");
-   });
-}
 
- 
-          // Save the PDF
-          doc.save("Sales_Report.pdf");
-       } catch (error) {
-          console.error("Error generating PDF:", error);
-          alert("Failed to export PDF. Please check the console for errors.");
-       }
-    }
+
+      doc.save("Sales_Report.pdf");
+   } catch (error) {
+      console.error("Error generating PDF:", error);
+      alert("Failed to export PDF. Please check the console for errors.");
+   }
+}
  
     async function exportToExcel() {
        try {

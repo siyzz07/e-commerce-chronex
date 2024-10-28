@@ -118,45 +118,50 @@
                                 </thead>
                                 <tbody>
                                     <% cartData.items.forEach(item => { %>
-                                        <% if(item.product.isBlocked ){  %>
-                                            
-                                        <tr>
-                                            <td class="image product-thumbnail"><img src="/public/product_images/<%= item.product.images[0] %>" alt="#"></td>
-                                        
-                                            <td class="product-des product-name">
-                                                <h5 class="product-name"><a href="shop-product-right.html"><%= item.product.title %></a></h5>
-                                                <p class="font-xs"><%= item.product.description %><br> distingy magndapibus.</p>
-                                            </td>
-                                        
-                                            <td class="price" data-title="Price"><span class="item-price"><%= item.product.price %></span></td>
-                                        
-                                            <td class="text-center" data-title="Stock">
-                                                <div class="detail-qty border radius m-auto">
-                                                    <a href="#" class="qty-down" data-product-id="<%= item.product._id %>" data-stock="<%= item.product.stock %>">
-                                                        <i class="fi-rs-angle-small-down"></i>
+                                       
+                                            <tr>
+                                                <td class="image product-thumbnail">
+                                                    <img src="/public/product_images/<%= item.product.images[0] %>" alt="#">
+                                                </td>
+                                                <td class="product-des product-name">
+                                                    <h5 class="product-name"><a href="shop-product-right.html"><%= item.product.title %></a></h5>
+                                                    <p class="font-xs"><%= item.product.description %></p>
+                                                </td>
+                                                <td class="price" data-title="Price">
+                                                    <span class="item-price"><%= item.product.price %></span>
+                                                </td>
+                                                <td class="text-center" data-title="Stock">
+                                                    <div class="detail-qty border radius m-auto">
+                                                        <a href="#" class="qty-down" data-product-id="<%= item.product._id %>" data-stock="<%= item.product.stock %>">
+                                                            <i class="fi-rs-angle-small-down"></i>
+                                                        </a>
+                                                        <span class="qty-val"><%= item.quantity %></span>
+                                                        <a href="#" class="qty-up" data-product-id="<%= item.product._id %>" data-stock="<%= item.product.stock %>">
+                                                            <i class="fi-rs-angle-small-up"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="stock-message" style="color: red; display: none;"></div>
+                                                </td>
+                                                <td class="text-right" data-title="Cart">
+                                                    <span class="item-total"><%= item.quantity * item.product.price %></span>
+                                                </td>
+                                                <td class="action" data-title="Remove">
+                                                    <a href="/deletFromCart?id=<%= item.product._id %>" class="text-muted">
+                                                        <i class="fi-rs-trash"></i>
                                                     </a>
-                                                    <span class="qty-val"><%= item.quantity %></span>
-                                                    <a href="#" class="qty-up" data-product-id="<%= item.product._id %>" data-stock="<%= item.product.stock %>">
-                                                        <i class="fi-rs-angle-small-up"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="stock-message" style="color: red; display: none;"></div>
-                                            </td>
-                                        
-                                            <td class="text-right" data-title="Cart">
-                                                <span class="item-total"><%= item.quantity * item.product.price %></span>
-                                            </td>
-                                        
-                                           <td class="action" data-title="Remove"><a href="/deletFromCart?id=<%= item.product._id %>" class="text-muted"><i class="fi-rs-trash"></i></a></td>
-                                        </tr>
-                                        
-                                    <%} }) %>
+                                                </td>
+                                            </tr>
+                                       <!-- End check for item.product -->
+                                    <% }) %>
                                     <tr>
                                         <td colspan="6" class="text-end">
-                                            <a href="#" class="text-muted"> <i class="fi-rs-cross-small"></i> Clear Cart</a>
+                                            <a href="#" class="text-muted">
+                                                <i class="fi-rs-cross-small"></i> Clear Cart
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>
+                                
                             </table>
                         </div>
                         <div class="cart-action text-end">

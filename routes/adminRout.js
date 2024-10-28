@@ -102,13 +102,13 @@ admin_route.get('/deleteCoupen',adminSession,coupenController.deleteCoupen)
 
 
 // offer
-admin_route.get('/offer',adminSession,offerController.offer)
+admin_route.get('/offer',adminSession,offerController.offerGet)
 admin_route.get('/addOffer',adminSession,offerController.addOffer)
 admin_route.post('/addOffer',offerController.postAddOffer)
 admin_route.get('/editOffer',adminSession,offerController.editOfferGet)
 admin_route.post('/editOffer/:id',offerController.editOffer)
-admin_route.get('/unlistOffer',adminSession,offerController.unlistOffer)
-admin_route.get('/listOffer',adminSession,offerController.listOffer)
+admin_route.get('/unlistOffer',adminSession,offerController.unlistOffers)
+admin_route.get('/listOffer',adminSession,offerController.listOffers)
 
 
 

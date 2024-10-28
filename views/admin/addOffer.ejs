@@ -144,7 +144,7 @@
                 <div class="col-lg-9">
                     <div class="card mb-4">
                         <div class="card-body">
-                            <form action="/admin/addOffer" method="post" onsubmit="return validateForm()">
+                            <form action="/admin/addOffer" method="post" onsubmit="return validateForm()">   
                                 <div class="mb-4">
                                     <label  for="coupon_code" class="form-label">Offer name</label>
                                     <input  type="text"
@@ -273,68 +273,72 @@
 
 
 <script>
-  function validateForm() {
-      let offerName = document.getElementById("offername").value.trim();
-      let discountPercentage = document.getElementById("percentage").value.trim();
-      let startDate = new Date(document.getElementsByName("startDate")[0].value);
-      let endDate = new Date(document.getElementsByName("endDate")[0].value);
-      let applicableProducts = document.querySelectorAll('input[name="applicableProducts[]"]:checked').length;
-      let applicableCategories = document.querySelectorAll('input[name="applicableCategories[]"]:checked').length;
-      let currentDate = new Date();
-
-      // Clear previous error messages
-      document.getElementById('code-error').innerText = '';
-      document.getElementById('price-error').innerText = '';
-      document.getElementById('description-error').innerText = '';
-
-
-      const today = new Date().toISOString().split('T')[0];
-      // Offer name validation
-      if (!offerName || offerName.length === 0) {
-          document.getElementById('code-error').innerText = "Offer name cannot be empty or contain only spaces.";
-          return false;
-      }
-
-      // Discount percentage validation (must be a number between 1 and 100)
-      let percentage = parseInt(discountPercentage);
-      if (isNaN(percentage) || percentage < 1 || percentage > 100) {
-          document.getElementById('price-error').innerText = "Discount percentage must be a number between 1 and 100.";
-          return false;
-      }
-
-      // Date validation (end date must not be in the past and must be after the start date)
-      if (endDate <= currentDate) {
-          document.getElementById('description-error').innerText = "End date must be in the future.";
-          return false;
-      }
-      if (endDate <=  currentDate) {
-          document.getElementById('description-error').innerText = "End date cannot be earlier than start date.";
-          return false;
-      }
-
-      // At least one product or category must be selected
-      if (applicableProducts === 0 && applicableCategories === 0) {
-          document.getElementById('description-error').innerText = "At least one applicable product or category must be selected.";
-          return false;
-      }
-
-      return true; // Allow form submission if all validations pass
-  }
-
-  function toggleApplicableFields() {
-      let offerType = document.getElementById("offerType").value;
-      let applicableProducts = document.getElementById("applicableProducts");
-      let applicableCategories = document.getElementById("applicableCategories");
-
-      if (offerType === 'product') {
-          applicableProducts.classList.remove('hidden');
-          applicableCategories.classList.add('hidden');
-      } else if (offerType === 'category') {
-          applicableProducts.classList.add('hidden');
-          applicableCategories.classList.remove('hidden');
-      }
-  }
-</script>
+    function validateForm() {
+        let offerName = document.getElementById("offername").value.trim();
+        let discountPercentage = document.getElementById("percentage").value.trim();
+        let startDateElement = document.getElementsByName("startDate")[0]; // Ensure it's uncommented in HTML if needed
+        let endDateElement = document.getElementsByName("endDate")[0];
+        let applicableProducts = document.querySelectorAll('input[name="applicableProducts[]"]:checked').length;
+        let applicableCategories = document.querySelectorAll('input[name="applicableCategories[]"]:checked').length;
+        let currentDate = new Date();
+  
+        // Clear previous error messages
+        document.getElementById('code-error').innerText = '';
+        document.getElementById('price-error').innerText = '';
+        document.getElementById('description-error').innerText = '';
+  
+        // Offer name validation
+        if (!offerName || offerName.length === 0) {
+            document.getElementById('code-error').innerText = "Offer name cannot be empty or contain only spaces.";
+            return false;
+        }
+  
+        // Discount percentage validation (must be a number between 1 and 100)
+        let percentage = parseInt(discountPercentage);
+        if (isNaN(percentage) || percentage < 1 || percentage > 100) {
+            document.getElementById('price-error').innerText = "Discount percentage must be a number between 1 and 100.";
+            return false;
+        }
+  
+        // Date validation (end date must be in the future and after start date if start date is available)
+        if (endDateElement) {
+            let endDate = new Date(endDateElement.value);
+            if (endDate <= currentDate) {
+                document.getElementById('description-error').innerText = "End date must be in the future.";
+                return false;
+            }
+            if (startDateElement && startDateElement.value) {
+                let startDate = new Date(startDateElement.value);
+                if (endDate <= startDate) {
+                    document.getElementById('description-error').innerText = "End date cannot be earlier than the start date.";
+                    return false;
+                }
+            }
+        }
+  
+        // At least one product or category must be selected
+        if (applicableProducts === 0 && applicableCategories === 0) {
+            document.getElementById('description-error').innerText = "At least one applicable product or category must be selected.";
+            return false;
+        }
+  
+        return true; // Allow form submission if all validations pass
+    }
+  
+    function toggleApplicableFields() {
+        let offerType = document.getElementById("offerType").value;
+        let applicableProducts = document.getElementById("applicableProducts");
+        let applicableCategories = document.getElementById("applicableCategories");
+  
+        if (offerType === 'product') {
+            applicableProducts.classList.remove('hidden');
+            applicableCategories.classList.add('hidden');
+        } else if (offerType === 'category') {
+            applicableProducts.classList.add('hidden');
+            applicableCategories.classList.remove('hidden');
+        }
+    }
+  </script>
 
 
 

@@ -508,24 +508,7 @@ const loadHome = async (req, res) => {
       .populate("category");
 
 
-      // check the offer exxixt or not //  if the offer exist check the time is corrrecrt
-    //   for (const products of product) {
-    //     const foundOffer = await Offer.findOne({ _id: product.offerId });
-    //     if (foundOffer) {
-          
-    //     } else {
-
-    //       let price=products.price
-
-
-    //       products.offerId=null
-    //       products.isDiscounted=false
-    //       products.offerPrice=price
-    //       products.offerPercentage=0
-
-    //       await products.save()
-    //     }
-    // }
+     
 
     // Check if no product is found
     if (!product || product.length === 0) {

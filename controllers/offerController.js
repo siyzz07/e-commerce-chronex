@@ -9,25 +9,47 @@ const Product=require('../models/porduct')
 
 // get offer page list 
 
-const offer = async (req, res) => {
+const offerGet = async (req, res) => {
     try {
-        const perPage = 6; 
+        const perPage = 6;
         const currentPage = parseInt(req.query.page) || 1;
 
         const offerCount = await Offer.countDocuments();
-        const offer = await Offer.find()
+        const offers = await Offer.find() 
             .populate('applicableProducts')
             .populate('applicableCategories')
             .skip((currentPage - 1) * perPage)
             .limit(perPage);
 
-        // Updating expired offers
         const currentDate = new Date();
-        for (const offers of offer) { 
-            if (offers.endDate < currentDate) {
-                offers.isEnded = true;
-                offers.isListed = false;
-                await offers.save(); 
+
+        for (const offer of offers) { 
+            if (offer.endDate < currentDate && !offer.isEnded) {
+                offer.isEnded = true;
+                offer.isListed = false;
+                await offer.save();
+
+                for (const productId of offer.applicableProducts) {
+                    const product = await Product.findById(productId);
+                    if (product) {
+                        product.isDiscounted = false;
+                        product.offerId = null;
+                        product.offerPercentage = 0;
+                        product.offerPrice = product.price;
+                        await product.save();
+                    }
+                }
+
+                for (const categoryId of offer.applicableCategories) {
+                    const categoryProducts = await Product.find({ category: categoryId });
+                    for (const product of categoryProducts) {
+                        product.isDiscounted = false;
+                        product.offerId = null;
+                        product.offerPercentage = 0;
+                        product.offerPrice = product.price;
+                        await product.save();
+                    }
+                }
             }
         }
 
@@ -35,7 +57,7 @@ const offer = async (req, res) => {
         const fail = req.flash('fail');
 
         res.render('offer', {
-            offer,
+            offer: offers, 
             fail,
             msg,
             currentPage,
@@ -67,67 +89,79 @@ const addOffer=async(req,res)=>{
 
 
 // new offer post form the add ofer page
-const postAddOffer=async (req,res)=>{
-    try{
+const postAddOffer = async (req, res) => {
+    try {
+       
+        const offer = await Offer.findOne({ offerName: req.body.offerName.toLowerCase() });
         
-        const offer=await Offer.findOne({offerName:req.body.offerName.toLowerCase()})
+        if (offer) {
+            req.flash('fail', 'The offer is already added');
+            return res.redirect('/admin/offer');
+        }
 
-        if(offer){
-            req.flash('fail','The offer is Aleady Added')
-            res.redirect('/admin/offer')
+        let addoffer;
+        if (req.body.offerType === 'product') {
+            addoffer = new Offer({
+                offerName: req.body.offerName,
+                offerType: req.body.offerType,
+                discountPercentage: req.body.discountPercentage,
+                endDate: req.body.endDate,
+                applicableProducts: req.body.applicableProducts,
+            });
+        } else {
+            addoffer = new Offer({
+                offerName: req.body.offerName,
+                offerType: req.body.offerType,
+                discountPercentage: req.body.discountPercentage,
+                endDate: req.body.endDate,
+                applicableCategories: req.body.applicableCategories,
+            });
+        }
 
-        }else{
+        
+        const offeradd = await addoffer.save();
+        const percentage = offeradd.discountPercentage;
 
-            const addoffer=new Offer({
-                offerName :req.body.offerName,
-                offerType:req.body.offerType,
-                discountPercentage:req.body.discountPercentage,
-                endDate:req.body.endDate,
-                applicableProducts:req.body.applicableProducts,
-                applicableCategories:req.body.applicableCategories
+        if (offeradd.offerType === 'product') {
+            for (const productId of offeradd.applicableProducts) {
+                let productOffer = await Product.findById(productId);
 
-            })
+                if (productOffer) {
+                    const price = productOffer.price; 
+                    const offerPrice = price - (price * percentage / 100);
 
-            const offeradd=await addoffer.save();
-            const percentage=offeradd.discountPercentage
-
-            if(offeradd.offerType == 'product'){
-
-
-                for (const product of offeradd.applicableProducts){
-                    let productOffer=await Product.findById(product)
-
-                 if(productOffer){ 
+                    productOffer.offerPrice = offerPrice;
                     productOffer.isDiscounted = true;
                     productOffer.offerId = offeradd._id;
                     productOffer.offerPercentage = percentage;
                     await productOffer.save();
-                 }
-                }
-            }else{
-                for (const category of offeradd.applicableCategories){
-                    let categoryproducts=await Product.find({category})
-                    for (const productOffer of categoryproducts) {
-                        productOffer.isDiscounted = true;
-                        productOffer.offerId = offeradd._id;
-                        productOffer.offerPercentage = percentage;
-                        await productOffer.save();
-                      }
-                    
-
                 }
             }
+        } else {
+            for (const categoryId of offeradd.applicableCategories) {
+                let categoryProducts = await Product.find({ category: categoryId });
 
-            req.flash('msg','Offer Added')
-            res.redirect('/admin/offer')
+                for (const productOffer of categoryProducts) {
+                    const price = productOffer.price; 
+                    const offerPrice = price - (price * percentage / 100);
 
+                    productOffer.offerPrice = offerPrice;
+                    productOffer.isDiscounted = true;
+                    productOffer.offerId = offeradd._id;
+                    productOffer.offerPercentage = percentage;
+                    await productOffer.save();
+                }
+            }
         }
-        
-    }catch(error){
-        console.log(error.message);
-        
+
+        req.flash('msg', 'Offer added successfully');
+        res.redirect('/admin/offer');
+    } catch (error) {
+        console.log("Error:", error.message);
+        req.flash('fail', 'Error adding offer');
+        res.redirect('/admin/offer');
     }
-}
+};
 
 
 // edit offer get
@@ -195,38 +229,128 @@ const editOffer=async (req,res)=>{
 
 // unlist offer
 
-const unlistOffer=async (req,res)=>{
-    try{
-       const offerId = req.query.id
-        const unslistoffer = await Offer.findByIdAndUpdate(offerId, { isListed: false });
-        res.redirect('/admin/offer')
-    }catch(error){
-        console.log(error.message);
+const unlistOffers = async (req, res) => {
+    try {
+        const offerId = req.query.id;
+
         
-    }
-}
-
-
-// unlist offer
-
-const listOffer=async (req,res)=>{
-    try{
-       const offerId = req.query.id
-        const unslistoffer = await Offer.findByIdAndUpdate(offerId, { isListed: true});
-        res.redirect('/admin/offer')
-    }catch(error){
-        console.log(error.message);
+        const unlistedOffer = await Offer.findByIdAndUpdate(offerId, { isListed: false }, { new: true });
         
+        if (!unlistedOffer) {
+            console.log("Offer not found");
+            req.flash('fail', 'Offer not found');
+            return res.redirect('/admin/offer');
+        }
+
+        
+        if (unlistedOffer.offerType === 'product' && unlistedOffer.applicableProducts.length > 0) {
+           
+            for (const productId of unlistedOffer.applicableProducts) {
+                const product = await Product.findById(productId);
+
+                if (product) {
+                    
+                    product.offerId = null;
+                    product.offerPercentage = 0;
+                    product.offerPrice = product.price;  
+                    product.isDiscounted = false;
+
+                    await product.save();
+                }
+            }
+        } else if (unlistedOffer.offerType === 'category' && unlistedOffer.applicableCategories.length > 0) {
+           
+            for (const categoryId of unlistedOffer.applicableCategories) {
+                const categoryProducts = await Product.find({ category: categoryId });
+
+                for (const product of categoryProducts) {
+                  
+                    product.offerId = null;
+                    product.offerPercentage = 0;
+                    product.offerPrice = product.price; 
+                    product.isDiscounted = false;
+
+                    await product.save();
+                }
+            }
+        }
+
+        req.flash('msg', 'Offer successfully unlisted and products updated');
+        res.redirect('/admin/offer');
+    } catch (error) {
+        console.log( error.message);
+       
     }
-}
+};
+
+
+
+
+
+
+// List offer
+const listOffers = async (req, res) => {
+    try {
+        const offerId = req.query.id;
+
+        const listedOffer = await Offer.findByIdAndUpdate(offerId, { isListed: true }, { new: true });
+
+        if (!listedOffer) {
+            console.log("Offer not found");
+            req.flash('fail', 'Offer not found');
+            return res.redirect('/admin/offer');
+        }
+
+        const percentage = listedOffer.discountPercentage;
+
+      
+        if (listedOffer.offerType === 'product' && listedOffer.applicableProducts.length > 0) {
+           
+            for (const productId of listedOffer.applicableProducts) {
+                const product = await Product.findById(productId);
+
+                if (product) {
+                  
+                    product.isDiscounted = true;
+                    product.offerId = listedOffer._id;
+                    product.offerPercentage = percentage;
+                    product.offerPrice = Math.floor(product.price - (product.price * percentage) / 100);
+
+                    await product.save();
+                }
+            }
+        } else if (listedOffer.offerType === 'category' && listedOffer.applicableCategories.length > 0) {
+            
+            for (const categoryId of listedOffer.applicableCategories) {
+                const categoryProducts = await Product.find({ category: categoryId });
+
+                for (const product of categoryProducts) {
+                  
+                    product.isDiscounted = true;
+                    product.offerId = listedOffer._id;
+                    product.offerPercentage = percentage;
+                    product.offerPrice = Math.floor(product.price - (product.price * percentage) / 100);
+
+                    await product.save();
+                }
+            }
+        }
+
+        req.flash('msg', 'Offer successfully listed and products updated');
+        res.redirect('/admin/offer');
+    } catch (error) {
+        console.log( error.message);
+    
+    }
+};
 
 
 module.exports={
-    offer,
+    offerGet,
     addOffer,
     postAddOffer,
     editOfferGet,
     editOffer,
-    unlistOffer,
-    listOffer
+    unlistOffers,
+    listOffers
 }

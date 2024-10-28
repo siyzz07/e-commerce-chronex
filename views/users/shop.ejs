@@ -517,7 +517,14 @@
                                                     </span>
                                                 </div>
                                                 <div class="product-price">
-                                                    <span>$<%= product[i].price %></span>
+                                                    <% if(product[i].isDiscounted == true){ %>
+
+                                                        <span>$<%= product[i].offerPrice %></span>
+                                                        <span class="old-price"><%= product[i].price %></span> 
+
+                                                        <% }else{%>
+                                                            <span>$<%= product[i].price %></span>
+                                                            <% } %>
                                                     <!-- <span class="old-price">$245.8</span> -->
                                                 </div>
                                                 <!-- <div class="product-action-1 show">

@@ -467,7 +467,7 @@
                                 <div class="row product-grid-4">
                                         <p style="color:#088178;font-size: x-large;"> <%= noProduct %></p>
 <!-- ========================================================= ================--><% for(let i=0;i<product.length;i++){ %> 
-                                 <% if(product[i].brandName.isListed == false ||product[i].category.isListed == false ){%>
+                                 <% if(product[i].brandName.isListed == false ||product[i].category.isListed == false || product[i].isBlocked===false ){%>
                                     <% }else{ %>
                                     <div class="col-lg-4 col-md-4 col-12 col-sm-6">
                                         <div class="product-cart-wrap mb-30">
@@ -509,8 +509,15 @@
                                                     </span>
                                                 </div>
                                                 <div class="product-price">
-                                                    <span>$<%= product[i].price %></span>
-                                                    <!-- <span class="old-price">$245.8</span> -->
+                                                    <% if(product[i].isDiscounted == true){ %>
+
+                                                        <span>$<%= product[i].offerPrice %></span>
+                                                        <span class="old-price"><%= product[i].price %></span> 
+
+                                                        <% }else{%>
+                                                            <span>$<%= product[i].price %></span>
+                                                            <% } %>
+                                                    <!-- <span class="old-price">$245.8</span>  -->
                                                 </div>
                                                  
                                                 <!-- <div class="product-action-1 show">

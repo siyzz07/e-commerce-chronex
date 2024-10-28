@@ -222,14 +222,19 @@ const salesReportGet=async (req,res)=>{
 
 
         const { reportType, startDate, endDate } = req.query;
-   
-    
 
         // Define date filters based on reportType
         let dateFilter = {};
         const today = new Date();
     
-        if (reportType === 'Weekly') {
+        if (reportType === 'Today') {
+            dateFilter = {
+                orderDate: {
+                    $gte: moment(today).startOf('day').toDate(),
+                    $lte: today
+                }
+            };
+        } else if (reportType === 'Weekly') {
             dateFilter = { 
                 orderDate: { 
                     $gte: moment(today).startOf('week').toDate(),
@@ -275,13 +280,11 @@ const salesReportGet=async (req,res)=>{
             reportType,
             returnedOrderCount
         });
-  
-
-  }catch(error){
-    console.log(error.message);
     
-  }
-}
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
 
 //------------------------------------------------------ END ------------------------------------------------------------------
 
