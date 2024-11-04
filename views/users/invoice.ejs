@@ -156,7 +156,7 @@
                 <tbody>
                     <% order.items.forEach(item=>{ %>
                         <tr>
-                        <td>$<%= item.product.title %></td>
+                        <td><%= item.product.title %></td>
                         <td><%= item.quantity %></td>
                         <td>$<%= item.product.price %></td>
                         <td>$<%= item.price %></td>
@@ -183,7 +183,7 @@
                 </tbody>
             </table>
             <div class="invoice-summary">
-                <p><strong>Payment Method:</strong> Credit Card</p>
+                <p><strong>Payment Method:</strong> <%= order.paymentMethod %></p>
                 <p><strong>Order Status:</strong><%= order.status %></p>
             </div>
             <button class="download-btn" onclick="downloadInvoice()">Download Invoice</button>

@@ -142,6 +142,8 @@ user_route.get('/deletCoupen',userSession,coupenController.deletCoupen)
 // razorpay
 user_route.post('/createOrder', orderController.createOrder);/////////////////////----------------
 user_route.post('/verifyPayment',orderController.verifyPayment);
+user_route.post('/logOrderCancellation', orderController.logOrderCancellation);
+
 
 //wallet
 user_route.get('/wallet',userSession,walletController.getWallet)
@@ -155,5 +157,10 @@ user_route.get('/wallet',userSession,walletController.getWallet)
 // invoice 
 user_route.get('/invoice',orderController.invoiceGet)
 
+
+
+// retry order
+user_route.post('/createOrderRetry',orderController.createOrderRetry)
+user_route.post('/verifyPamentRetry',orderController.verifyPaymentRetry)
 
 module.exports=user_route

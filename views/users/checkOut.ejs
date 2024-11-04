@@ -560,54 +560,92 @@
                 .then(order => {
                     console.log("Order created successfully:", order);
     
-                    // Configure Razorpay options
+            
                     var options = {
-                        "key": "rzp_test_YCA4FknRMLC2X0", 
-                        "amount": order.amount, 
-                        "currency": "INR",
-                        "name": "Chronex",
-                        "description": "Test Transaction",
-                        "order_id": order.id,
-                        "handler": function (response) {
-                            // Verify the payment by calling the backend
-                            fetch('/verifyPayment', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    razorpay_order_id: response.razorpay_order_id,
-                                    razorpay_payment_id: response.razorpay_payment_id,
-                                    razorpay_signature: response.razorpay_signature,
-                                    payment_option: paymentMethod,
-                                     address: address,
-                                     productIds: productIds,
-                                     couponName: couponName
-                                }),
-                            })
-                            .then(res => res.json())
-                            .then(data => {
-                                if (data.success) {
-                                    window.location.href = data.redirectUrl; // Redirect to success page
-                                } else {
-                                    document.getElementById('wrong').textContent = 'Payment verification failed!';
-                                }
-                            });
-                        },
-                        "theme": {
-                            "color": "#F37254"
-                        }
-                    };
-    
-                    var rzp1 = new Razorpay(options);
-                    rzp1.open();
+                     "key": "rzp_test_YCA4FknRMLC2X0",
+                     "amount": order.amount,
+                     "currency": "INR",
+                     "name": "Chronex",
+                     "description": "Test Transaction",
+                     "order_id": order.id,
+                     "handler": function (response) {
+                   
+                         fetch('/verifyPayment', {
+                             method: 'POST',
+                             headers: {
+                                 'Content-Type': 'application/json',
+                             },
+                             body: JSON.stringify({
+                                 razorpay_order_id: response.razorpay_order_id,
+                                 razorpay_payment_id: response.razorpay_payment_id,
+                                 razorpay_signature: response.razorpay_signature,
+                                 payment_option: paymentMethod,
+                                 address: address,
+                                 productIds: productIds,
+                                 couponName: couponName
+                             }),
+                         })
+                         .then(res => res.json())
+                         .then(data => {
+                             if (data.success) {
+                                 window.location.href = data.redirectUrl; 
+                             } else {
+                                 document.getElementById('wrong').textContent = 'Payment verification failed!';
+                             }
+                         });
+                     },
+                     "theme": {
+                         "color": "#F37254"
+                     },
+                    
+                     "modal": {
+                         "ondismiss": function() {
+                             console.log("Payment cancelled by the user.");
+
+                            
+                             fetch('/logOrderCancellation', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({
+                                            status: "Order Cancelled",
+                                            transactionStatus: "Pending",
+                                            payment_option: paymentMethod,
+                                            address: address,
+                                            productIds: productIds,
+                                            couponName: couponName
+                                        }),
+                                    })
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            
+                                            window.location.href = data.redirectUrl;
+                                        } else {
+                                            document.getElementById('wrong').textContent = 'Error logging cancellation!';
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        document.getElementById('wrong').textContent = 'Error logging cancellation!';
+                                    });
+
+                                
+                         }
+                     }
+                };
+                
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     document.getElementById('wrong').textContent = 'Error creating Razorpay order!';
                 });
             } else {
-                // Handle other payment methods like COD or PayPal
+               
                 fetch('/submit-payment', {
                     method: 'POST',
                     headers: {
