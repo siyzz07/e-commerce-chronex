@@ -26,7 +26,7 @@ const getCheckOut = async (req, res) => {
     const totalPrice = cartProduct.totalPrice;
     let addedCoupen;
     if (req.query.coupenName) {
-      addedCoupen = req.query.coupenName;
+      addedCoupen = req.query.coupenName; 
     }
    
 
@@ -182,28 +182,52 @@ const confirmOrder = async (req, res) => {
 const getOrderHistory = async (req, res) => {
   try {
     const id = req.session.user._id;
-
     if (!id) {
       return res.redirect("/home");
     }
-    const order = await Order.find({ userId: id }).populate({
-      path: "items.product",
-      model: "Product",
-    });
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = 5; 
+
+    const skip = (page - 1) * limit;
+
+    
+    const totalOrders = await Order.countDocuments({ userId: id });
+
+    
+    const orders = await Order.find({ userId: id })
+      .populate({
+        path: "items.product",
+        model: "Product",
+      })
+      .sort({ orderDate: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    
+    const totalPages = Math.ceil(totalOrders / limit);
+
+    
     const category = await Category.find({ isListed: true });
     const brand = await Brand.find({ isListed: true });
+
+   
     res.render("orderHistory", {
       category: category,
       brand: brand,
-      orders: order,
+      orders: orders,
+      currentPage: page,
+      totalPages: totalPages,
     });
   } catch (error) {
     console.log(error.message);
   }
 };
 
-// user can see the order details  ,from history page
 
+
+
+// user can see the order details  ,from history page
 const getOrderDeatails = async (req, res) => {
   try {
     const orderId = req.query.orderid;
@@ -319,19 +343,23 @@ const retrunProduct = async (req, res) => {
   }
 };
 
-/// -----------------razorpay-------------------------
+/// ----------------------------------------------razorpay-------------------------
 
 const createOrder = async (req, res) => {
   const options = {
-    amount: req.body.amount * 100, // Convert to paisa
+    amount: req.body.amount * 100, 
     currency: "INR",
     receipt: "order_rcptid_11",
   };
 
   try {
+    console.log("oooo",req.body);
+    
+    console.log("1");
+    
     const order = await razorpayInstance.orders.create(options);
-
     res.json(order);
+    console.log("2");
   } catch (error) {
     console.error("Error creating order:", error); // Log any errors
     res.status(500).send({ error: "Failed to create Razorpay order" });
@@ -342,11 +370,12 @@ const verifyPayment = async (req, res) => {
   const { razorpay_payment_id } = req.body;
 
   try {
+    console.log("3");
     const payment = await razorpayInstance.payments.fetch(razorpay_payment_id);
 
     if (payment.status === "captured") {
       const userId = req.session.user._id;
-
+      console.log("4");
       const { payment_option, address, couponName } = req.body;
       const coupenAddUser = await Coupen.updateOne(
         { coupenCode: couponName },
@@ -355,13 +384,13 @@ const verifyPayment = async (req, res) => {
           $inc: { usedCount: 1 },
         }
       );
-
+      console.log("5");
       const user = await User.findOne({ _id: userId });
       const shippingAddress = await Address.findOne(
         { "addressData._id": address },
         { "addressData.$": 1 }
       );
-
+      console.log("6");
       const cartItems = await Cart.findOne({ userId: userId });
       const order = new Order({
         userId: userId,
@@ -385,12 +414,12 @@ const verifyPayment = async (req, res) => {
         discount: cartItems.discount,
         totalWithDiscount: cartItems.totalWithDiscount,
         paymentMethod: payment_option,
-        paymentStatus: "pending",
+        paymentStatus: "success",
         status: "Pending",
       });
 
       await order.save();
-
+      console.log("");
       for (let item of cartItems.items) {
         await Product.findByIdAndUpdate(item.product._id, {
           $inc: { stock: -item.quantity },
@@ -401,15 +430,52 @@ const verifyPayment = async (req, res) => {
       res.json({
         success: true,
         redirectUrl: `/confirmorder?orderId=${order._id}`,
-      }); // Redirect to success page
+      }); 
     } else {
-      res.json({ success: false, redirectUrl: "/payment/fail" }); // Redirect to failure page
+      console.log("Payment verification failed:", payment.status); 
+      res.json({ success: false, redirectUrl: "/payment/fail" }); 
     }
   } catch (error) {
     console.error("Error fetching payment details:", error);
     res.status(500).send({ error: "Failed to verify payment" });
   }
 };
+
+
+
+
+
+// invoice get 
+
+const invoiceGet=async(req,res)=>{
+  try{
+
+    
+    const orderId = req.query.id;
+
+    if(orderId){
+  
+    
+    const order=await Order.findOne({_id:orderId}).populate('items.product')
+    if(order){
+      
+      res.render('invoice',{order})
+    }else{
+    console.log('dont get invoice');
+    
+    }
+    }else{
+      res.redirect('/order')
+    }
+  }catch(error){
+    console.log(error.message);
+    
+  }
+}
+
+
+
+
 
 //--------------------------------------------------- END ------------------------------------------------------
 //---------------------------------------------------------- ADMIN SIDE ------------------------------------------------
@@ -435,7 +501,7 @@ const getOrderList = async (req, res) => {
     const limit = 4;
     const skip = (page - 1) * limit;
 
-    const orders = await Order.find().skip(skip).limit(limit);
+    const orders = await Order.find().skip(skip).limit(limit).sort({orderDate:-1})
     const totalOrders = await Order.countDocuments();
     const totalPages = Math.ceil(totalOrders / limit);
     const msg = req.flash("msg");
@@ -506,6 +572,7 @@ module.exports = {
   retrunProduct,
   verifyPayment,
   createOrder,
+  invoiceGet,
   // -----end------
   //-----admin------
   getOrderList,

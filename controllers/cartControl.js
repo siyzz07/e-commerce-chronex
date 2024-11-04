@@ -13,7 +13,14 @@ const Coupen=require('../models/coupen')
         const  productId=req.query.id;
         const  userId=req.session.user._id
             const procuct = await Product.findOne({_id:productId})
-            const price=procuct.price
+            let price
+            if(procuct.isDiscounted == true){
+                price=procuct.offerPrice
+              
+            }else{
+          
+                price=procuct.price
+            }
             // console.log(procuct);
             
             let cart=await Cart.findOne({userId:userId})

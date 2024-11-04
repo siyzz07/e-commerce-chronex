@@ -144,13 +144,14 @@
                                                                     <td style="text-align: center;">
                                                                         <a href="/orderDetails?orderid=<%= orders[i]._id %>" class="btn btn-md btn-primary" style="margin-bottom: 10px;">Details</a>
                                                                         <% if(orders[i].status !== 'Cancelled' && orders[i].status !== 'Delivered' && orders[i].status!== 'Returned') { %>
-                                                                            <a  href="/cancelOrder/?orderid=<%= orders[i]._id %>" class="btn btn-md btn-primary" onclick="closeCustomAlert()">Cancel</a>
+                                                                            <a href="javascript:void(0);" class="btn btn-md btn-primary" onclick="openCustomAlert('<%= orders[i]._id %>')">Cancel</a>
 
                                                                             <div id="customAlert" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; padding:20px; border:1px solid #333; z-index:9999; border-radius:10px; box-shadow:0 0 15px rgba(0,0,0,0.3); width: 300px; height: 200px; text-align:center;">
                                                                                 <p>Are you sure you want to delete this address?</p>
                                                                                 <button id="confirmDelete" class="btn-small" style="background-color:red;color:white;padding:10px;margin-right:10px;">Yes</button>
                                                                                 <button onclick="closeCustomAlert()" class="btn-small" style="background-color:green;color:white;padding:10px;">No</button>
                                                                             </div>
+                                                                            
                                                                         <% }if(orders[i].status =='Delivered') {%>
   
                                                                             <a  data-toggle="modal" data-target="#exampleModal" type="button" class="btn btn-md btn-primary">Return</a>
@@ -205,6 +206,37 @@
                                         <h5 style="text-align: center;">You don't have any orders!</h5>
                                     <% } %>
                                 </section>
+                                <div class="pagination-area mt-30 mb-50">
+                                    <nav aria-label="Page navigation example">
+                                      <ul class="pagination justify-content-start">
+                                        <!-- Previous Page Link -->
+                                        <% if (currentPage > 1) { %>
+                                          <li class="page-item">
+                                            <a class="page-link" href="?page=<%= currentPage - 1 %>">
+                                              <i class="material-icons md-chevron_left"></i>
+                                            </a>
+                                          </li>
+                                        <% } %>
+                                  
+                                        <!-- Page Number Links -->
+                                        <% for (let i = 1; i <= totalPages; i++) { %>
+                                          <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                                          </li>
+                                        <% } %>
+                                  
+                                        <!-- Next Page Link -->
+                                        <% if (currentPage < totalPages) { %>
+                                          <li class="page-item">
+                                            <a class="page-link" href="?page=<%= currentPage + 1 %>">
+                                              <i class="material-icons md-chevron_right"></i>
+                                            </a>
+                                          </li>
+                                        <% } %>
+                                      </ul>
+                                    </nav>
+                                  </div>
+                                  
                             </div>
                         </div>
                     </div>
@@ -214,16 +246,28 @@
     </main>
 
     <!-- JS and jQuery Scripts -->
-    <script src="http://localhost:4444/user/js/vendor/modernizr-3.6.0.min.js"></script>
+    <!-- <script src="http://localhost:4444/user/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="http://localhost:4444/user/js/vendor/jquery-3.6.0.min.js"></script>
-    <script src="http://localhost:4444/user/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="http://localhost:4444/user/js/vendor/bootstrap.bundle.min.js"></script> -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script>
-        function onconfirm() {
-            return confirm('Are you sure you want to cancel your order?');
-        }
-    </script>
+<script>
+    function openCustomAlert(orderId) {
+        // Store the order ID in a data attribute for the confirm button to access
+        document.getElementById("confirmDelete").setAttribute("data-orderid", orderId);
+        document.getElementById("customAlert").style.display = "block";
+    }
+  
+    function closeCustomAlert() {
+        document.getElementById("customAlert").style.display = "none";
+    }
+  
+    document.getElementById("confirmDelete").addEventListener("click", function() {
+        const orderId = this.getAttribute("data-orderid");
+        // Redirect to the cancel order route with the order ID
+        window.location.href = `/cancelOrder/?orderid=${orderId}`;
+    });
+  </script>
 </body>
 </html>

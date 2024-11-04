@@ -13,11 +13,11 @@ const getWallet=async(req,res)=>{
     try{
             const userId=req.session.user._id
 
-        const transaction=await Transaction.find({userId:userId})
+        const transaction=await Transaction.find({userId:userId}).sort({date:-1})
         const category=await Category.find({isListed:true})
         const brand=await Brand.find({isListed:true})
 
-       let wallet=await Wallet.findOne({userId:userId})
+       let wallet=await Wallet.findOne({userId:userId}).populate('userId')
 
         if(!wallet){
             wallet =new Wallet({

@@ -127,6 +127,8 @@ const postAddOffer = async (req, res) => {
                 let productOffer = await Product.findById(productId);
 
                 if (productOffer) {
+
+                    if(productOffer.offerPercentage < percentage){
                     const price = productOffer.price; 
                     const offerPrice = price - (price * percentage / 100);
 
@@ -136,12 +138,16 @@ const postAddOffer = async (req, res) => {
                     productOffer.offerPercentage = percentage;
                     await productOffer.save();
                 }
+                }
             }
         } else {
             for (const categoryId of offeradd.applicableCategories) {
                 let categoryProducts = await Product.find({ category: categoryId });
 
                 for (const productOffer of categoryProducts) {
+
+                    if(productOffer.offerPercentage < percentage){
+
                     const price = productOffer.price; 
                     const offerPrice = price - (price * percentage / 100);
 
@@ -150,6 +156,7 @@ const postAddOffer = async (req, res) => {
                     productOffer.offerId = offeradd._id;
                     productOffer.offerPercentage = percentage;
                     await productOffer.save();
+                }
                 }
             }
         }
@@ -194,7 +201,7 @@ const editOffer=async (req,res)=>{
         const offerId = req.params.id;
         const existOffer = await Offer.findOne({
             offerName: req.body.offerName,
-            _id: { $ne: offerId }
+             _id: { $ne: offerId }
         });
         
         if(existOffer){
@@ -249,13 +256,23 @@ const unlistOffers = async (req, res) => {
                 const product = await Product.findById(productId);
 
                 if (product) {
-                    
+                    if(product.offerId){
+                    if( product.offerId.toString() === offerId){
                     product.offerId = null;
                     product.offerPercentage = 0;
                     product.offerPrice = product.price;  
                     product.isDiscounted = false;
 
                     await product.save();
+                }
+            }else{
+                product.offerId = null;
+                product.offerPercentage = 0;
+                product.offerPrice = product.price;  
+                product.isDiscounted = false;
+
+                await product.save();
+            }
                 }
             }
         } else if (unlistedOffer.offerType === 'category' && unlistedOffer.applicableCategories.length > 0) {
@@ -264,13 +281,23 @@ const unlistOffers = async (req, res) => {
                 const categoryProducts = await Product.find({ category: categoryId });
 
                 for (const product of categoryProducts) {
-                  
+
+                    if(product.offerId){
+
+                    if(product.offerId.toString() === offerId){
                     product.offerId = null;
                     product.offerPercentage = 0;
                     product.offerPrice = product.price; 
                     product.isDiscounted = false;
 
                     await product.save();
+                }
+            }else{
+                product.offerId = null;
+                product.offerPercentage = 0;
+                product.offerPrice = product.price; 
+                product.isDiscounted = false;
+            }
                 }
             }
         }
@@ -310,13 +337,14 @@ const listOffers = async (req, res) => {
                 const product = await Product.findById(productId);
 
                 if (product) {
-                  
+                    if(product.offerPercentage < percentage){
                     product.isDiscounted = true;
                     product.offerId = listedOffer._id;
                     product.offerPercentage = percentage;
                     product.offerPrice = Math.floor(product.price - (product.price * percentage) / 100);
 
                     await product.save();
+                }
                 }
             }
         } else if (listedOffer.offerType === 'category' && listedOffer.applicableCategories.length > 0) {
@@ -325,13 +353,15 @@ const listOffers = async (req, res) => {
                 const categoryProducts = await Product.find({ category: categoryId });
 
                 for (const product of categoryProducts) {
-                  
+                   if(product.offerPercentage < percentage){
+
                     product.isDiscounted = true;
                     product.offerId = listedOffer._id;
                     product.offerPercentage = percentage;
                     product.offerPrice = Math.floor(product.price - (product.price * percentage) / 100);
 
                     await product.save();
+                }
                 }
             }
         }

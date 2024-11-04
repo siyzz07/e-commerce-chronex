@@ -117,4 +117,11 @@ admin_route.get('/listOffer',adminSession,offerController.listOffers)
 admin_route.get('/salesReport',adminSession,adminController.salesReportGet)
 
 
+
+
+
+
+
+admin_route.get('/chart',adminController.chart)
+
 module.exports=admin_route

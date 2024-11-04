@@ -16,6 +16,7 @@ const razorpayInstance=require('../config/razorpayConfig')//rezorpay
 const Coupen=require('../models/coupen');
 const Offer = require("../models/offer");
 
+
 //-------------------------------------------------- LOGIN PAGE --------------------------------------------------------------------------
 
 //  for load login page
@@ -176,6 +177,8 @@ const otpVarification = async (req, res) => {
     console.log(error.message);
   }
 };
+
+
 
 //in otp vatification page chek the two otp's are same or not
 const otpVarificationCheck = async (req, res) => {
@@ -358,6 +361,8 @@ const postotpcheck = async (req, res) => {
   }
 };
 
+
+
 // get set password page
 const getSetPassword = async (req, res) => {
   try {
@@ -381,10 +386,17 @@ const getSetPassword = async (req, res) => {
 const postSetPassword = async (req, res) => {
   try {
     const email = req.body.email;
+    const user = await User.findOne({ email: email });
     if (req.body.password == req.body.conformpassword) {
-      const password = req.body.password;
-      const user = await User.findOne({ email: email });
 
+          const matchPassword = await bcrypt.compare(req.body.password, user.password);
+        if(matchPassword){
+          req.flash('fail','new password be not same as old password')
+          res.redirect(`/setpassword?email=${email}`);
+        }else{
+
+
+      const password = req.body.password;
       const hasedpassword = await bcrypt.hash(password, 10); //hash password
       user.password = hasedpassword;
 
@@ -392,9 +404,10 @@ const postSetPassword = async (req, res) => {
 
       req.flash("success", "password changed ");
       res.redirect("/login");
+
+}
     } else {
       req.flash("fail", "password and conform Passwords are not correct");
-
       res.redirect(`/setpassword?email=${email}`);
     }
   } catch (error) {
@@ -406,64 +419,7 @@ const postSetPassword = async (req, res) => {
 
 //------------------------------------------------- HOME PAGE --------------------------------------------------------
 
-//load home
-// const loadHome = async (req, res) => {
-//   try {
 
-    
-//     const user = req.session.user.email;
-//     const userId=req.session.user._id;
-   
-//     const userData = await User.findOne({ email: user });
-//     if (userData.isBlocked) {
-//       req.session.destroy();
-//       res.redirect("/login");
-//     } else {
-
-//       const cart=await Cart.findOne({userId:userId})
-
-//       const wishlist=await Wishlist.findOne({userId:userId})
-//       const category = await Category.find({ isListed: true });
-//       const brand = await Brand.find({ isListed: true });
-//       const searchTerm = req.query.search;
-//       console.log(searchTerm);
-      
-//      if(req.query){
-      
-//       const searchCriteria = {
-//         isPublished: true,
-//         $or: [
-//           { title: { $regex: searchTerm, $options: 'i' } }, 
-//           { description: { $regex: searchTerm, $options: 'i' } } 
-//         ],
-//       };
-//       const product = await Product.find(searchCriteria)
-//       .populate("brandName")
-//       .populate("category");
-//      }else{
-//       const product = await Product.find({ isBlocked: true })
-//       .populate("brandName")
-//       .populate("category");
-//      }
-
-
-
-
-
-
-    
-//       res.render("home", {
-//         product: product,
-//         category: category,
-//         brand: brand,
-//         cart,
-//         wishlist,
-//       });
-//     }
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };
 
 
 const loadHome = async (req, res) => {
@@ -486,9 +442,9 @@ const loadHome = async (req, res) => {
     let noProduct = '';
     
     const searchTerm = req.query.search;
-    const categoryFilter = req.query.category; // Get selected category from query params
+    const categoryFilter = req.query.category; 
 
-    // Building search criteria
+    // creeeeeate a serch creiteria
     let searchCriteria = { isPublished: true };
 
     if (searchTerm && searchTerm.trim() !== "") {
@@ -499,7 +455,7 @@ const loadHome = async (req, res) => {
     }
 
     if (categoryFilter && categoryFilter.trim() !== "") {
-      searchCriteria.category = categoryFilter; // Add category filter to search criteria
+      searchCriteria.category = categoryFilter; 
     }
 
     // Fetch products based on search criteria
@@ -623,7 +579,7 @@ const postEditUser = async (req, res) => {
   }
 };
 
-// get change password page
+// get change password page in user account
 const getChangePassword = async (req, res) => {
   try {
     const id = req.query.id;
@@ -648,14 +604,21 @@ const getChangePassword = async (req, res) => {
   }
 };
 
-//post change password
+//post change password in user account
 const postChangePassword = async (req, res) => {
   try {
     const id = req.body.id;
     const user = await User.findOne({ _id: id });
+
+
     const matchPassword = await bcrypt.compare(req.body.oldpass, user.password);
     if (matchPassword) {
       if (req.body.newpass == req.body.confirmpass) {
+
+        if(req.body.oldpass == req.body.newpass){
+            req.flash('fail',"new password not be same as old password")
+            res.redirect(`/changePassword?id=${id}`);
+        }else{
         const password = req.body.newpass;
         const hasedpassword = await bcrypt.hash(password, 10);
         user.password = hasedpassword;
@@ -663,6 +626,7 @@ const postChangePassword = async (req, res) => {
         await user.save();
         req.flash("msg", "Password Changed");
         res.redirect("/userAccount");
+      }
       }
     } else {
       req.flash("fail", "Current Password is Wrong ");
@@ -878,7 +842,7 @@ const verifyPayment = async (req, res) => {
 
       if (payment.status === 'captured') {
 
-        console.log("sddsffsdfsdfdsfdsddsfsdfsdfsffa",req.body);
+        // console.log("sddsffsdfsdfdsfdsddsfsdfsdfsffa",req.body);
                
       const  userId=req.session.user._id
 
@@ -926,7 +890,7 @@ const verifyPayment = async (req, res) => {
 
             await order.save()
             
-            console.log(order,"sddsfsdfsafsdfdsfdsfwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+         
             
             
             for(let item of cartItems.items){
@@ -939,9 +903,9 @@ const verifyPayment = async (req, res) => {
 
 
 
-          res.json({ success: true, redirectUrl: '/payment/success' }); // Redirect to success page
+          res.json({ success: true, redirectUrl: '/payment/success' }); 
       } else {
-          res.json({ success: false, redirectUrl: '/payment/fail' }); // Redirect to failure page
+          res.json({ success: false, redirectUrl: '/payment/fail' }); 
       }
   } catch (error) {
       console.error("Error fetching payment details:", error);
@@ -954,9 +918,6 @@ const verifyPayment = async (req, res) => {
 
 
 
-const search=async (req,res)=>{
-  
-}
 
 
 
@@ -984,5 +945,5 @@ module.exports = {
   getShop,
   googleAuth,
   /////////////////
-search
+ 
 };

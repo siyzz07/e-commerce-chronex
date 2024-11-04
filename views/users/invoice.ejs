@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Invoice</title>
+    <link rel="stylesheet" href="user/assets/css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+        .col-md-4 {
+            width: 30%;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+        }
+        .dashboard-menu ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .dashboard-menu li {
+            margin-bottom: 10px;
+        }
+        .dashboard-menu a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .dashboard-menu a:hover {
+            background-color: #f2f2f2;
+        }
+        .invoice-box {
+            width: 70%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+        }
+        .invoice-box h1 {
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+        }
+        .invoice-header, .invoice-details, .invoice-summary {
+            margin-bottom: 20px;
+        }
+        .invoice-header h2 {
+            margin: 0;
+            color: #333;
+        }
+        .invoice-details p, .invoice-summary p {
+            margin: 4px 0;
+            color: #555;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+        .total {
+            font-weight: bold;
+            color: #333;
+        }
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            color: white;
+            background-color: #333;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }   
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar (left) -->
+        <div class="col-md-4">
+            <div class="dashboard-menu">
+                <ul class="nav flex-column" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/userAccount"><i class="fi-rs-user mr-10"></i>Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/order"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/address"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/wallet"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
+                            <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
+                        </svg>&nbsp; Wallet</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Invoice Box (right) -->
+        <div class="invoice-box">
+            <h1>Order Invoice</h1>
+            <div class="invoice-header">
+                <h2>Chronex</h2>
+                <p>Maradu,Eranamkulam </p>
+                <p>Email: chronex123123@gmail.com </p>
+            </div>
+            <div class="invoice-details">
+                <p><strong>Orderer Name:</strong>&nbsp;<%= order. billingDetails.name %></p>
+                <p><strong>Orderer Email:</strong> &nbsp;<%= order.billingDetails.email %></p>
+                <p><strong>Order Date:</strong> &nbsp;<%= order.orderDate.toLocaleDateString() %></p>
+                <p><strong>Shipping Address:</strong>&nbsp;<%= order.billingDetails.address %>,<%= order.billingDetails.city %>,<%= order.billingDetails.state %>,<%= order.billingDetails.pincode %>,  %></p>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% order.items.forEach(item=>{ %>
+                        <tr>
+                        <td>$<%= item.product.title %></td>
+                        <td><%= item.quantity %></td>
+                        <td>$<%= item.product.price %></td>
+                        <td>$<%= item.price %></td>
+                    </tr>
+                   <% }) %>
+                 
+                   
+                    <tr class="total">
+                        <td colspan="3">Subtotal</td>
+                        <td>$<%= order.totalPrice %></td>
+                    </tr>
+                    <tr class="total">
+                        <td colspan="3">Shipping</td>
+                        <td>$00.00</td>
+                    </tr>
+                    <tr class="total">
+                        <td colspan="3">Discount</td>
+                        <td>-$<%= order.discount %></td>
+                    </tr>
+                    <tr class="total">
+                        <td colspan="3">Total</td>
+                        <td>$<%= order.totalWithDiscount %></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="invoice-summary">
+                <p><strong>Payment Method:</strong> Credit Card</p>
+                <p><strong>Order Status:</strong><%= order.status %></p>
+            </div>
+            <button class="download-btn" onclick="downloadInvoice()">Download Invoice</button>
+        </div>
+        
+       
+    </div>
+<script>
+   function downloadInvoice() {
+    const { jsPDF } = window.jspdf;
+
+    
+    const invoiceElement = document.querySelector('.invoice-box');
+    const downloadButton = document.querySelector('.download-btn');
+
+    
+    downloadButton.style.display = 'none';
+
+
+    html2canvas(invoiceElement, { scale: 2 }).then((canvas) => {
+        const pdf = new jsPDF('p', 'pt', 'a4');
+        const imgData = canvas.toDataURL('image/png');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        
+     
+        pdf.save(`invoice_${new Date().toISOString().split('T')[0]}.pdf`);
+
+        
+        downloadButton.style.display = 'block';
+    });
+}
+
+    
+</script>
+</body>
+</html>

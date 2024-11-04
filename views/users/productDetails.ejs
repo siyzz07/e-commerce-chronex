@@ -252,7 +252,9 @@
                     <div class="col-lg-12">
                         <div class="product-detail accordion-detail">
                             <div class="row mb-50">
-                                <% if(data.brandName.isListed == false || data.category.isListed == false ) {%>
+
+                                
+                                <% if(data.brandName.isListed == false || data.category.isListed == false || data.isBlocked == false ) {%>
                                        <p style="text-align: center;color: red;font-size: large;">item not available!</p> 
                                     <% }else{ %>
                                 <div class="col-md-6 col-sm-12 col-xs-12">

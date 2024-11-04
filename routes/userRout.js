@@ -101,7 +101,7 @@ user_route.get('/deletFromCart',cartController.deleFromCart)
 
 // chekout    order placing 
 user_route.get('/checkOut',userSession,orderController.getCheckOut)
-user_route.post('/submit-payment',orderController.placeOrder)
+user_route.post('/submit-payment',orderController.placeOrder)/////////////////////////////////////////////----------------
 user_route.get('/confirmorder',orderController.confirmOrder)
 
 
@@ -140,7 +140,7 @@ user_route.get('/deletCoupen',userSession,coupenController.deletCoupen)
 
 
 // razorpay
-user_route.post('/createOrder', orderController.createOrder);
+user_route.post('/createOrder', orderController.createOrder);/////////////////////----------------
 user_route.post('/verifyPayment',orderController.verifyPayment);
 
 //wallet
@@ -150,6 +150,10 @@ user_route.get('/wallet',userSession,walletController.getWallet)
 // search 
 // user_route.get('/search',userController.search)
 
+
+
+// invoice 
+user_route.get('/invoice',orderController.invoiceGet)
 
 
 module.exports=user_route

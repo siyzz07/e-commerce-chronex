@@ -9,7 +9,7 @@
           {
               product:{
                   type:mongoose.Schema.Types.ObjectId,
-                  ref:"product"
+                  ref:"Product"
               },
               price:{
                   type:Number,
@@ -61,5 +61,6 @@
           type: Date,
           default: Date.now(),
         },
+        
   })
   module.exports = mongoose.model("Order", orderSchema )

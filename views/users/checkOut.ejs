@@ -210,37 +210,7 @@
                                     <p>No addresses found for this user.</p>
                                <% } %>
                             </div>
-                            <!-- <div class="bt-1 border-color-1 mt-30 mb-30"></div> -->
-                            <!-- <div class="payment_method">
-                                <div class="mb-25">
-                                    <h5>Payment</h5>
-                                </div>
-                                <div class="payment_option">
-                                    <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios3" checked="">
-                                        <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Direct Bank Transfer</label>
-                                        <div class="form-group collapse in" id="bankTranfer">
-                                            <p class="text-muted mt-5">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration. </p>
-                                        </div>
-                                    </div>
-                                    <div class="custome-radio">
-                                        <input class="form-check-input" required="" value="Paypal" type="radio" name="payment_option" id="exampleRadios4" checked="">
-                                        <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">Check Payment</label>
-                                        <div class="form-group collapse in" id="checkPayment">
-                                            <p class="text-muted mt-5">Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode. </p>
-                                        </div>
-                                    </div>
-                                    <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" value="COD" name="payment_option" id="exampleRadios5" checked="">
-                                        <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">COD </label>
-                                        <div class="form-group collapse in" id="paypal">
-                                            <p class="text-muted mt-5">Pay via PayPal; you can pay with your credit card if you don't have a PayPal account.</p>
-                                        </div>
-                                    </div>
-                                    
-                                    
-                                   
-                                </div> -->
+                            
                             </div>
 
                     </div>
@@ -398,7 +368,8 @@
                                 <div class="mb-25">
                                     <h5>Payment</h5>
                                 </div>
-                                <div class="custome-radio">
+                                
+                                <div <% if(cart.totalWithDiscount >=2000){ %> style="display: none;" <% } %>   class="custome-radio">
                                     <!-- COD option -->
                                     <input class="form-check-input" required type="radio" value="COD" name="payment_option" id="exampleRadios5">
                                     <label class="form-check-label" for="exampleRadios5">COD</label>
@@ -490,7 +461,68 @@
 // //      </script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+<!-- <script>
+  document.getElementById('submitPayment').addEventListener('click', (event) => {
+    event.preventDefault(); // Prevents form submission if inside a form
+
+    const selectedOption = document.querySelector('input[name="payment_option"]:checked');
+    const selectedAddress = document.querySelector('input[name="address"]:checked');
+    const couponName = document.getElementById('couponNameInput') ? document.getElementById('couponNameInput').value.trim() : null;
+    const amount = document.getElementById('totalWithDiscount') ? document.getElementById('totalWithDiscount').value : 0;
+    
+    // Clear any previous error message
+    document.getElementById('wrong').textContent = '';
+
+    if (selectedOption && selectedAddress) {
+      const paymentMethod = selectedOption.value;
+      const address = selectedAddress.value;
+      const productIds = Array.from(document.querySelectorAll('.product-id')).map(input => input.value);
+
+      if (paymentMethod === 'Razorpay') {
+        fetch('/confirm-payment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            payment_option: paymentMethod,
+            address: address,
+            productIds: productIds,
+            couponName: couponName,
+            amount: amount  // Include amount in the request body
+          }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            window.location.href = data.redirectUrl; // Redirect on success
+          } else {
+            document.getElementById('wrong').textContent = 'Error placing order!'; // Display error on failure
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          document.getElementById('wrong').textContent = 'Error placing order!';
+        });
+      }
+
+    } else {
+      document.getElementById('wrong').textContent = 'Invalid! Check your payment method and shipping address.';
+    }
+  });
+</script> -->
+
+
+
+
+
+
+
+
 <script>
+
+
+
     document.getElementById('submitPayment').addEventListener('click', () => {
         const selectedOption = document.querySelector('input[name="payment_option"]:checked');
         const selectedAddress = document.querySelector('input[name="address"]:checked');
@@ -511,7 +543,13 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ amount, productIds, address, couponName }),
+                    body: JSON.stringify({ 
+                        amount,
+                        productIds, 
+                        address, 
+                        couponName ,
+                        payment_option: paymentMethod                                   
+                    }),
                 })
                 .then(res => {
                     if (!res.ok) {
@@ -524,12 +562,12 @@
     
                     // Configure Razorpay options
                     var options = {
-                        "key": "rzp_test_YCA4FknRMLC2X0", // Enter your Razorpay API key here
-                        "amount": order.amount, // Amount in smallest unit (paise for INR)
+                        "key": "rzp_test_YCA4FknRMLC2X0", 
+                        "amount": order.amount, 
                         "currency": "INR",
                         "name": "Chronex",
                         "description": "Test Transaction",
-                        "order_id": order.id, // Razorpay Order ID
+                        "order_id": order.id,
                         "handler": function (response) {
                             // Verify the payment by calling the backend
                             fetch('/verifyPayment', {
@@ -615,11 +653,11 @@
     const couponCodeInput = document.getElementById('couponCode');
     const applyCouponButton = document.getElementById('applyCouponButton');
 
-    // Add event listener to monitor changes in the coupon code input
+    
     couponCodeInput.addEventListener('input', function() {
-        // Show the Apply button if the input is not empty, otherwise hide it
+      
         if (couponCodeInput.value.trim() !== "") {
-            applyCouponButton.style.display = "inline-block"; // Show button
+            applyCouponButton.style.display = "inline-block";
         } else {
             applyCouponButton.style.display = "none"; // Hide button
         }
@@ -628,7 +666,7 @@
 <script>
     document.querySelector('form').addEventListener('submit', function(event) {
         const couponInput = document.getElementById('couponCode');
-        couponInput.value = couponInput.value.trim();  // Trim the input value
+        couponInput.value = couponInput.value.trim();
     });
 </script>
 
