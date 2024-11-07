@@ -25,6 +25,7 @@
             height: 400px; /* Fixed height for the chart */
             margin: auto; /* Center the chart container */
         }
+       
     </style>
    
 </head>
@@ -210,48 +211,11 @@
                 
             </div>
 
-                            <h3>Total Orders Dlivered : <span style="color: rgb(74, 173, 74)"><%= totaldeleverd  %></span></h3>
-                            <h3>Total Orders Shipped :<span style="color: rgb(74, 173, 74)"><%= totalshipped %></span></h3>
-                            <h3>Total Orders Candelled :<span style="color: rgb(240, 87, 87)"><%= totalcancelled %></span></h3>
-                            <h3>Total Orders Retruned :<span style="color:rgb(240, 87, 87)"><%= totalreturned %></span></h3>
-
-<br><br>
-                    <div style="display: flex;">
-                            <div  class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                                <div  class="custom_selec">
-                                    <select style="border-color: black;" class="form-select select-n">
-                                        <option selected>Top 10 Best-Selling products</option>
-                                        <% for(i=0;i<topProducts.length;i++){ %>
-
-                                        <option disabled><%= topProducts[i].title %></option>
-                                        <% } %>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <br>
-                            <div  class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                                <div  class="custom_selec">
-                                    <select style="border-color: black;" class="form-select select-n">
-                                        <option selected>Best-Selling Categories</option>
-                                        <% for(i=0;i<topCategories.length;i++){ %>
-                                        <option disabled><%= topCategories[i].categoryName %></option>
-                                       <% } %>
-                                    </select>
-                                </div>
-                            </div>
-                            <div  class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                                <div  class="custom_selec">
-                                    <select style="border-color: black;" class="form-select select-n">
-                                        <option selected>Best-Selling Brand</option>
-                                        <% for(i=0;i<topBrands.length;i++){ %>
-                                            <option disabled><%= topBrands[i].brandName %></option>
-                                           <% } %>
-                                        
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                            <h4>Total Orders Dlivered : <span style="color: rgb(74, 173, 74)"><%= totaldeleverd  %></span></h4><br>
+                            <h4>Total Orders Shipped :<span style="color: rgb(74, 173, 74)"><%= totalshipped %></span></h4><br>
+                            <h4>Total Orders Candelled :<span style="color: rgb(240, 87, 87)"><%= totalcancelled %></span></h4><br>
+                            <h4>Total Orders Retruned :<span style="color:rgb(240, 87, 87)"><%= totalreturned %></span></h4><hr style="height: 2px;">
+                    
                         <br><br>
                         <div class="col-md-3 col-6">
                             <select style="background-color: rgb(201, 201, 201); color: black;" class="form-select" id="option" onchange="selectChange()">
@@ -264,21 +228,130 @@
                         <div class="chart-container">
                             <canvas id="salesChart"></canvas>
                         </div>
-                          
-            
-            <!-- <div class="pagination-area mt-30 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">16</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
-                </nav>
+        
+        </section>  <br><br><br><br>
+
+
+
+      <!-- top sellilng=========== -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <header class="card-header">
+                        <div class="row gx-3">
+                           
+                           <P style="font-size: large;">10 Best-Selling P roducts</P> 
+                        </div>
+                    </header>
+                     <!-- card-header end// -->
+                    
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead style="background-color: rgb(206, 206, 206);">
+                                    <tr style="text-align: center;">
+                                        <th style="width: 33%;">SiNo</th>
+                                        <th style="width: 34%;">Product Name</th>
+                                        <th style="width: 33%;">Total Sold</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody style="background-color: rgb(241, 241, 241);">
+                                    <% for(i=0;i<topProducts.length;i++){ %>
+                                    <tr>
+                                        <td style="text-align: center;" ><%= i+1 %></td>
+                                        <td style="text-align: center;" ><b><%= topProducts[i].title %></b></td>
+                                        <td style="text-align: center;" ><%= topProducts[i].totalSold %></td>
+                                        
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div> <!-- table-responsive //end -->
+                    </div> <!-- card-body end// -->
+                </div> <!-- card end// -->
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <header class="card-header">
+                        <div class="row gx-3">
+                           
+                            <P style="font-size: large;">Best-Selling Categories</P> 
+                        </div>
+                    </header>
+                     <!-- card-header end// -->
+                    
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover " >
+                                <thead style="text-align: center;background-color: rgb(206, 206, 206);">
+                                    <tr>
+                                        <th style="width: 33%;">SiNo</th>
+                                        <th style="width: 33%;">Category Name</th>
+                                        <th style="width: 33%;">Total Sold</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody style="text-align: center;background-color: rgb(241, 241, 241);">
+                                    <% for(i=0;i<topCategories.length;i++){ %>
+                                    <tr>
+                                        <td><%= i+1 %></td>
+                                        <td><b><%= topCategories[i].categoryName %></b></td>
+                                        <td><%= topCategories[i].totalSold %></td>
+                                        
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div> <!-- table-responsive //end -->
+                    </div> <!-- card-body end// -->
+                </div> <!-- card end// -->
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <header class="card-header">
+                        <div class="row gx-3">
+                           
+                           <P style="font-size: large;">
+                            Best-Selling Brand </P> 
+                        </div>
+                    </header>
+                     <!-- card-header end// -->
+                    
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead style="text-align: center;background-color: rgb(206, 206, 206);">
+                                    <tr>
+                                        <th style="width: 33%;">SiNo</th>
+                                        <th style="width: 33%;">Brand Name</th>
+                                        <th style="width: 33%;">Total Sold</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody style="text-align: center;background-color: rgb(241, 241, 241);">
+                                    <% for(i=0;i<topBrands.length;i++){ %>
+                                    <tr>
+                                        <td><%= i+1 %></td>
+                                        <td><b><%= topBrands[i].brandName %></b></td>
+                                        <td><%= topBrands[i].totalSold %></td>
+                                        
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div> <!-- table-responsive //end -->
+                    </div> <!-- card-body end// -->
+                </div> <!-- card end// -->
+            </div>
+            <!-- <div class="col-md-3">
+                <div class="card mb-4">
+                    
+                </div> 
             </div> -->
-        </section> <!-- content-main end// -->
+        </div>
+        
        
     </main>
  

@@ -716,6 +716,11 @@ const getShop = async (req, res) => {
     const sortOption = req.query.sort;
     const searchTerm = req.query.search;
     const categoryFilter = req.query.category; 
+    const userId = req.session.user._id;
+    const cart = await Cart.findOne({ userId: userId });
+    const wishlist = await Wishlist.findOne({ userId: userId });
+
+
     let noProduct = '';
     let sortmethod = {};
     let selected;
@@ -790,7 +795,9 @@ const getShop = async (req, res) => {
       category: category,
       brand: brand,
       selected,
-      noProduct
+      noProduct,
+      cart,
+      wishlist
     });
   } catch (error) {
     console.log(error.message);

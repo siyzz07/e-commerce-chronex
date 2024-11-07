@@ -391,14 +391,18 @@
                             <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                             <div class="payment_method">
                                 <div class="mb-25">
+                                    <% if(cart.totalWithDiscount >2000){ %>
+                                        <P style="color: #8d8686;">Total 2000 about can't shop with COD</P>
+                                        <% } %> <br>
                                     <h5>Payment</h5>
                                 </div>
                                 
-                                <div <% if(cart.totalWithDiscount >=2000){ %> style="display: none;" <% } %>   class="custome-radio">
+                                <div <% if(cart.totalWithDiscount >=2001){ %> style="display: none;" <% } %>   class="custome-radio">
                                     <!-- COD option -->
                                     <input class="form-check-input" required type="radio" value="COD" name="payment_option" id="exampleRadios5">
                                     <label class="form-check-label" for="exampleRadios5">COD</label>
                                 </div>
+                               
                                 
                                 <div class="custome-radio">
                                     <!-- Razorpay option -->
