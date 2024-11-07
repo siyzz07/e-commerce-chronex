@@ -11,7 +11,7 @@ const googleStrategy = require("passport-google-oauth20").Strategy; //google aut
 const razorpayInstance = require("../config/razorpayConfig"); //rezorpay
 const Transaction = require("../models/transaction");
 const Wallet = require("../models/wallet");
-
+const Wishlist=require('../models/wishlist')
 // ------------------------------------ IN USER SIDE ----------------------------------------------
 
 // load checkoup page  from user side
@@ -100,6 +100,8 @@ const getCheckOut = async (req, res) => {
 const placeOrder = async (req, res) => {
   try {
     const userId = req.session.user._id;
+    // const cart = await Cart.findOne({ userId: userId });
+    // const wishlist = await Wishlist.findOne({ userId: userId });
 
     const { payment_option, address, couponName } = req.body;
     const coupenAddUser = await Coupen.updateOne(
@@ -184,6 +186,10 @@ const confirmOrder = async (req, res) => {
 const getOrderHistory = async (req, res) => {
   try {
     const id = req.session.user._id;
+    const userId = req.session.user._id;
+    const cart = await Cart.findOne({ userId: userId });
+    const wishlist = await Wishlist.findOne({ userId: userId });
+
     if (!id) {
       return res.redirect("/home");
     }
@@ -220,7 +226,9 @@ const getOrderHistory = async (req, res) => {
       orders: orders,
       currentPage: page,
       totalPages: totalPages,
-      fail
+      fail,
+      cart,
+      wishlist
     });
   } catch (error) {
     console.log(error.message);
@@ -238,6 +246,11 @@ const getOrderDeatails = async (req, res) => {
       res.redirect("/order");
     }
     const userId = req.session.user._id;
+    const cart = await Cart.findOne({ userId: userId });
+    const wishlist = await Wishlist.findOne({ userId: userId });
+
+
+
     const orderData = await Order.findOne({ _id: orderId }).populate({
       path: "items.product",
       model: "Product",
@@ -251,6 +264,8 @@ const getOrderDeatails = async (req, res) => {
       brand: brand,
       order: orderData,
       user: user,
+      cart,
+      wishlist
     });
   } catch (error) {
     console.log(error.message);

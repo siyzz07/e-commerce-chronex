@@ -4,7 +4,7 @@ const Brand=require('../models/brand')
 const Product=require('../models/porduct')
 const { productDetails } = require('./userControl')
 const Coupen=require('../models/coupen')
-
+const Wishlist=require('../models/wishlist')
 
 
 //add product to cart from product details  page click add to cart
@@ -121,7 +121,13 @@ const addToCartFromWishlist=async (req,res)=>{
 // get cart page and sees the cart total 
 const getCart =async (req,res)=>{
     try{
-        userId=req.session.user._id
+       const userId=req.session.user._id
+       
+
+
+        const cart = await Cart.findOne({ userId: userId });
+        const wishlist = await Wishlist.findOne({ userId: userId });
+    
         const category=await Category.find({isListed:true})
         const brand=await Brand.find({isListed:true})
         // const cartData=await Cart.findOne({userId:userId}).populate('items.product')
@@ -142,7 +148,7 @@ const getCart =async (req,res)=>{
         const fail=req.flash('fail')
     
         
-        res.render('cart',{category:category,brand:brand,cartData:cartData||{ items: [] },msg,fail})
+        res.render('cart',{category:category,brand:brand,cartData:cartData||{ items: [] },msg,fail,cart,wishlist})
     }catch(error){
         console.log(error.message);
         

@@ -2,6 +2,8 @@ const Address=require('../models/address')
 const Product=require('../models/porduct')
 const Category=require('../models/category')
 const Brand=require('../models/brand')
+const Cart =require('../models/cart')
+const Wishlist=require('../models/wishlist')
 
 
 
@@ -25,6 +27,8 @@ const Brand=require('../models/brand')
 const getAddress = async (req, res) => {
     try {
         const userId = req.session.user._id;
+        const cart = await Cart.findOne({ userId: userId });
+        const wishlist = await Wishlist.findOne({ userId: userId });
         const userAddress = await Address.findOne({ userId: req.session.user._id });
         const category = await Category.find({ isListed: true });
         const brand = await Brand.find({ isListed: true });
@@ -38,7 +42,9 @@ const getAddress = async (req, res) => {
             msg,
             userAddress: userAddress || { addressData: [] },  
             fail,
-            userId
+            userId,
+            cart,
+            wishlist
         });
     } catch (error) {
         console.log(error.message);
@@ -50,15 +56,17 @@ const getAddress = async (req, res) => {
 const getAddAddress=async (req,res)=>{
     try{
         const id=req.query.id
-        
-        
+        const userId = req.session.user._id;
+        const cart = await Cart.findOne({ userId: userId });
+    const wishlist = await Wishlist.findOne({ userId: userId });
+
         if(!id){
             res.redirect('/address')
         }else{
         
         const category=await Category.find({isListed:true})
         const brand=await Brand.find({isListed:true})
-        res.render('addAddress',{category:category,brand:brand,})
+        res.render('addAddress',{category:category,brand:brand,cart,wishlist})
     }
     }catch(error){
         console.log(error.message);
@@ -147,6 +155,9 @@ const editAddress=async (req,res)=>{
     try{
         const addressid = req.query.addressid;
         const userId=req.session.user._id
+        const cart = await Cart.findOne({ userId: userId });
+        const wishlist = await Wishlist.findOne({ userId: userId });
+
         if(!addressid){
             res.redirect('/address')
         }else{
@@ -157,7 +168,7 @@ const editAddress=async (req,res)=>{
         
         const category=await Category.find({isListed:true})
         const brand=await Brand.find({isListed:true})
-        res.render('editAddress',{category:category,brand:brand,address:address,userId})
+        res.render('editAddress',{category:category,brand:brand,address:address,userId,cart,wishlist})
     }
     }catch(error){
         console.log(error.message);

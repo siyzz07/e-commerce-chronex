@@ -495,6 +495,11 @@ const loadHome = async (req, res) => {
 const productDetails = async (req, res) => {
   try {
     const id = req.query.id;
+    const userId = req.session.user._id;
+    const cart = await Cart.findOne({ userId: userId });
+    const wishlist = await Wishlist.findOne({ userId: userId });
+
+
     const productData = await Product.findOne({ _id: id })
       .populate("brandName")
       .populate("category");
@@ -510,6 +515,8 @@ const productDetails = async (req, res) => {
         category: category,
         msg,
         fail,
+        cart,
+        wishlist
       });
     } else {
       res.redirect("/home");
@@ -527,10 +534,12 @@ const productDetails = async (req, res) => {
 
 const account = async (req, res) => {
   try {
+    const userId = req.session.user._id;
     const email = req.session.user.email;
 
     const user = await User.findOne({ email: email });
-
+    const cart = await Cart.findOne({ userId: userId });
+    const wishlist = await Wishlist.findOne({ userId: userId });
     const category = await Category.find({ isListed: true });
     const brand = await Brand.find({ isListed: true });
 
@@ -540,6 +549,8 @@ const account = async (req, res) => {
       brand: brand,
       user: user,
       msg,
+      cart,
+      wishlist
     });
   } catch (error) {
     console.log(error.message);
@@ -583,6 +594,9 @@ const postEditUser = async (req, res) => {
 const getChangePassword = async (req, res) => {
   try {
     const id = req.query.id;
+    const userId = req.session.user._id;
+    const cart = await Cart.findOne({ userId: userId });
+    const wishlist = await Wishlist.findOne({ userId: userId })
     if (id) {
       const user = await User.findOne({ _id: id });
       const category = await Category.find({ isListed: true });
@@ -595,6 +609,8 @@ const getChangePassword = async (req, res) => {
         brand: brand,
         user: user,
         fail,
+        cart,
+        wishlist
       });
     } else {
       res.redirect("/userAccount");

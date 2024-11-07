@@ -1,7 +1,8 @@
-const Wishlist=require('../models/wishlist')
+
 const Category = require("../models/category");
 const Brand = require("../models/brand");
-
+const Cart=require('../models/cart')
+const Wishlist=require('../models/wishlist')
 
 
 
@@ -63,7 +64,10 @@ const getWishlist=async (req,res)=>{
     
         const userId=req.session.user._id
         
-        
+        const cart = await Cart.findOne({ userId: userId });
+        const wishlists = await Wishlist.findOne({ userId: userId });
+    
+    
         const category=await Category.find({isListed:true})
         const brand=await Brand.find({isListed:true})
         const wishlist = await Wishlist.findOne({ userId: userId })
@@ -77,7 +81,7 @@ const getWishlist=async (req,res)=>{
         const fail=req.flash('fail')
         const msg=req.flash('msg')
         
-        res.render('wishlist',{category:category,brand:brand ,product:wishlist||0,fail,msg})
+        res.render('wishlist',{category:category,brand:brand ,product:wishlist||0,fail,msg,wishlists,cart})
     }catch(error){
         console.log(error.message);
         
