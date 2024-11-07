@@ -93,12 +93,7 @@
                 </a>
                
               </li>
-              <li class="menu-item ">
-                <a class="menu-link" href="#">
-                  <i class="icon material-icons md-person"></i>
-                  <span class="text">Banners</span>
-                </a>
-              </li>
+             
               <li class="menu-item active ">
                 <a class="menu-link" href="#">
                     <i class="icon material-icons md-store"></i>
@@ -117,17 +112,7 @@
       <header class="main-header navbar">
         <div class="col-search">
           <form class="searchform">
-            <!-- <div class="input-group">
-              <input
-                list="search_terms"
-                type="text"
-                class="form-control"
-                placeholder="Search term"
-              />
-              <button class="btn btn-light bg" type="button">
-                <i class="material-icons md-search"></i>
-              </button>
-            </div> -->
+           
             <datalist id="search_terms">
               <option value="Products"></option>
               <option value="New orders"></option>
@@ -183,26 +168,7 @@
                                         <button type="submit" class="btn btn-primary" onclick="submitReportForm()">Submit</button>
                                 </div>
                         
-                                <!-- Status Select Section -->
-                                <!-- <div style="width: 50%; display: none;" id="date-range">
-                                    <div class="row gx-3">
-                                        <div class="col-lg-12 col-md-12">
-                                            <div class="mb-2">
-                                                <div style="display: flex; gap: 10px; align-items: center;">
-                                                    <label for="start-date" class="form-label">Start Date</label>
-                                                    <input type="date" class="form-control" name="start-date" id="start-date">
-                                
-                                                    <label for="end-date" class="form-label">End Date</label>
-                                                    <input type="date" class="form-control" name="end-date" id="end-date">
-                                                </div>
-                                                <div style="display: flex; align-items: center; justify-content: center; margin-top: 10px;">
-                                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
-                                
+                              
                             </div>
                         </header>
                         <div class="row">
@@ -307,7 +273,8 @@
                               </div>
                           </div>
                         </div>
-                        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                        <% if(report.length != 0){ %>
+                          <div style="display: flex; justify-content: flex-end; gap: 10px;">
                             <div>
                                <button onclick="exportToPDF()" type="submit" class="btn btn-primary">Download as PDF</button>
                             </div>
@@ -315,6 +282,8 @@
                                <button onclick="exportToExcel()" type="submit" class="btn btn-primary">Download as Excel</button>
                             </div>
                          </div>
+                          <% } %>
+                      
                          
                          <div class="card-body">
                             <div class="table-responsive">
@@ -374,13 +343,7 @@
              
 
             
-        </section> <!-- content-main end// -->
-        <!-- <div class="container">
-        
-        <div class="row">
-            <div class="col-md-3">
-               
-            </div> -->
+        </section> 
        
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -393,19 +356,7 @@
     <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="assets/js/main.js" type="text/javascript"></script>
-    <!-- if choose custom date  the date box will come -->
-    <!-- <script>
-        function toggleDateFields() {
-            var reportType = document.getElementById('report-type').value;
-            var dateRangeDiv = document.getElementById('date-range');
-        
-            if (reportType === 'custom') {
-                dateRangeDiv.style.display = 'block'; // Show date fields
-            } else {
-                dateRangeDiv.style.display = 'none';  // Hide date fields
-            }
-        }
-        </script> -->
+   
         <script>
             function toggleDateFields() {
                 const reportType = document.getElementById('report-type').value;
