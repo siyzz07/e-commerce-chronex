@@ -426,6 +426,9 @@
     });
   </script>
 
+<script>
+    const razorpayKey = "<%= process.env.RAZORPAY_KEY_ID %>"; 
+</script>
 
 
 <script>
@@ -452,7 +455,7 @@ console.log(orderId);
 
            
             const options = {
-                key:process.env.Razorpay_key,
+                key:razorpayKey,
                 amount: order.amount,
                 currency: "INR",
                 name: "Chronex",

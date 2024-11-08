@@ -259,7 +259,7 @@ const dashboard = async (req, res) => {
       },
     ]);
 
-    const allDaysOfWeek =  [];
+    const allDaysOfWeek = [];
     for (let i = 0; i < 7; i++) {
       const day = moment(startOfWeek).add(i, "days");
       allDaysOfWeek.push({
@@ -306,7 +306,7 @@ const dashboard = async (req, res) => {
     ]);
 
     const monthlySalesData = Array.from({ length: 12 }, (_, index) => ({
-      month: moment().month(index).format("MMMM"), 
+      month: moment().month(index).format("MMMM"),
       year: currentYear,
       totalSales: 0,
       totalOrders: 0,
@@ -318,17 +318,11 @@ const dashboard = async (req, res) => {
       monthlySalesData[monthIndex].totalOrders = sale.totalOrders;
     });
 
+    const weeklyreport = allDaysOfWeek.map((day) => day.totalSales);
+    const dailyreport = allDaysOfWeek.map((day) => day.day);
 
-  
-
-    const weeklyreport = allDaysOfWeek.map(day => day.totalSales);
-    const dailyreport = allDaysOfWeek.map(day => day.day);
-  
-    const monthlyreport=monthlySalesData.map(val=>val.totalSales)
-    const months=monthlySalesData.map(val=>val.month)
-    
-
-   
+    const monthlyreport = monthlySalesData.map((val) => val.totalSales);
+    const months = monthlySalesData.map((val) => val.month);
 
     res.render("home", {
       totalRevenue,
@@ -342,15 +336,11 @@ const dashboard = async (req, res) => {
       topProducts,
       topCategories,
       topBrands,
-    // --chart--
-    weeklyreport,
-    dailyreport,
-    monthlyreport,
-    months,
-    
-    
-      
-      
+      // --chart--
+      weeklyreport,
+      dailyreport,
+      monthlyreport,
+      months,
     });
   } catch (error) {
     console.log(error.message);

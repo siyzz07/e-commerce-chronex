@@ -451,9 +451,11 @@
 
 
 
+<script>
+    const razorpayKey = "<%= process.env.RAZORPAY_KEY_ID %>"; 
+</script>
 
 <script>
-
 
 
     document.getElementById('submitPayment').addEventListener('click', () => {
@@ -495,7 +497,7 @@
     
             
                     var options = {
-                     "key": "rzp_test_YCA4FknRMLC2X0",
+                     "key":razorpayKey,
                      "amount": order.amount,
                      "currency": "INR",
                      "name": "Chronex",
