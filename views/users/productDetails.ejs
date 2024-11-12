@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-product-full.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:43 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Evara - eCommerce HTML Template</title>
+    <title>Chronex</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +14,6 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link rel="stylesheet" href="user/assets/css/main.css">
 </head>
@@ -239,6 +238,9 @@
 
         <section class="mt-50 mb-50">
             <div class="container">
+                <p style="color: green; text-align: center;"><%= msg %></p>
+                <p style="color: rgb(255, 0, 0); text-align: center;"><%= fail%></p>
+                <br>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="product-detail accordion-detail">
@@ -277,7 +279,7 @@
                                 </div>
 
 
-
+                                  
 
                                 <div class="col-md-6 col-sm-12 col-xs-12">
                                     <div class="detail-info">
@@ -333,9 +335,7 @@
                                             <% if(data.stock <=0){ %>
                                                 <button style="caret-color: rgb(98, 107, 107);" type="" class="button text-secondary text-danger">Out of Stock</button>
                                                 <% }else{ %>
-                                                    <p style="color: green; text-align: center;"><%= msg %></p>
-                                                    <p style="color: rgb(255, 0, 0); text-align: center;"><%= fail%></p>
-                                                    <br>
+                                                   
                                                     <form action="/addToCart?id=<%= data._id %>" method="post">
                                                 <button  class="button button-add-to-cart">Add to cart</button>
                                                 <br>
