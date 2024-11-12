@@ -8,14 +8,13 @@ const Product = require("../models/porduct");
 const Category = require("../models/category");
 const Brand = require("../models/brand");
 const UserOtpStore = require("../models/userOtpVerification");
-const Cart=require('../models/cart')
-const Wishlist=require('../models/wishlist')
+const Cart = require("../models/cart");
+const Wishlist = require("../models/wishlist");
 const Passport = require("passport"); //google auth
 const googleStrategy = require("passport-google-oauth20").Strategy; //google auth
-const razorpayInstance=require('../config/razorpayConfig')//rezorpay
-const Coupen=require('../models/coupen');
+const razorpayInstance = require("../config/razorpayConfig"); //rezorpay
+const Coupen = require("../models/coupen");
 const Offer = require("../models/offer");
-
 
 //-------------------------------------------------- LOGIN PAGE --------------------------------------------------------------------------
 
@@ -177,8 +176,6 @@ const otpVarification = async (req, res) => {
     console.log(error.message);
   }
 };
-
-
 
 //in otp vatification page chek the two otp's are same or not
 const otpVarificationCheck = async (req, res) => {
@@ -361,8 +358,6 @@ const postotpcheck = async (req, res) => {
   }
 };
 
-
-
 // get set password page
 const getSetPassword = async (req, res) => {
   try {
@@ -388,24 +383,23 @@ const postSetPassword = async (req, res) => {
     const email = req.body.email;
     const user = await User.findOne({ email: email });
     if (req.body.password == req.body.conformpassword) {
+      const matchPassword = await bcrypt.compare(
+        req.body.password,
+        user.password
+      );
+      if (matchPassword) {
+        req.flash("fail", "new password be not same as old password");
+        res.redirect(`/setpassword?email=${email}`);
+      } else {
+        const password = req.body.password;
+        const hasedpassword = await bcrypt.hash(password, 10); //hash password
+        user.password = hasedpassword;
 
-          const matchPassword = await bcrypt.compare(req.body.password, user.password);
-        if(matchPassword){
-          req.flash('fail','new password be not same as old password')
-          res.redirect(`/setpassword?email=${email}`);
-        }else{
+        await user.save();
 
-
-      const password = req.body.password;
-      const hasedpassword = await bcrypt.hash(password, 10); //hash password
-      user.password = hasedpassword;
-
-      await user.save();
-
-      req.flash("success", "password changed ");
-      res.redirect("/login");
-
-}
+        req.flash("success", "password changed ");
+        res.redirect("/login");
+      }
     } else {
       req.flash("fail", "password and conform Passwords are not correct");
       res.redirect(`/setpassword?email=${email}`);
@@ -418,9 +412,6 @@ const postSetPassword = async (req, res) => {
 //-------------------------------------------------------  END  -----------------------------------------------------------
 
 //------------------------------------------------- HOME PAGE --------------------------------------------------------
-
-
-
 
 const loadHome = async (req, res) => {
   try {
@@ -439,32 +430,29 @@ const loadHome = async (req, res) => {
     const brand = await Brand.find({ isListed: true });
 
     let product;
-    let noProduct = '';
-    
+    let noProduct = "";
+
     const searchTerm = req.query.search;
-    const categoryFilter = req.query.category; 
+    const categoryFilter = req.query.category;
 
     // creeeeeate a serch creiteria
     let searchCriteria = { isPublished: true };
 
     if (searchTerm && searchTerm.trim() !== "") {
       searchCriteria.$or = [
-        { title: { $regex: String(searchTerm), $options: 'i' } },
-        { description: { $regex: String(searchTerm), $options: 'i' } }
+        { title: { $regex: String(searchTerm), $options: "i" } },
+        { description: { $regex: String(searchTerm), $options: "i" } },
       ];
     }
 
     if (categoryFilter && categoryFilter.trim() !== "") {
-      searchCriteria.category = categoryFilter; 
+      searchCriteria.category = categoryFilter;
     }
 
     // Fetch products based on search criteria
     product = await Product.find(searchCriteria)
       .populate("brandName")
       .populate("category");
-
-
-     
 
     // Check if no product is found
     if (!product || product.length === 0) {
@@ -478,14 +466,12 @@ const loadHome = async (req, res) => {
       brand: brand,
       cart,
       wishlist,
-      noProduct
+      noProduct,
     });
-
   } catch (error) {
     console.log(error.message);
   }
 };
-
 
 //-------------------------------------------------------  END  -----------------------------------------------------------
 
@@ -498,7 +484,6 @@ const productDetails = async (req, res) => {
     const userId = req.session.user._id;
     const cart = await Cart.findOne({ userId: userId });
     const wishlist = await Wishlist.findOne({ userId: userId });
-
 
     const productData = await Product.findOne({ _id: id })
       .populate("brandName")
@@ -516,7 +501,7 @@ const productDetails = async (req, res) => {
         msg,
         fail,
         cart,
-        wishlist
+        wishlist,
       });
     } else {
       res.redirect("/home");
@@ -550,7 +535,7 @@ const account = async (req, res) => {
       user: user,
       msg,
       cart,
-      wishlist
+      wishlist,
     });
   } catch (error) {
     console.log(error.message);
@@ -596,7 +581,7 @@ const getChangePassword = async (req, res) => {
     const id = req.query.id;
     const userId = req.session.user._id;
     const cart = await Cart.findOne({ userId: userId });
-    const wishlist = await Wishlist.findOne({ userId: userId })
+    const wishlist = await Wishlist.findOne({ userId: userId });
     if (id) {
       const user = await User.findOne({ _id: id });
       const category = await Category.find({ isListed: true });
@@ -610,7 +595,7 @@ const getChangePassword = async (req, res) => {
         user: user,
         fail,
         cart,
-        wishlist
+        wishlist,
       });
     } else {
       res.redirect("/userAccount");
@@ -626,23 +611,21 @@ const postChangePassword = async (req, res) => {
     const id = req.body.id;
     const user = await User.findOne({ _id: id });
 
-
     const matchPassword = await bcrypt.compare(req.body.oldpass, user.password);
     if (matchPassword) {
       if (req.body.newpass == req.body.confirmpass) {
+        if (req.body.oldpass == req.body.newpass) {
+          req.flash("fail", "new password not be same as old password");
+          res.redirect(`/changePassword?id=${id}`);
+        } else {
+          const password = req.body.newpass;
+          const hasedpassword = await bcrypt.hash(password, 10);
+          user.password = hasedpassword;
 
-        if(req.body.oldpass == req.body.newpass){
-            req.flash('fail',"new password not be same as old password")
-            res.redirect(`/changePassword?id=${id}`);
-        }else{
-        const password = req.body.newpass;
-        const hasedpassword = await bcrypt.hash(password, 10);
-        user.password = hasedpassword;
-
-        await user.save();
-        req.flash("msg", "Password Changed");
-        res.redirect("/userAccount");
-      }
+          await user.save();
+          req.flash("msg", "Password Changed");
+          res.redirect("/userAccount");
+        }
       }
     } else {
       req.flash("fail", "Current Password is Wrong ");
@@ -709,19 +692,16 @@ const postChangePassword = async (req, res) => {
 //   }
 // };
 
-
-
 const getShop = async (req, res) => {
   try {
     const sortOption = req.query.sort;
     const searchTerm = req.query.search;
-    const categoryFilter = req.query.category; 
+    const categoryFilter = req.query.category;
     const userId = req.session.user._id;
     const cart = await Cart.findOne({ userId: userId });
     const wishlist = await Wishlist.findOne({ userId: userId });
 
-
-    let noProduct = '';
+    let noProduct = "";
     let sortmethod = {};
     let selected;
 
@@ -764,28 +744,27 @@ const getShop = async (req, res) => {
       searchCriteria = {
         isPublished: true,
         $or: [
-          { title: { $regex: String(searchTerm), $options: 'i' } },
-          { description: { $regex: String(searchTerm), $options: 'i' } }
+          { title: { $regex: String(searchTerm), $options: "i" } },
+          { description: { $regex: String(searchTerm), $options: "i" } },
         ],
       };
     }
 
-    // Category 
+    // Category
     if (categoryFilter && categoryFilter.trim() !== "") {
       searchCriteria.category = categoryFilter;
     }
 
-    
     const product = await Product.find(searchCriteria)
       .populate("brandName")
       .populate("category")
       .sort(sortmethod);
 
-    
     if (!product || product.length === 0) {
-      noProduct = `No products found for: ${searchTerm || "your search criteria"}`;
+      noProduct = `No products found for: ${
+        searchTerm || "your search criteria"
+      }`;
     }
-
 
     const category = await Category.find({ isListed: true });
     const brand = await Brand.find({ isListed: true });
@@ -797,152 +776,124 @@ const getShop = async (req, res) => {
       selected,
       noProduct,
       cart,
-      wishlist
+      wishlist,
     });
   } catch (error) {
     console.log(error.message);
   }
 };
 
-
 // ------------------------------------- GOOGLE AUTH ----------------------------------
 
 // This handles redirection after successful Google authentication
 googleAuth = (req, res) => {
-  try{
-
+  try {
     if (req.user) {
       const useremail = req.user.email;
       req.session.user = { email: req.user.email, _id: req.user._id };
-  
+
       return res.redirect("/home");
     } else {
       return res.redirect("/login");
     }
-
-
-  }catch(error){
+  } catch (error) {
     console.log(error.message);
-    
   }
- 
 };
 
 // ------------------------------------- END ----------------------------------
 
 // ------------------------------------ RAZORPAY ----------------------------------------------
 
-
 const createOrder = async (req, res) => {
-
-  
   const options = {
     amount: req.body.amount * 100, // Convert to paisa
     currency: "INR",
-    receipt: "order_rcptid_11"
+    receipt: "order_rcptid_11",
   };
 
   try {
-
     const order = await razorpayInstance.orders.create(options);
-  
+
     res.json(order);
   } catch (error) {
     console.error("Error creating order:", error); // Log any errors
-    res.status(500).send({ error: 'Failed to create Razorpay order' });
+    res.status(500).send({ error: "Failed to create Razorpay order" });
   }
 };
 
-
 const verifyPayment = async (req, res) => {
-
-
   const { razorpay_payment_id } = req.body;
 
   try {
-     
-      const payment = await razorpayInstance.payments.fetch(razorpay_payment_id);
+    const payment = await razorpayInstance.payments.fetch(razorpay_payment_id);
 
-      if (payment.status === 'captured') {
+    if (payment.status === "captured") {
+      // console.log("sddsffsdfsdfdsfdsddsfsdfsdfsffa",req.body);
 
-        // console.log("sddsffsdfsdfdsfdsddsfsdfsdfsffa",req.body);
-               
-      const  userId=req.session.user._id
+      const userId = req.session.user._id;
 
       const { payment_option, address, couponName } = req.body;
-       const coupenAddUser = await Coupen.updateOne(
-        { coupenCode: couponName }, 
+      const coupenAddUser = await Coupen.updateOne(
+        { coupenCode: couponName },
         {
-            $push: { usedBy: userId },  
-            $inc: { usedCount: 1 }      
+          $push: { usedBy: userId },
+          $inc: { usedCount: 1 },
         }
-    );
-    
+      );
 
-       const user =await User.findOne({_id:userId})
-       const shippingAddress=await Address.findOne({"addressData._id":address},{ "addressData.$": 1 } )
+      const user = await User.findOne({ _id: userId });
+      const shippingAddress = await Address.findOne(
+        { "addressData._id": address },
+        { "addressData.$": 1 }
+      );
 
-       const cartItems = await Cart.findOne({userId:userId})
-        const order =new Order({
-            userId:userId,
-            items:cartItems.items.map((item)=>({
-                product:item.product._id,
-                price:item.price,
-                quantity:item.quantity
+      const cartItems = await Cart.findOne({ userId: userId });
+      const order = new Order({
+        userId: userId,
+        items: cartItems.items.map((item) => ({
+          product: item.product._id,
+          price: item.price,
+          quantity: item.quantity,
+        })),
+        totalPrice: cartItems.totalPrice,
+        billingDetails: {
+          name: user.name,
+          email: user.email,
+          phno: user.phone,
+          address: shippingAddress.addressData[0].address,
+          secPnoe: shippingAddress.addressData[0].secphone,
+          pincode: shippingAddress.addressData[0].pincode,
+          country: shippingAddress.addressData[0].country,
+          state: shippingAddress.addressData[0].state,
+          city: shippingAddress.addressData[0].city,
+        },
+        discount: cartItems.discount,
+        totalWithDiscount: cartItems.totalWithDiscount,
+        paymentMethod: payment_option,
+        paymentStatus: "pending",
+        status: "Pending",
+      });
 
-            })),
-            totalPrice:cartItems.totalPrice,
-            billingDetails:{
-                name:user.name,
-                email: user.email,
-                phno: user.phone,
-                address:shippingAddress.addressData[0].address,
-                secPnoe: shippingAddress.addressData[0].secphone,
-                pincode: shippingAddress.addressData[0].pincode,
-                country: shippingAddress.addressData[0].country,
-                state: shippingAddress.addressData[0].state,
-                city: shippingAddress.addressData[0].city,
-              },
-              discount:cartItems.discount,
-              totalWithDiscount:cartItems.totalWithDiscount,
-              paymentMethod:payment_option,
-              paymentStatus:'pending',
-              status:'Pending'
-        
-            });
+      await order.save();
 
-            await order.save()
-            
-         
-            
-            
-            for(let item of cartItems.items){
-                await Product.findByIdAndUpdate(item.product._id,{
-                    $inc:{stock:-item.quantity}
-                })
-            }
-
-
-
-
-
-          res.json({ success: true, redirectUrl: '/payment/success' }); 
-      } else {
-          res.json({ success: false, redirectUrl: '/payment/fail' }); 
+      for (let item of cartItems.items) {
+        await Product.findByIdAndUpdate(item.product._id, {
+          $inc: { stock: -item.quantity },
+        });
       }
+
+      res.json({ success: true, redirectUrl: "/payment/success" });
+    } else {
+      res.json({ success: false, redirectUrl: "/payment/fail" });
+    }
   } catch (error) {
-      console.error("Error fetching payment details:", error);
-      res.status(500).send({ error: 'Failed to verify payment' });
+    console.error("Error fetching payment details:", error);
+    res.status(500).send({ error: "Failed to verify payment" });
   }
 };
 
-
 // --------------------------------------------- END ----------------------------------
-
-
-
-
-
 
 module.exports = {
   loadLogin,
@@ -968,5 +919,4 @@ module.exports = {
   getShop,
   googleAuth,
   /////////////////
- 
 };

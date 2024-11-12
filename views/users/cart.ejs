@@ -197,9 +197,12 @@
                             </table>
                         </div>
                         <div class="cart-action text-end">
-                            <a class="btn mr-10 mb-sm-15"  id="update-cart-btn"><i class="fi-rs-shuffle mr-10"></i>Update Cart</a>
+                            <!-- <a class="btn mr-10 mb-sm-15"  id="update-cart-btn"><i class="fi-rs-shuffle mr-10"></i>Update Cart</a> -->
                             <a href="/home" class="btn"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
                         </div>
+
+
+
                         <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
                         <div class="row mb-50 justify-content-center">
                           
@@ -355,6 +358,22 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
+        // Function to update cart for a single product
+        function updateCartItem(productId, quantity, subtotal) {
+            $.ajax({
+                url: '/updateCart', 
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ productId, quantity, subtotal }),
+                success: function(response) {
+                    console.log('Cart item updated successfully:', response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error updating cart item:', error);
+                }
+            });
+        }
+    
         // Load quantities from local storage on page load
         $('.qty-val').each(function() {
             const productId = $(this).siblings('.qty-up').data('product-id');
@@ -366,43 +385,8 @@
                 $(this).closest('tr').find('.item-total').text(newTotal);
             }
         });
-
-        // Update cart button click event
-        $('#update-cart-btn').click(function(e) {
-            e.preventDefault();
-            window.location.href = '#cartTotals';
-            const cartItems = [];
-
-            // Gather all items in the cart
-            $('.qty-val').each(function() {
-                const productId = $(this).siblings('.qty-up').data('product-id');
-                const quantity = parseInt($(this).text());
-                const price = parseFloat($(this).closest('tr').find('.item-price').text());
-                const subtotal = (quantity * price).toFixed(2);
-
-                cartItems.push({
-                    productId: productId,
-                    quantity: quantity,
-                    subtotal: subtotal
-                });
-            });
-
-            // Send AJAX request to update the cart on the server
-            $.ajax({
-                url: '/updateCart', 
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ items: cartItems }),
-                success: function(response) {
-                    // Optionally handle successful update response
-                    console.log('Cart updated successfully:', response);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error updating cart:', error);
-                }
-            });
-        });
-
+    
+        // Increase quantity
         $('.qty-up').click(function(e) {
             e.preventDefault();
             const $this = $(this);
@@ -411,24 +395,25 @@
             const stock = parseInt($this.data('stock'));
             const price = parseFloat($this.closest('tr').find('.item-price').text());
             const $stockMessage = $this.closest('td').find('.stock-message');
-            const productId = $this.data('product-id'); // Get the product ID
-
-            if (currentQty < stock && currentQty<5) {
-                $stockMessage.hide(); // Hide any previous message
+            const productId = $this.data('product-id');
+    
+            if (currentQty < stock && currentQty < 5) {
+                $stockMessage.hide();
                 const newQty = currentQty + 1;
                 $qtyVal.text(newQty);
                 const newTotal = (newQty * price).toFixed(2);
                 $this.closest('tr').find('.item-total').text(newTotal);
                 
-                // Save updated quantity to local storage
                 localStorage.setItem(`cart_${productId}`, newQty);
                 
-                // Optionally, can also update the subtotal array here for immediate effect
+                // Call the update function for this item
+                updateCartItem(productId, newQty, newTotal);
             } else {
-                $stockMessage.text('limit reached').show();
+                $stockMessage.text('Limit reached').show();
             }
         });
-
+    
+        // Decrease quantity
         $('.qty-down').click(function(e) {
             e.preventDefault();
             const $this = $(this);
@@ -436,23 +421,24 @@
             const currentQty = parseInt($qtyVal.text());
             const price = parseFloat($this.closest('tr').find('.item-price').text());
             const $stockMessage = $this.closest('td').find('.stock-message');
-            const productId = $this.data('product-id'); 
-
-            if (currentQty > 1) { 
-                $stockMessage.hide(); // Hide any previous message
+            const productId = $this.data('product-id');
+    
+            if (currentQty > 1) {
+                $stockMessage.hide();
                 const newQty = currentQty - 1;
                 $qtyVal.text(newQty);
                 const newTotal = (newQty * price).toFixed(2);
                 $this.closest('tr').find('.item-total').text(newTotal);
-                
-                // Save updated quantity to local storage
+    
                 localStorage.setItem(`cart_${productId}`, newQty);
-                
-                // Optionally, you can also update the subtotal array here for immediate effect
+    
+                // Call the update function for this item
+                updateCartItem(productId, newQty, newTotal);
             }
         });
     });
-</script>
+    </script>
+    
 
 
 

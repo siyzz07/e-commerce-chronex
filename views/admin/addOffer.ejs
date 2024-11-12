@@ -174,6 +174,7 @@
                                     <div class="col-lg-6">
                                         <label  class="form-label">End Date</label>
                                         <input  type="date" class="form-control" name="endDate" required>
+                                        <span id="date-error" style="color: red;"></span>
                                     </div>
                                 </div>
                                 <div id="applicableProducts" class="mb-4">
@@ -281,6 +282,7 @@
         document.getElementById('code-error').innerText = '';
         document.getElementById('price-error').innerText = '';
         document.getElementById('description-error').innerText = '';
+        document.getElementById('date-error').innerText = ''
   
         // Offer name validation
         if (!offerName || offerName.length === 0) {
@@ -299,7 +301,7 @@
         if (endDateElement) {
             let endDate = new Date(endDateElement.value);
             if (endDate <= currentDate) {
-                document.getElementById('description-error').innerText = "End date must be in the future.";
+                document.getElementById('date-error').innerText = "End date must be in the future.";
                 return false;
             }
             if (startDateElement && startDateElement.value) {

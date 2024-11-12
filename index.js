@@ -2,7 +2,7 @@ const express=require('express')
 const session = require('express-session');
     const app=express()
 require('dotenv').config();
-
+ 
 const passport = require('passport');
 require('./config/passportConfig')
 
@@ -61,6 +61,7 @@ app.use(passport.session());
 
 
 const PORT=process.env.PORT || 5000
+
 
 app.listen(PORT,()=>console.log(`server in running on port ${PORT}`))
 

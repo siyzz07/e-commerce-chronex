@@ -361,11 +361,11 @@ const createOrder = async (req, res) => {
   };
 
   try {
-    console.log("1");
+ 
 
     const order = await razorpayInstance.orders.create(options);
     res.json(order);
-    console.log("2");
+
   } catch (error) {
     console.error("Error creating order:", error); // Log any errors
     res.status(500).send({ error: "Failed to create Razorpay order" });
@@ -377,12 +377,12 @@ const verifyPayment = async (req, res) => {
   const { razorpay_payment_id } = req.body;
 
   try {
-    console.log("3");
+   
     const payment = await razorpayInstance.payments.fetch(razorpay_payment_id);
 
     if (payment.status === "captured") {
       const userId = req.session.user._id;
-      console.log("4");
+     
       const { payment_option, address, couponName } = req.body;
       const coupenAddUser = await Coupen.updateOne(
         { coupenCode: couponName },
@@ -391,13 +391,13 @@ const verifyPayment = async (req, res) => {
           $inc: { usedCount: 1 },
         }
       );
-      console.log("5");
+      
       const user = await User.findOne({ _id: userId });
       const shippingAddress = await Address.findOne(
         { "addressData._id": address },
         { "addressData.$": 1 }
       );
-      console.log("6");
+      
       const cartItems = await Cart.findOne({ userId: userId });
       const order = new Order({
         userId: userId,

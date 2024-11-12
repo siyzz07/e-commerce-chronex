@@ -96,19 +96,19 @@ user_route.post('/editAddress',addressController.postEditAddress)
 user_route.post('/addToCart',cartController.addToCart)//this post come from the product details page 
 user_route.get('/cart',userSession,cartController.getCart)
 user_route.post('/updateCart',cartController.updateCart)
-user_route.get('/deletFromCart',cartController.deleFromCart)
+user_route.get('/deletFromCart',userSession,cartController.deleFromCart)
 
 
 // chekout    order placing 
 user_route.get('/checkOut',userSession,orderController.getCheckOut)
 user_route.post('/submit-payment',orderController.placeOrder)/////////////////////////////////////////////----------------
-user_route.get('/confirmorder',orderController.confirmOrder)
+user_route.get('/confirmorder',userSession,orderController.confirmOrder)
 
 
 // show order page
 user_route.get('/order',userSession,orderController.getOrderHistory)
 user_route.get('/orderDetails',userSession,orderController.getOrderDeatails)
-user_route.get('/cancelOrder',orderController.cancelOrder)
+user_route.get('/cancelOrder',userSession,orderController.cancelOrder)
 user_route.post('/returnProduct',orderController.retrunProduct)
 
 // shop page
@@ -155,7 +155,7 @@ user_route.get('/wallet',userSession,walletController.getWallet)
 
 
 // invoice 
-user_route.get('/invoice',orderController.invoiceGet)
+user_route.get('/invoice',userSession,orderController.invoiceGet)
 
 
 
