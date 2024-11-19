@@ -273,7 +273,7 @@
                                     
                                     <form action="/applyCoupen?cartId=<%= cart._id %>" method="post">
                                         <div class="form-group mb-3">
-                                            <input type="text" class="form-control" id="couponCode" name="couponCode" placeholder="Enter Coupon Code...">
+                                            <!-- <input type="text" class="form-control" id="couponCode" name="couponCode" placeholder="Enter Coupon Code..."> -->
                                             
                                         </div>
                                         <div class="form-group d-flex">
@@ -310,13 +310,31 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-    
-        <div class="modal-body">
-            <% for(let i=0;i<coupen.length;i++){ %>
-                <p style="font-size: large; color: #198754;"><%= coupen[i].coupenCode %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp; <span style="font-size: 15px;color: #8d8686;"><%= coupen[i].description %></span></p> 
-                <hr>
-                <% } %>
-        </div>
+        
+            <div class="modal-body">
+                
+                <% for(let i=0;i<coupen.length;i++){ %>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div>
+                            <p style="font-size: large; color: #198754;">
+                                <%#= coupen[i].coupenCode %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span style="font-size: large; color: #8d8686;">
+                                    <%= coupen[i].description %>
+                                </span>
+                            </p>
+                            
+                        </div>
+                        <div style="margin-left: auto;">
+                            <a href="/applyCoupen?cartId=<%= cart._id %>&couponCode=<%= coupen[i].coupenCode %>">
+                                <button class="btn">Get</button>
+                            </a>
+                        </div>
+                    </div>
+                    <hr>
+                    
+                
+                    <% } %>
+            </div>
        
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -452,6 +470,7 @@
 
 
 <script>
+    
     const razorpayKey = "<%= process.env.RAZORPAY_KEY_ID %>"; 
 </script>
 

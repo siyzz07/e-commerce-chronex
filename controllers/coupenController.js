@@ -77,7 +77,7 @@ const applyCoupen = async (req, res) => {
   try {
     const cartId = req.query.cartId;
 
-    const couponCode = req.body.couponCode;
+    const couponCode = req.query.couponCode;
 
     let coupen = await Coupen.findOne({ coupenCode: couponCode });
 

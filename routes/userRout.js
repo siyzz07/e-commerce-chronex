@@ -135,7 +135,7 @@ user_route.get('/deleteFromWishlist',userSession,wishlistContoller.deleFromWishl
 
 
 // coupen
-user_route.post('/applyCoupen',coupenController.applyCoupen)
+user_route.get('/applyCoupen',coupenController.applyCoupen)
 user_route.get('/deletCoupen',userSession,coupenController.deletCoupen)
 
 

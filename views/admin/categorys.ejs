@@ -277,12 +277,13 @@
     // Clear previous errors
     document.getElementById('category-error').innerHTML = '';
     document.getElementById('description-error').innerHTML = '';
-
+    
+    const categoryPattern = /^[A-Za-z\s]+$/
     // Validate Category
     const category = document.getElementById('category').value.trim();
-    if (!category) {
+    if (!category || !categoryPattern.test(category)) {
         document.getElementById('category-error').innerHTML = 'Category is required';
-        document.getElementById('category-error').style.color = 'red'; // Set error message color
+        document.getElementById('category-error').style.color = 'red'; 
         isValid = false;
     }
 
@@ -290,11 +291,11 @@
     const description = document.getElementById('description').value.trim();
     if (!description) {
         document.getElementById('description-error').innerHTML = 'Description is required';
-        document.getElementById('description-error').style.color = 'red'; // Set error message color
+        document.getElementById('description-error').style.color = 'red'; 
         isValid = false;
     }
 
-    return isValid; // Prevent form submission if invalid
+    return isValid; 
 }
 
     </script>

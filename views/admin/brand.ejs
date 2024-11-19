@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>chronex</title>
+    <title>Chronex</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -278,10 +278,12 @@
     // Clear previous errors
     document.getElementById('brand-error').innerHTML = '';
     document.getElementById('description-error').innerHTML = '';
-
+    //
+    
+    const brandPattern = /^[A-Za-z\s]+$/
     // Validate Brand
     const brand = document.getElementById('brand').value.trim();
-    if (!brand) {
+    if (!brand ||  !brandPattern.test(brand) ) {
         document.getElementById('brand-error').innerHTML = 'Brand is required';
         document.getElementById('brand-error').style.color = 'red'; // Set error message color
         isValid = false;
