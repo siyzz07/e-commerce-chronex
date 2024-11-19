@@ -206,7 +206,7 @@
                                                                     </td>
                                                                     <td style="text-align: center;"><%= orders[i].paymentStatus %></td>
                                                                     <td style="text-align: center;">
-                                                                        <a href="/orderDetails?orderid=<%= orders[i]._id %>" class="btn btn-md btn-primary" style="margin-bottom: 10px;">Details</a>
+                                                                        <a href="/orderDetails?orderid=<%= orders[i]._id %>&userId=<%= orders[i].userId %>" class="btn btn-md btn-primary" style="margin-bottom: 10px;">Details</a>
                                                                         <% if(orders[i].status !== 'Cancelled' && orders[i].status !== 'Delivered' && orders[i].status!== 'Returned') { %>
                                                                             <a href="javascript:void(0);" class="btn btn-md btn-prim" onclick="openCustomAlert('<%= orders[i]._id %>')">Cancel</a>
 

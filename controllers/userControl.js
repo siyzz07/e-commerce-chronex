@@ -788,6 +788,7 @@ const getShop = async (req, res) => {
 // This handles redirection after successful Google authentication
 googleAuth = (req, res) => {
   try {
+    
     if (req.user) {
       const useremail = req.user.email;
       req.session.user = { email: req.user.email, _id: req.user._id };
@@ -829,7 +830,6 @@ const verifyPayment = async (req, res) => {
     const payment = await razorpayInstance.payments.fetch(razorpay_payment_id);
 
     if (payment.status === "captured") {
-      // console.log("sddsffsdfsdfdsfdsddsfsdfsdfsffa",req.body);
 
       const userId = req.session.user._id;
 

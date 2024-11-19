@@ -20,14 +20,14 @@ async (accessToken, refreshToken, profile, done) => {
       return done(null, user); 
     }
 
-    //  doesn't exist, create a new user
+    //  doesnt exist create a new user
     user = new User({
       name: profile.displayName,
       email: profile.emails[0].value,
       isVerified: true
     });
     await user.save();
-    return done(null, user); // Pass the newly created user to Passport
+    return done(null, user); 
   } catch (error) {
     return done(error, null);
   }

@@ -188,7 +188,7 @@
                                     <tr>
                                         <td colspan="6" class="text-end">
                                             <a href="#" class="text-muted">
-                                                <i class="fi-rs-cross-small"></i> Clear Cart
+                                                <!-- <i class="fi-rs-cross-small"></i> Clear Cart -->
                                             </a>
                                         </td>
                                     </tr>
@@ -366,6 +366,7 @@
                 contentType: 'application/json',
                 data: JSON.stringify({ productId, quantity, subtotal }),
                 success: function(response) {
+                    // location.reload()
                     console.log('Cart item updated successfully:', response);
                 },
                 error: function(xhr, status, error) {

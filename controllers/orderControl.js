@@ -225,11 +225,14 @@ const getOrderHistory = async (req, res) => {
 // user can see the order details  ,from history page
 const getOrderDeatails = async (req, res) => {
   try {
-    const orderId = req.query.orderid;
-    if (!orderId) {
-      res.redirect("/order");
-    }
     const userId = req.session.user._id;
+    const orderId = req.query.orderid;
+      const users=req.query.userId
+      
+    if (!orderId || userId !== users) {
+      return res.redirect("/order");
+    }
+    
     const cart = await Cart.findOne({ userId: userId });
     const wishlist = await Wishlist.findOne({ userId: userId });
 
