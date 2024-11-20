@@ -5,22 +5,6 @@ const Brand = require("../models/brand");
 const Cart = require("../models/cart");
 const Wishlist = require("../models/wishlist");
 
-// get address page
-// const getAddress=async (req,res)=>{
-//     try{
-//         const userId=req.session.user._id
-//         const userAddress=await Address.findOne({userId:req.session.user._id})
-//       const category=await Category.find({isListed:true})
-//        const brand=await Brand.find({isListed:true})
-//        const msg=req.flash('msg')
-//        const fail=req.flash('fail')
-//       res.render('address',{category:category,brand:brand,msg,userAddress:userAddress,fail,userId})
-//     }catch(error){
-//       console.log(error.message);
-
-//     }
-//   }
-
 // ---------------------- get address page -------------------------
 const getAddress = async (req, res) => {
   try {

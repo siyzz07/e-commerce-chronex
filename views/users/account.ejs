@@ -1,448 +1,704 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
-
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
-<head>
-    <meta charset="utf-8">
+  <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
+  <head>
+    <meta charset="utf-8" />
     <title>Chronex</title>
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="">
-    <meta property="og:type" content="">
-    <meta property="og:url" content="">
-    <meta property="og:image" content="">
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
     <!-- Favicon -->
-   
+
     <!-- Template CSS -->
-    <link rel="stylesheet" href="user/assets/css/main.css">
-</head>
+    <link rel="stylesheet" href="user/assets/css/main.css" />
+  </head>
 
-<body>
-
-
-    
+  <body>
     <div class="header-bottom header-bottom-bg-color sticky-bar">
-        <div class="container">
-            <div class="header-wrap header-space-between position-relative">
-                <div class="logo logo-width-1 d-block d-lg-none">
-                    <a href="index.html"><img src="user/assets/imgs/theme/logo.svg" alt="logo"></a>
-                </div>
-                <div class="header-nav d-none d-lg-flex">
-                    <!-- <div class="main-categori-wrap d-none d-lg-block">
+      <div class="container">
+        <div class="header-wrap header-space-between position-relative">
+          <div class="logo logo-width-1 d-block d-lg-none">
+            <a href="index.html"
+              ><img src="user/assets/imgs/theme/logo.svg" alt="logo"
+            /></a>
+          </div>
+          <div class="header-nav d-none d-lg-flex">
+            <!-- <div class="main-categori-wrap d-none d-lg-block">
                        
                         
                     </div>  -->
-                    <div class="logo logo-width-1">
-                        <a href="#" ><img src="images/logo_image.png" alt="logo"></a>
-                    </div>
-
-                    <!-- pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp -->
-                    <div class="main-menu  main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
-                        <nav>
-                            <ul>
-                                <li><a  href="/home">Home </a>
-                                    
-                                </li>
-                                <li><a class="" href="/shop">Shope </a>
-                                        
-                                </li>
-                               
-                                <li><a href="#">Category<i class="fi-rs-angle-down"></i></a>
-                                    <ul class="sub-menu">
-                                        <% for(let i=0;i<category.length;i++){ %>
-                                        <li><a href="#"><%= category[i].category %></a></li>
-                                        <% } %>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Brand<i class="fi-rs-angle-down"></i></a>
-                                    <ul class="sub-menu">
-                                        <% for(let i=0;i<brand.length;i++){ %>
-                                            <li><a href="#"><%= brand[i].brand %></a></li>
-                                            <% } %>
-                                        
-                                    </ul>
-                                </li>   
-                                <li>
-                                    <a href="page-about.html">About</a>
-                                </li>
-                               
-                              
-                                <li>
-                                    <a href="page-contact.html">Contact</a>
-                                </li>
-
-                                <li>
-                                    <a class="active" href="http://localhost:5000/userAccount">Account</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <div class="header-action-right">
-                    <div class="header-action-2">
-                        <div class="header-action-icon-2">
-                            <a href="/wishlist">
-                                <img class="svgInject" alt="Evara" src="user/assets/imgs/theme/icons/icon-heart.svg">
-                                <span class="pro-count blue"><%= wishlist && wishlist.items ? wishlist.items.length : 0 %></span>
-                            </a>
-                        </div>
-                        <div class="header-action-icon-2">
-                            <a class="mini-cart-icon" href="/cart">
-                                <img alt="Evara" src="user/assets/imgs/theme/icons/icon-cart.svg">
-                                <span class="pro-count blue"><%= cart && cart.items ? cart.items.length : 0 %></span>
-                            </a>
-                           
-                        </div>
-                    </div>
-                </div>
-               
-                <div class="header-action-icon-2">
-                    <a class="mini-cart-icon" href="shop-cart.html">
-                        <img alt="Evara" src="user/assets/imgs/theme/icons/icon-cart.svg">
-                        <!-- <span class="pro-count blue">66</span> -->
-                    </a>
-                   
-                </div>
-               
-               
+            <div class="logo logo-width-1">
+              <a href="#"><img src="images/logo_image.png" alt="logo" /></a>
             </div>
+
+            <!-- pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp -->
+            <div
+              class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block"
+            >
+              <nav>
+                <ul>
+                  <li>
+                    <a href="/home">Home</a>
+                  </li>
+                  <li>
+                    <a class="" href="/shop">Shop</a>
+                  </li>
+                  <li>
+                    <a href="#">Category <i class="fi-rs-angle-down"></i></a>
+                    <ul class="sub-menu">
+                      <% for (let i = 0; i < category.length; i++) { %>
+                      <li>
+                        <a href="#"><%= category[i].category %></a>
+                      </li>
+                      <% } %>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="#">Brand <i class="fi-rs-angle-down"></i></a>
+                    <ul class="sub-menu">
+                      <% for (let i = 0; i < brand.length; i++) { %>
+                      <li>
+                        <a href="#"><%= brand[i].brand %></a>
+                      </li>
+                      <% } %>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="page-about.html">About</a>
+                  </li>
+                  <li>
+                    <a href="page-contact.html">Contact</a>
+                  </li>
+                  <li>
+                    <a class="active" href="/userAccount">Account</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <div class="header-action-right">
+            <div class="header-action-2">
+              <div class="header-action-icon-2">
+                <a href="/wishlist">
+                  <img
+                    class="svgInject"
+                    alt="Evara"
+                    src="user/assets/imgs/theme/icons/icon-heart.svg"
+                  />
+                  <span class="pro-count blue"
+                    ><%= wishlist && wishlist.items ? wishlist.items.length : 0
+                    %></span
+                  >
+                </a>
+              </div>
+              <div class="header-action-icon-2">
+                <a class="mini-cart-icon" href="/cart">
+                  <img
+                    alt="Evara"
+                    src="user/assets/imgs/theme/icons/icon-cart.svg"
+                  />
+                  <span class="pro-count blue"
+                    ><%= cart && cart.items ? cart.items.length : 0 %></span
+                  >
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="header-action-icon-2">
+            <a class="mini-cart-icon" href="shop-cart.html">
+              <img
+                alt="Evara"
+                src="user/assets/imgs/theme/icons/icon-cart.svg"
+              />
+              <!-- <span class="pro-count blue">66</span> -->
+            </a>
+          </div>
         </div>
+      </div>
     </div>
     <main class="main">
-        <div class="page-header breadcrumb-wrap">
-            <div class="container">
-                <div class="breadcrumb">
-                    <a href="http://localhost:5000/home" rel="nofollow">Home</a>
-                  <a href="">  <span></span> Account</a>
-                </div>
-            </div>
+      <div class="page-header breadcrumb-wrap">
+        <div class="container">
+          <div class="breadcrumb">
+            <a href="http://localhost:5000/home" rel="nofollow">Home</a>
+            <a href=""> <span></span> Account</a>
+          </div>
         </div>
-        <section class="pt-150 pb-150">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-10 m-auto">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="dashboard-menu">
-                                    <ul class="nav flex-column" role="tablist">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Profile</a>
-                                        </li>
-                                       
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="/order" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
-                                        </li>
-                
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="/address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link " href="wallet"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
-                                                <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
-                                              </svg> &nbsp; Wallet</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="logout"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
-                                        </li>
-                                        
-                                       
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="tab-content dashboard-content">
+      </div>
+      <section class="pt-150 pb-150">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-10 m-auto">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="dashboard-menu">
+                    <ul class="nav flex-column" role="tablist">
+                      <li class="nav-item">
+                        <a
+                          class="nav-link active"
+                          id="account-detail-tab"
+                          data-bs-toggle="tab"
+                          href="#account-detail"
+                          role="tab"
+                          aria-controls="account-detail"
+                          aria-selected="true"
+                          ><i class="fi-rs-user mr-10"></i>Profile</a
+                        >
+                      </li>
 
-                                <!-- ========================= USER FORM ============== -->
-                                <form id="editForm" action="/editUser?_method=PUT" method="post">
-                                    <div class="form-group">
-                                        <h3 style="font-weight: bold;">Profile Details</h3><br>
-                                        <p style="color: rgb(47, 215, 38); text-align: center;"><%= msg %></p>
-                                        <div class="form-group">
-                                            <input type="hidden" value="<%= user._id %>" name="id">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="name">Name</label>
-                                            <input type="text" value="<%= user.name %>" name="name" placeholder="Username" 
-                                                pattern="^[A-Za-z\s]+$" title="Name must only contain letters and spaces.">
-                                            <span style="color: red;font-size: 13PX;" id="nameerror"></span>
-                                        </div>
-                                        <br>
-                                        <div class="form-group">
-                                            <label for="email">Email</label>
-                                            <input type="text" disabled value="<%= user.email %>" name="email" placeholder="Email">
-                                        </div>
-                                        <br>
-                                        <div class="form-group">
-                                            <label for="phone">Phone</label>
-                                            <input type="tel" value="<%= user.phone %>" name="phone" placeholder="Phone"
-                                                pattern="^[0-9]{10}$" title="Phone number must be 10 digits.">
-                                            <span style="color: red;font-size: 13PX;" id="phoneerror"></span>
-                                        </div>
-                                        <br>
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-fill-out btn-block hover-up">Edit</button>
-                                        </div>
-                                    </div>
-                                </form>
-                                
-                                <div id="customAlert" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; padding:20px; border:1px solid #333; z-index:9999; border-radius:10px; box-shadow:0 0 15px rgba(0,0,0,0.3); width: 450px; height: 200px; text-align:center;">
-                                    <p>Are you sure you want to update your profile details?</p><br>
-                                    <button id="confirmEdit" class="btn btn-danger" style="background-color:red;color:white;padding:10px;margin-right:10px;width: 77px;">Yes</button>
-                                    <button onclick="closeCustomAlert()" class="btn btn-success" style="color:white;padding:10px;width: 77px;">No</button>
-                                </div>
-                                
-                                <% if(user.password){ %>
+                      <li class="nav-item">
+                        <a
+                          class="nav-link"
+                          id="orders-tab"
+                          data-bs-toggle="tab"
+                          href="/order"
+                          role="tab"
+                          aria-controls="orders"
+                          aria-selected="false"
+                          ><i class="fi-rs-shopping-bag mr-10"></i>Orders</a
+                        >
+                      </li>
 
-                                    <div class="form-group">
-                                        <a href="/changePassword?id=<%= user._id %>"> <button type="" class="btn btn-fill-out btn-block hover-up" >Change Password</button></a>
-                                     </div>
-                                   
-                                     <% } %>
-
-
-                                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5 class="mb-0">Your Orders</h5>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Order</th>
-                                                                <th>Date</th>
-                                                                <th>Status</th>
-                                                                <th>Total</th>
-                                                                <th>Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>#1357</td>
-                                                                <td>March 45, 2020</td>
-                                                                <td>Processing</td>
-                                                                <td>$125.00 for 2 item</td>
-                                                                <td><a href="#" class="btn-small d-block">View</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>#2468</td>
-                                                                <td>June 29, 2020</td>
-                                                                <td>Completed</td>
-                                                                <td>$364.00 for 5 item</td>
-                                                                <td><a href="#" class="btn-small d-block">View</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>#2366</td>
-                                                                <td>August 02, 2020</td>
-                                                                <td>Completed</td>
-                                                                <td>$280.00 for 3 item</td>
-                                                                <td><a href="#" class="btn-small d-block">View</a></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="track-orders" role="tabpanel" aria-labelledby="track-orders-tab">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5 class="mb-0">Orders tracking</h5>
-                                            </div>
-                                            <div class="card-body contact-from-area">
-                                                <p>To track your order please enter your OrderID in the box below and press "Track" button. This was given to you on your receipt and in the confirmation email you should have received.</p>
-                                                <div class="row">
-                                                    <div class="col-lg-8">
-                                                        <form class="contact-form-style mt-30 mb-50" action="#" method="post">
-                                                            <div class="input-style mb-20">
-                                                                <label>Order ID</label>
-                                                                <input name="order-id" placeholder="Found in your order confirmation email" type="text" class="square">
-                                                            </div>
-                                                            <div class="input-style mb-20">
-                                                                <label>Billing email</label>
-                                                                <input name="billing-email" placeholder="Email you used during checkout" type="email" class="square">
-                                                            </div>
-                                                            <button class="submit submit-auto-width" type="submit">Track</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="card mb-3 mb-lg-0">
-                                                    <div class="card-header">
-                                                        <h5 class="mb-0">Billing Address</h5>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <address>3522 Interstate<br> 75 Business Spur,<br> Sault Ste. <br>Marie, MI 49783</address>
-                                                        <p>New York</p>
-                                                        <a href="#" class="btn-small">Edit</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h5 class="mb-0">Shipping Address</h5>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <address>4299 Express Lane<br>
-                                                            Sarasota, <br>FL 34249 USA <br>Phone: 1.941.227.4444</address>
-                                                        <p>Sarasota</p>
-                                                        <a href="#" class="btn-small">Edit</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5>Account Details</h5>
-                                            </div>
-                                            <div class="card-body">
-                                                <p>Already have an account? <a href="page-login-register.html">Log in instead!</a></p>
-                                                <form method="post" name="enq">
-                                                    <div class="row">
-                                                        <div class="form-group col-md-6">
-                                                            <label>First Name <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="name" type="text">
-                                                        </div>
-                                                        <div class="form-group col-md-6">
-                                                            <label>Last Name <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="phone">
-                                                        </div>
-                                                        <div class="form-group col-md-12">
-                                                            <label>Display Name <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="dname" type="text">
-                                                        </div>
-                                                        <div class="form-group col-md-12">
-                                                            <label>Email Address <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="email" type="email">
-                                                        </div>
-                                                        <div class="form-group col-md-12">
-                                                            <label>Current Password <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="password" type="password">
-                                                        </div>
-                                                        <div class="form-group col-md-12">
-                                                            <label>New Password <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="npassword" type="password">
-                                                        </div>
-                                                        <div class="form-group col-md-12">
-                                                            <label>Confirm Password <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="cpassword" type="password">
-                                                        </div>
-                                                        <div class="col-md-12">
-                                                            <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Save</button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                      <li class="nav-item">
+                        <a
+                          class="nav-link"
+                          id="address-tab"
+                          data-bs-toggle="tab"
+                          href="/address"
+                          role="tab"
+                          aria-controls="address"
+                          aria-selected="true"
+                          ><i class="fi-rs-marker mr-10"></i>My Address</a
+                        >
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="wallet"
+                          ><svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-wallet2"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"
+                            />
+                          </svg>
+                          &nbsp; Wallet</a
+                        >
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="logout"
+                          ><i class="fi-rs-sign-out mr-10"></i>Logout</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+                <div class="col-md-8">
+                  <div class="tab-content dashboard-content">
+                    <!-- ========================= USER FORM ============== -->
+                    <form
+                      id="editForm"
+                      action="/editUser?_method=PUT"
+                      method="post"
+                    >
+                      <div class="form-group">
+                        <h3 style="font-weight: bold">Profile Details</h3>
+                        <br />
+                        <p style="color: rgb(47, 215, 38); text-align: center">
+                          <%= msg %>
+                        </p>
+                        <div class="form-group">
+                          <input
+                            type="hidden"
+                            value="<%= user._id %>"
+                            name="id"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="name">Name</label>
+                          <input
+                            type="text"
+                            value="<%= user.name %>"
+                            name="name"
+                            placeholder="Username"
+                            pattern="^[A-Za-z\s]+$"
+                            title="Name must only contain letters and spaces."
+                          />
+                          <span
+                            style="color: red; font-size: 13px"
+                            id="nameerror"
+                          ></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                          <label for="email">Email</label>
+                          <input
+                            type="text"
+                            disabled
+                            value="<%= user.email %>"
+                            name="email"
+                            placeholder="Email"
+                          />
+                        </div>
+                        <br />
+                        <div class="form-group">
+                          <label for="phone">Phone</label>
+                          <input
+                            type="tel"
+                            value="<%= user.phone %>"
+                            name="phone"
+                            placeholder="Phone"
+                            pattern="^[0-9]{10}$"
+                            title="Phone number must be 10 digits."
+                          />
+                          <span
+                            style="color: red; font-size: 13px"
+                            id="phoneerror"
+                          ></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                          <button
+                            type="submit"
+                            class="btn btn-fill-out btn-block hover-up"
+                          >
+                            Edit
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+
+                    <div
+                      id="customAlert"
+                      style="
+                        display: none;
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        background: #fff;
+                        padding: 20px;
+                        border: 1px solid #333;
+                        z-index: 9999;
+                        border-radius: 10px;
+                        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+                        width: 450px;
+                        height: 200px;
+                        text-align: center;
+                      "
+                    >
+                      <p>
+                        Are you sure you want to update your profile details?
+                      </p>
+                      <br />
+                      <button
+                        id="confirmEdit"
+                        class="btn btn-danger"
+                        style="
+                          background-color: red;
+                          color: white;
+                          padding: 10px;
+                          margin-right: 10px;
+                          width: 77px;
+                        "
+                      >
+                        Yes
+                      </button>
+                      <button
+                        onclick="closeCustomAlert()"
+                        class="btn btn-success"
+                        style="color: white; padding: 10px; width: 77px"
+                      >
+                        No
+                      </button>
+                    </div>
+
+                    <% if(user.password){ %>
+
+                    <div class="form-group">
+                      <a href="/changePassword?id=<%= user._id %>">
+                        <button
+                          type=""
+                          class="btn btn-fill-out btn-block hover-up"
+                        >
+                          Change Password
+                        </button></a
+                      >
+                    </div>
+
+                    <% } %>
+
+                    <div
+                      class="tab-pane fade"
+                      id="orders"
+                      role="tabpanel"
+                      aria-labelledby="orders-tab"
+                    >
+                      
+                    </div>
+                    <div
+                      class="tab-pane fade"
+                      id="track-orders"
+                      role="tabpanel"
+                      aria-labelledby="track-orders-tab"
+                    >
+                      <div class="card">
+                        <div class="card-header">
+                          <h5 class="mb-0">Orders tracking</h5>
+                        </div>
+                        <div class="card-body contact-from-area">
+                          <p>
+                            To track your order please enter your OrderID in the
+                            box below and press "Track" button. This was given
+                            to you on your receipt and in the confirmation email
+                            you should have received.
+                          </p>
+                          <div class="row">
+                            <div class="col-lg-8">
+                              <form
+                                class="contact-form-style mt-30 mb-50"
+                                action="#"
+                                method="post"
+                              >
+                                <div class="input-style mb-20">
+                                  <label>Order ID</label>
+                                  <input
+                                    name="order-id"
+                                    placeholder="Found in your order confirmation email"
+                                    type="text"
+                                    class="square"
+                                  />
+                                </div>
+                                <div class="input-style mb-20">
+                                  <label>Billing email</label>
+                                  <input
+                                    name="billing-email"
+                                    placeholder="Email you used during checkout"
+                                    type="email"
+                                    class="square"
+                                  />
+                                </div>
+                                <button
+                                  class="submit submit-auto-width"
+                                  type="submit"
+                                >
+                                  Track
+                                </button>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="tab-pane fade"
+                      id="address"
+                      role="tabpanel"
+                      aria-labelledby="address-tab"
+                    >
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <div class="card mb-3 mb-lg-0">
+                            <div class="card-header">
+                              <h5 class="mb-0">Billing Address</h5>
+                            </div>
+                            <div class="card-body">
+                              <address>
+                                3522 Interstate<br />
+                                75 Business Spur,<br />
+                                Sault Ste. <br />Marie, MI 49783
+                              </address>
+                              <p>New York</p>
+                              <a href="#" class="btn-small">Edit</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="card">
+                            <div class="card-header">
+                              <h5 class="mb-0">Shipping Address</h5>
+                            </div>
+                            <div class="card-body">
+                              <address>
+                                4299 Express Lane<br />
+                                Sarasota, <br />FL 34249 USA <br />Phone:
+                                1.941.227.4444
+                              </address>
+                              <p>Sarasota</p>
+                              <a href="#" class="btn-small">Edit</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="tab-pane fade"
+                      id="account-detail"
+                      role="tabpanel"
+                      aria-labelledby="account-detail-tab"
+                    >
+                      <div class="card">
+                        <div class="card-header">
+                          <h5>Account Details</h5>
+                        </div>
+                        <div class="card-body">
+                          <p>
+                            Already have an account?
+                            <a href="page-login-register.html"
+                              >Log in instead!</a
+                            >
+                          </p>
+                          <form method="post" name="enq">
+                            <div class="row">
+                              <div class="form-group col-md-6">
+                                <label
+                                  >First Name
+                                  <span class="required">*</span></label
+                                >
+                                <input
+                                  required=""
+                                  class="form-control square"
+                                  name="name"
+                                  type="text"
+                                />
+                              </div>
+                              <div class="form-group col-md-6">
+                                <label
+                                  >Last Name
+                                  <span class="required">*</span></label
+                                >
+                                <input
+                                  required=""
+                                  class="form-control square"
+                                  name="phone"
+                                />
+                              </div>
+                              <div class="form-group col-md-12">
+                                <label
+                                  >Display Name
+                                  <span class="required">*</span></label
+                                >
+                                <input
+                                  required=""
+                                  class="form-control square"
+                                  name="dname"
+                                  type="text"
+                                />
+                              </div>
+                              <div class="form-group col-md-12">
+                                <label
+                                  >Email Address
+                                  <span class="required">*</span></label
+                                >
+                                <input
+                                  required=""
+                                  class="form-control square"
+                                  name="email"
+                                  type="email"
+                                />
+                              </div>
+                              <div class="form-group col-md-12">
+                                <label
+                                  >Current Password
+                                  <span class="required">*</span></label
+                                >
+                                <input
+                                  required=""
+                                  class="form-control square"
+                                  name="password"
+                                  type="password"
+                                />
+                              </div>
+                              <div class="form-group col-md-12">
+                                <label
+                                  >New Password
+                                  <span class="required">*</span></label
+                                >
+                                <input
+                                  required=""
+                                  class="form-control square"
+                                  name="npassword"
+                                  type="password"
+                                />
+                              </div>
+                              <div class="form-group col-md-12">
+                                <label
+                                  >Confirm Password
+                                  <span class="required">*</span></label
+                                >
+                                <input
+                                  required=""
+                                  class="form-control square"
+                                  name="cpassword"
+                                  type="password"
+                                />
+                              </div>
+                              <div class="col-md-12">
+                                <button
+                                  type="submit"
+                                  class="btn btn-fill-out submit"
+                                  name="submit"
+                                  value="Submit"
+                                >
+                                  Save
+                                </button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
     </main>
     <footer class="main">
-        
-        <section class="section-padding footer-mid">
-            <div class="container pt-15 pb-20">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="widget-about font-md mb-md-5 mb-lg-0">
-                            <div class="logo logo-width-1 wow fadeIn animated">
-                                <!-- <a href="index.html"><img src="user/assets/imgs/theme/logo.svg" alt="logo"></a> -->
-                            </div>
-                            <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
-                            <p class="wow fadeIn animated">
-                                <strong>Address: </strong>562 Wellington Road, Street 32, San Francisco
-                            </p>
-                            <p class="wow fadeIn animated">
-                                <strong>Phone: </strong>+01 2222 365 /(+91) 01 2345 6789
-                            </p>
-                            <p class="wow fadeIn animated">
-                                <strong>Hours: </strong>10:00 - 18:00, Mon - Sat
-                            </p>
-                            <h5 class="mb-10 mt-30 fw-600 text-grey-4 wow fadeIn animated">Follow Us</h5>
-                            <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0">
-                                <a href="#"><img src="user/assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
-                                <a href="#"><img src="user/assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
-                                <a href="#"><img src="user/assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
-                                <a href="#"><img src="user/assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
-                                <a href="#"><img src="user/assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-3">
-                        <h5 class="widget-title wow fadeIn animated">About</h5>
-                        <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Delivery Information</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms &amp; Conditions</a></li>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Support Center</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-2  col-md-3">
-                        <h5 class="widget-title wow fadeIn animated">My Account</h5>
-                        <ul class="footer-list wow fadeIn animated">
-                            <li><a href="#">Sign In</a></li>
-                            <li><a href="#">View Cart</a></li>
-                            <li><a href="#">My Wishlist</a></li>
-                            <li><a href="#">Track My Order</a></li>
-                            <li><a href="#">Help</a></li>
-                            <li><a href="#">Order</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4">
-                        <h5 class="widget-title wow fadeIn animated">Install App</h5>
-                        <div class="row">
-                            <div class="col-md-8 col-lg-12">
-                                <p class="wow fadeIn animated">From App Store or Google Play</p>
-                                <div class="download-app wow fadeIn animated">
-                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active" src="user/assets/imgs/theme/app-store.jpg" alt=""></a>
-                                    <a href="#" class="hover-up"><img src="user/assets/imgs/theme/google-play.jpg" alt=""></a>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
-                                <p class="mb-20 wow fadeIn animated">Secured Payment Gateways</p>
-                                <img class="wow fadeIn animated" src="user/assets/imgs/theme/payment-method.png" alt="">
-                            </div>
-                        </div>
-                    </div>
+      <section class="section-padding footer-mid">
+        <div class="container pt-15 pb-20">
+          <div class="row">
+            <div class="col-lg-4 col-md-6">
+              <div class="widget-about font-md mb-md-5 mb-lg-0">
+                <div class="logo logo-width-1 wow fadeIn animated">
+                  <!-- <a href="index.html"><img src="user/assets/imgs/theme/logo.svg" alt="logo"></a> -->
                 </div>
+                <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">
+                  Contact
+                </h5>
+                <p class="wow fadeIn animated">
+                  <strong>Address: </strong>562 Wellington Road, Street 32, San
+                  Francisco
+                </p>
+                <p class="wow fadeIn animated">
+                  <strong>Phone: </strong>+01 2222 365 /(+91) 01 2345 6789
+                </p>
+                <p class="wow fadeIn animated">
+                  <strong>Hours: </strong>10:00 - 18:00, Mon - Sat
+                </p>
+                <h5 class="mb-10 mt-30 fw-600 text-grey-4 wow fadeIn animated">
+                  Follow Us
+                </h5>
+                <div
+                  class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0"
+                >
+                  <a href="#"
+                    ><img
+                      src="user/assets/imgs/theme/icons/icon-facebook.svg"
+                      alt=""
+                  /></a>
+                  <a href="#"
+                    ><img
+                      src="user/assets/imgs/theme/icons/icon-twitter.svg"
+                      alt=""
+                  /></a>
+                  <a href="#"
+                    ><img
+                      src="user/assets/imgs/theme/icons/icon-instagram.svg"
+                      alt=""
+                  /></a>
+                  <a href="#"
+                    ><img
+                      src="user/assets/imgs/theme/icons/icon-pinterest.svg"
+                      alt=""
+                  /></a>
+                  <a href="#"
+                    ><img
+                      src="user/assets/imgs/theme/icons/icon-youtube.svg"
+                      alt=""
+                  /></a>
+                </div>
+              </div>
             </div>
-        </section>
-        <div class="container pb-20 wow fadeIn animated">
-            <div class="row">
-                <div class="col-12 mb-20">
-                    <div class="footer-bottom"></div>
-                </div>
-                <div class="col-lg-6">
-                    <p class="float-md-left font-sm text-muted mb-0">&copy; 2021, <strong class="text-brand">Evara</strong> - HTML Ecommerce Template </p>
-                </div>
-                <div class="col-lg-6">
-                    <p class="text-lg-end text-start font-sm text-muted mb-0">
-                        Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights reserved
-                    </p>
-                </div>
+            <div class="col-lg-2 col-md-3">
+              <h5 class="widget-title wow fadeIn animated">About</h5>
+              <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Delivery Information</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms &amp; Conditions</a></li>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Support Center</a></li>
+              </ul>
             </div>
+            <div class="col-lg-2 col-md-3">
+              <h5 class="widget-title wow fadeIn animated">My Account</h5>
+              <ul class="footer-list wow fadeIn animated">
+                <li><a href="#">Sign In</a></li>
+                <li><a href="#">View Cart</a></li>
+                <li><a href="#">My Wishlist</a></li>
+                <li><a href="#">Track My Order</a></li>
+                <li><a href="#">Help</a></li>
+                <li><a href="#">Order</a></li>
+              </ul>
+            </div>
+            <div class="col-lg-4">
+              <h5 class="widget-title wow fadeIn animated">Install App</h5>
+              <div class="row">
+                <div class="col-md-8 col-lg-12">
+                  <p class="wow fadeIn animated">
+                    From App Store or Google Play
+                  </p>
+                  <div class="download-app wow fadeIn animated">
+                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"
+                      ><img
+                        class="active"
+                        src="user/assets/imgs/theme/app-store.jpg"
+                        alt=""
+                    /></a>
+                    <a href="#" class="hover-up"
+                      ><img src="user/assets/imgs/theme/google-play.jpg" alt=""
+                    /></a>
+                  </div>
+                </div>
+                <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
+                  <p class="mb-20 wow fadeIn animated">
+                    Secured Payment Gateways
+                  </p>
+                  <img
+                    class="wow fadeIn animated"
+                    src="user/assets/imgs/theme/payment-method.png"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
+      <div class="container pb-20 wow fadeIn animated">
+        <div class="row">
+          <div class="col-12 mb-20">
+            <div class="footer-bottom"></div>
+          </div>
+          <div class="col-lg-6">
+            <p class="float-md-left font-sm text-muted mb-0">
+              &copy; 2021, <strong class="text-brand">Evara</strong> - HTML
+              Ecommerce Template
+            </p>
+          </div>
+          <div class="col-lg-6">
+            <p class="text-lg-end text-start font-sm text-muted mb-0">
+              Designed by
+              <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>.
+              All rights reserved
+            </p>
+          </div>
+        </div>
+      </div>
     </footer>
     <!-- Preloader Start -->
-    
+
     <!-- Vendor JS-->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
@@ -466,48 +722,47 @@
     <!-- Template  JS -->
     <script src="assets/js/main.js"></script>
     <script>
-        var editForm = document.getElementById('editForm');
-        var customAlert = document.getElementById('customAlert');
-        var confirmEditButton = document.getElementById('confirmEdit');
-    
-        editForm.addEventListener('submit', function(event) {
-            event.preventDefault(); 
-            var nameField = document.getElementsByName('name')[0];
-            var phoneField = document.getElementsByName('phone')[0];
-            const name = nameField.value.trim();
-    
-            var namePattern = /^[A-Za-z\s]+$/;
-            if (name === '') {
-                document.getElementById('nameerror').textContent = 'Name must only contain letters.';
-                return false;
-            } else if (!namePattern.test(name)) {
-                document.getElementById('nameerror').textContent = 'Name must only contain letters.';
-                return false;
-            }
-    
-            var phonePattern = /^[0-9]{10}$/;
-            if (!phonePattern.test(phoneField.value)) {
-                document.getElementById('phoneerror').textContent = 'Phone number must be 10 digits.';
-                return false;
-            }
-    
-            
-            customAlert.style.display = 'block';
-        });
-    
-        confirmEditButton.addEventListener('click', function() {
-            customAlert.style.display = 'none';
-            editForm.submit(); 
-        });
-    
-        function closeCustomAlert() {
-            customAlert.style.display = 'none';
+      var editForm = document.getElementById("editForm");
+      var customAlert = document.getElementById("customAlert");
+      var confirmEditButton = document.getElementById("confirmEdit");
+
+      editForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var nameField = document.getElementsByName("name")[0];
+        var phoneField = document.getElementsByName("phone")[0];
+        const name = nameField.value.trim();
+
+        var namePattern = /^[A-Za-z\s]+$/;
+        if (name === "") {
+          document.getElementById("nameerror").textContent =
+            "Name must only contain letters.";
+          return false;
+        } else if (!namePattern.test(name)) {
+          document.getElementById("nameerror").textContent =
+            "Name must only contain letters.";
+          return false;
         }
+
+        var phonePattern = /^[0-9]{10}$/;
+        if (!phonePattern.test(phoneField.value)) {
+          document.getElementById("phoneerror").textContent =
+            "Phone number must be 10 digits.";
+          return false;
+        }
+
+        customAlert.style.display = "block";
+      });
+
+      confirmEditButton.addEventListener("click", function () {
+        customAlert.style.display = "none";
+        editForm.submit();
+      });
+
+      function closeCustomAlert() {
+        customAlert.style.display = "none";
+      }
     </script>
-    
-    
-</body>
+  </body>
 
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
+  <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
 </html>

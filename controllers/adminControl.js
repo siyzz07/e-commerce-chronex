@@ -279,7 +279,6 @@ const dashboard = async (req, res) => {
       }
     });
 
-
     // year wise chart
     const currentYear = moment().year();
     const monthlySales = await Order.aggregate([
@@ -321,8 +320,6 @@ const dashboard = async (req, res) => {
 
     const weeklyreport = allDaysOfWeek.map((day) => day.totalSales);
     const dailyreport = allDaysOfWeek.map((day) => day.day);
-
-
 
     const monthlyreport = monthlySalesData.map((val) => val.totalSales);
     const months = monthlySalesData.map((val) => val.month);
