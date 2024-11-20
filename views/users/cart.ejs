@@ -366,7 +366,9 @@
                 contentType: 'application/json',
                 data: JSON.stringify({ productId, quantity, subtotal }),
                 success: function(response) {
-                    // location.reload()
+                    setTimeout(function() {
+            location.reload();
+        }, 1500); 
                     console.log('Cart item updated successfully:', response);
                 },
                 error: function(xhr, status, error) {

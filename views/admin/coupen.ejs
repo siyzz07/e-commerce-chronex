@@ -197,15 +197,22 @@
                     <td style="text-align: center;"><%= coupen[i].usedCount%></td>
                   
                   
-                    <td style="text-align: center;" >
+                    <td style="text-align: center;">
                       <a
-                        href="/admin/deleteCoupen?id=<%= coupen[i]._id %>"
+                        href="javascript:void(0)"
+                        onclick="showCustomAlert('<%= coupen[i]._id %>')"
                         class="btn bg-danger btn-sm btn-brand rounded font-sm mt-15"
-                        >Delete</a
                       >
+                        Delete
+                      </a>
                     </td>
                   </tr>
                <% } %>
+               <div id="customAlert" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; padding:20px; border:1px solid #333; z-index:9999; border-radius:10px; box-shadow:0 0 15px rgba(0,0,0,0.3); width: 450px; height: 200px; text-align:center;">
+                <p>Are you sure you want to delete the coupon?</p><br>
+                <button id="confirmDelete" class="btn btn-danger" style="background-color:red;color:white;padding:10px;margin-right:10px;width: 77px;">Yes</button>
+                <button onclick="closeCustomAlert()" class="btn btn-success" style="color:white;padding:10px;width: 77px;">No</button>
+              </div>
                 </tbody>
               </table>
               <!-- table-responsive.// -->
@@ -225,6 +232,25 @@
     <script src="assets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="assets/js/main.js" type="text/javascript"></script>
+    <script>
+      
+      function showCustomAlert(id) {
+         
+          document.getElementById("customAlert").style.display = "block";
+          
+          
+          document.getElementById("confirmDelete").onclick = function() {
+             
+              window.location.href = `/admin/deleteCoupen?id=${id}`;
+          };
+      }
+    
+     
+      function closeCustomAlert() {
+          
+          document.getElementById("customAlert").style.display = "none";
+      }
+    </script>
   </body>
 
   <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-sellers-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:23 GMT -->
