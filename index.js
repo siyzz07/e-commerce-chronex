@@ -12,10 +12,11 @@ require('./config/passportConfig')
     app.use(methodOverride('_method'));
 
 const mongoose = require("mongoose");
+
 mongoose
     .connect(process.env.DATABASE_URL)
     .then(()=>console.log("connected to database"))
-    .catch((err)=>console.log("could not connect database"))
+    .catch((err)=>console.log("could not connect database",err.message))
 
 
 const multer=require('multer')

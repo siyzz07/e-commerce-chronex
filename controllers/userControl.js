@@ -51,19 +51,19 @@ const verifyUser = async (req, res) => {
             res.redirect("/home");
           } else {
             req.flash("fail", "invalied password");
-            res.redirect("/login");
+            res.redirect("/");
           }
         } else {
           req.flash("fail", "use to login with google");
-          res.redirect("/login");
+          res.redirect("/");
         }
       } else {
         req.flash("fail", "Your account blocked by admin");
-        res.redirect("/login");
+        res.redirect("/");
       }
     } else {
       req.flash("fail", "invalied email");
-      res.redirect("/login");
+      res.redirect("/");
     }
   } catch (error) {
     console.log(error.message);
@@ -201,7 +201,7 @@ const otpVarificationCheck = async (req, res) => {
 
           // Redirect to success page or login page after verification
           req.flash("success", "your account is created ");
-          res.redirect("/login");
+          res.redirect("/");
         } else {
           req.flash("fail", "invalid otp");
           res.redirect(`/otp?id=${id}`);
@@ -251,7 +251,7 @@ const resendOtp = async (req, res) => {
 const logout = async (req, res) => {
   try {
     req.session.destroy();
-    res.redirect("/login");
+    res.redirect("/");
   } catch (error) {
     console.log(error.message);
   }
@@ -280,7 +280,7 @@ const postforgotPassword = async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (!user || user.isVerified == false) {
       req.flash("fail", "you dont have an account,please signup");
-      res.redirect("/login");
+      res.redirect("/");
     } else {
       const email = req.body.email;
       const existUser = await User.findOne({ email: req.body.email });
@@ -318,7 +318,7 @@ const getotpcheck = async (req, res) => {
       if (email) {
         res.render("forgotpassOTP", { email: email });
       } else {
-        res.redirect("/login");
+        res.redirect("/");
       }
     }
   } catch (error) {
@@ -369,7 +369,7 @@ const getSetPassword = async (req, res) => {
         const fail = req.flash("fail");
         res.render("setpassword", { fail, email });
       } else {
-        res.redirect("/login");
+        res.redirect("/");
       }
     }
   } catch (error) {
@@ -398,7 +398,7 @@ const postSetPassword = async (req, res) => {
         await user.save();
 
         req.flash("success", "password changed ");
-        res.redirect("/login");
+        res.redirect("/");
       }
     } else {
       req.flash("fail", "password and conform Passwords are not correct");
@@ -421,7 +421,7 @@ const loadHome = async (req, res) => {
     const userData = await User.findOne({ email: user });
     if (userData.isBlocked) {
       req.session.destroy();
-      return res.redirect("/login");
+      return res.redirect("/");
     }
 
     const cart = await Cart.findOne({ userId: userId });
@@ -734,7 +734,7 @@ const getShop = async (req, res) => {
 
     if (userData.isBlocked) {
       req.session.destroy();
-      return res.redirect("/login");
+      return res.redirect("/");
     }
 
     // Search criteria
@@ -794,7 +794,7 @@ googleAuth = (req, res) => {
 
       return res.redirect("/home");
     } else {
-      return res.redirect("/login");
+      return res.redirect("/");
     }
   } catch (error) {
     console.log(error.message);

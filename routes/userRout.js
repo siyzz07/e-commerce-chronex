@@ -39,7 +39,7 @@ const walletController=require('../controllers/walletControll')
 
 
 // login page
-user_route.get("/login",userController.loadLogin)
+user_route.get("/",userController.loadLogin)
 user_route.post('/verifyuser',userController.verifyUser)
 
 //logout
