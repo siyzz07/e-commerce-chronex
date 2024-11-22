@@ -57,7 +57,8 @@ const addToCart = async (req, res) => {
     req.flash("msg", "Product added to cart");
     res.redirect(`/productdetails?id=${productId}`);
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -103,7 +104,8 @@ const addToCartFromWishlist = async (req, res) => {
     req.flash("msg", "product added to cart");
     res.redirect(`/wishlist`);
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -168,7 +170,8 @@ const getCart = async (req, res) => {
       wishlist,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -209,8 +212,8 @@ const updateCart = async (req, res) => {
       .status(200)
       .json({ message: "Cart item updated successfully", totalPrice });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ error: "Failed to update cart item" });
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -288,8 +291,8 @@ const deleFromCart = async (req, res) => {
       res.redirect("/cart");
     }
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Error deleting product from cart");
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 

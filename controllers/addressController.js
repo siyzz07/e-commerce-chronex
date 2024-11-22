@@ -28,7 +28,8 @@ const getAddress = async (req, res) => {
       wishlist,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -53,7 +54,8 @@ const getAddAddress = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -101,7 +103,8 @@ const postAddAddres = async (req, res) => {
     req.flash("msg", "address added auccessfully");
     res.redirect("/address");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -123,7 +126,8 @@ const deletAddress = async (req, res) => {
       res.redirect("/address");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -157,7 +161,8 @@ const editAddress = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -193,7 +198,8 @@ const postEditAddress = async (req, res) => {
     req.flash("msg", "Address Updated Successfully");
     res.redirect("/address");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 

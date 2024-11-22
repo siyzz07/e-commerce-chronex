@@ -163,4 +163,8 @@ user_route.get('/invoice',userSession,orderController.invoiceGet)
 user_route.post('/createOrderRetry',orderController.createOrderRetry)
 user_route.post('/verifyPamentRetry',orderController.verifyPaymentRetry)
 
+
+//404
+// user_route.get('/*',userController.pageNotFound)
+
 module.exports=user_route

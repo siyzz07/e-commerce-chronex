@@ -12,7 +12,8 @@ const getCoupenPage = async (req, res) => {
     const fail = req.flash("fail");
     res.render("coupen", { fail, coupen, msg });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -22,7 +23,8 @@ const getAddCoupen = async (req, res) => {
   try {
     res.render("addCoupen");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -50,7 +52,8 @@ const postAddCoupen = async (req, res) => {
       res.redirect("/admin/coupen");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -62,7 +65,8 @@ const deleteCoupen = async (req, res) => {
     req.flash("msg", "Coupen deleted successfully");
     res.redirect("/admin/coupen");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -101,7 +105,8 @@ const applyCoupen = async (req, res) => {
       res.redirect(`/checkOut`);
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -111,7 +116,8 @@ const deletCoupen = async (req, res) => {
     req.flash("msg", "Coupen Deleted");
     res.redirect("/checkOut");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 

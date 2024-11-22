@@ -59,7 +59,8 @@ const offerGet = async (req, res) => {
       totalPages: Math.ceil(offerCount / perPage),
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -70,7 +71,8 @@ const addOffer = async (req, res) => {
     const categories = await Category.find({ isListed: true });
     res.render("addOffer", { products, categories });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -147,9 +149,8 @@ const postAddOffer = async (req, res) => {
     req.flash("msg", "Offer added successfully");
     res.redirect("/admin/offer");
   } catch (error) {
-    console.log("Error:", error.message);
-    req.flash("fail", "Error adding offer");
-    res.redirect("/admin/offer");
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -168,7 +169,8 @@ const editOfferGet = async (req, res) => {
       res.render("editOffer", { products, categories, offer });
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -200,7 +202,8 @@ const editOffer = async (req, res) => {
       res.redirect("/admin/offer");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -279,7 +282,8 @@ const unlistOffers = async (req, res) => {
     req.flash("msg", "Offer successfully unlisted and products updated");
     res.redirect("/admin/offer");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -347,7 +351,8 @@ const listOffers = async (req, res) => {
     req.flash("msg", "Offer successfully listed and products updated");
     res.redirect("/admin/offer");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 

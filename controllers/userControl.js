@@ -29,7 +29,8 @@ const loadLogin = async (req, res) => {
       res.render("login", { success, fail });
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -66,7 +67,8 @@ const verifyUser = async (req, res) => {
       res.redirect("/");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -96,7 +98,8 @@ const loadSignup = async (req, res) => {
       res.render("signup", { fail2, fail });
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -154,7 +157,8 @@ const insertUser = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -173,7 +177,8 @@ const otpVarification = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -209,7 +214,8 @@ const otpVarificationCheck = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -241,7 +247,8 @@ const resendOtp = async (req, res) => {
 
     res.redirect(`/otp?id=${id}`);
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -253,7 +260,8 @@ const logout = async (req, res) => {
     req.session.destroy();
     res.redirect("/");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -270,7 +278,8 @@ const getforgotPassword = async (req, res) => {
       res.render("forgotPassword", { fail });
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -304,7 +313,8 @@ const postforgotPassword = async (req, res) => {
       res.redirect(`/otpcheck?email=${email}`);
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -322,7 +332,8 @@ const getotpcheck = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -354,7 +365,8 @@ const postotpcheck = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -373,7 +385,8 @@ const getSetPassword = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -405,7 +418,8 @@ const postSetPassword = async (req, res) => {
       res.redirect(`/setpassword?email=${email}`);
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -469,7 +483,8 @@ const loadHome = async (req, res) => {
       noProduct,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -507,7 +522,8 @@ const productDetails = async (req, res) => {
       res.redirect("/home");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -538,7 +554,8 @@ const account = async (req, res) => {
       wishlist,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -571,7 +588,8 @@ const postEditUser = async (req, res) => {
       res.redirect("/userAccount");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -601,7 +619,8 @@ const getChangePassword = async (req, res) => {
       res.redirect("/userAccount");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -632,7 +651,8 @@ const postChangePassword = async (req, res) => {
       res.redirect(`/changePassword?id=${id}`);
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -779,7 +799,8 @@ const getShop = async (req, res) => {
       wishlist,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -797,7 +818,8 @@ googleAuth = (req, res) => {
       return res.redirect("/");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -817,8 +839,8 @@ const createOrder = async (req, res) => {
 
     res.json(order);
   } catch (error) {
-    console.error("Error creating order:", error); // Log any errors
-    res.status(500).send({ error: "Failed to create Razorpay order" });
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -886,12 +908,24 @@ const verifyPayment = async (req, res) => {
       res.json({ success: false, redirectUrl: "/payment/fail" });
     }
   } catch (error) {
-    console.error("Error fetching payment details:", error);
-    res.status(500).send({ error: "Failed to verify payment" });
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
 // --------------------------------------------- END ----------------------------------
+
+
+
+//-----------------------404---------------------------
+const pageNotFound=async(req,res)=>{
+  try{
+    res.render('404')
+  }catch(error){
+    console.log(error.message);
+    
+  }
+}
 
 module.exports = {
   loadLogin,
@@ -917,4 +951,5 @@ module.exports = {
   getShop,
   googleAuth,
   /////////////////
+  pageNotFound
 };

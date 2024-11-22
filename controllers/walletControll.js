@@ -38,7 +38,8 @@ const getWallet = async (req, res) => {
       wishlist,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 

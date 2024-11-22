@@ -13,7 +13,8 @@ const category = async (req, res) => {
     const fail2 = req.flash("fail2");
     res.render("categorys", { category: category, msg, fail, msg1, fail2 });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -39,7 +40,8 @@ const addCategory = async (req, res) => {
       res.redirect("/admin/category");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -51,7 +53,8 @@ const deletCategory = async (req, res) => {
     req.flash("msg1", "category deleted successfully");
     res.redirect("/admin/category");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -64,7 +67,8 @@ const listCategory = async (req, res) => {
     });
     res.redirect("/admin/category");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -75,7 +79,8 @@ const unlistCategory = async (req, res) => {
     const unlist = await Category.findByIdAndUpdate(id, { isListed: false });
     res.redirect("/admin/category");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -90,7 +95,8 @@ const loadEditCategory = async (req, res) => {
       res.redirect("/admin/category");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -118,7 +124,8 @@ const editCategoryPost = async (req, res) => {
       res.redirect("/admin/category");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 

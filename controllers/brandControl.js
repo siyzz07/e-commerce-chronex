@@ -11,7 +11,8 @@ const brand = async (req, res) => {
     const fail2 = req.flash("fail2");
     res.render("brand", { brand: brand, msg, fail, msg1, fail2 });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -34,7 +35,8 @@ const addBrand = async (req, res) => {
       res.redirect("/admin/brand");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -46,7 +48,8 @@ const deleteBrand = async (req, res) => {
     req.flash("msg1", "Brand deleted successfully");
     res.redirect("/admin/brand");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -57,7 +60,8 @@ const listBrand = async (req, res) => {
     const listbrand = await Brand.findByIdAndUpdate(id, { isListed: true });
     res.redirect("/admin/brand");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -68,7 +72,8 @@ const unlistBrand = async (req, res) => {
     const unslistbrand = await Brand.findByIdAndUpdate(id, { isListed: false });
     res.redirect("/admin/brand");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -84,7 +89,8 @@ const editBrand = async (req, res) => {
       res.redirect("/admin/brand");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -113,7 +119,8 @@ const edit = async (req, res) => {
       res.redirect("/admin/brand");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 

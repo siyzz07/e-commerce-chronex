@@ -42,7 +42,8 @@ const addWishlist = async (req, res) => {
     req.flash("msg", "product added to wishlist");
     res.redirect(`/productdetails?id=${productId}`);
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -76,7 +77,8 @@ const getWishlist = async (req, res) => {
       cart,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -98,7 +100,9 @@ const deleFromWishlist = async (req, res) => {
       res.redirect("/wishlist");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
+
   }
 };
 

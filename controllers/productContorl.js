@@ -9,7 +9,8 @@ const getProduct = async (req, res) => {
     const msg = req.flash("msg");
     res.render("product", { product: product, msg });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -22,7 +23,8 @@ const getAddProuduct = async (req, res) => {
     const msg = req.flash("msg");
     res.render("addProduct", { category: category, brand: brand, msg, fail });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -51,7 +53,8 @@ const postProduct = async (req, res) => {
       res.redirect("/admin/addproduct");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -62,7 +65,8 @@ const blockProduct = async (req, res) => {
     const block = await Product.findByIdAndUpdate(id, { isBlocked: false });
     return res.redirect("/admin/product");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -73,7 +77,8 @@ const unblockProduct = async (req, res) => {
     const unblock = await Product.findByIdAndUpdate(id, { isBlocked: true });
     return res.redirect("/admin/product");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -99,7 +104,8 @@ const editproductGet = async (req, res) => {
       res.redirect("/admin/product");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -126,7 +132,8 @@ const editproductpost = async (req, res) => {
     await Product.findByIdAndUpdate(id, updatedProduct);
     res.redirect("/admin/product");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -138,7 +145,8 @@ const deletproduct = async (req, res) => {
     req.flash("msg", "delete successfully");
     res.redirect("/admin/product");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 

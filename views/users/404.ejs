@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #f3f4f6;
+            color: #333;
+        }
+
+        /* Site Header */
+        .site-name {
+            width: 100%;
+            padding: 20px 0;
+            background-color: #121212; /* Blue color */
+            color: #fff;
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .site-name:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Wrapper for Main Content */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex: 1;
+            width: 100%;
+            margin-top: 80px; /* Adjust for fixed header */
+            padding: 20px;
+        }
+
+        /* Container Styles */
+        .container {
+            max-width: 600px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Headline */
+        h1 {
+            font-size: 96px;
+            margin: 0;
+            color: #656667;
+            animation: bounce 1s infinite alternate;
+        }
+
+        /* Subtext */
+        p {
+            font-size: 18px;
+            margin: 20px 0 30px;
+            color: #555;
+        }
+
+        /* Button Styles */
+        a {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #036f3e;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        a:hover {
+            background-color: #014527;
+            transform: translateY(-2px);
+        }
+
+        /* Animation for the Heading */
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 72px;
+            }
+            p {
+                font-size: 16px;
+            }
+            a {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 56px;
+            }
+            p {
+                font-size: 14px;
+            }
+            a {
+                font-size: 12px;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Header -->
+    <div class="site-name">Chronex</div>
+
+    <!-- Centered Content -->
+    <div class="wrapper">
+        <div class="container">
+            <h1>404</h1>
+            <p>Oops! The page you’re looking for cannot be found. It might have been moved or deleted.</p>
+            <a href="/">Go Back Home</a>
+        </div>
+    </div>
+</body>
+</html>

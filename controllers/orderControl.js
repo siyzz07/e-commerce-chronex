@@ -85,7 +85,8 @@ const getCheckOut = async (req, res) => {
       res.redirect("/cart");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -152,7 +153,8 @@ const placeOrder = async (req, res) => {
       redirectUrl: `/confirmorder?orderId=${order._id}`,
     });
   } catch (error) {
-    console.log(error.messagea);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -169,7 +171,8 @@ const confirmOrder = async (req, res) => {
       res.redirect("/home");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -218,7 +221,8 @@ const getOrderHistory = async (req, res) => {
       wishlist,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -253,7 +257,8 @@ const getOrderDeatails = async (req, res) => {
       wishlist,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -304,8 +309,8 @@ const cancelOrder = async (req, res) => {
 
     res.redirect("/order");
   } catch (error) {
-    console.error("Error in cancelOrder:", error.message);
-    res.status(500).send("Internal Server Error");
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -349,7 +354,8 @@ const retrunProduct = async (req, res) => {
 
     res.redirect("/order");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -367,8 +373,8 @@ const createOrder = async (req, res) => {
     const order = await razorpayInstance.orders.create(options);
     res.json(order);
   } catch (error) {
-    console.error("Error creating order:", error); // Log any errors
-    res.status(500).send({ error: "Failed to create Razorpay order" });
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -442,12 +448,12 @@ const verifyPayment = async (req, res) => {
       res.json({ success: false, redirectUrl: "/payment/fail" });
     }
   } catch (error) {
-    console.error("Error fetching payment details:", error);
-    res.status(500).send({ error: "Failed to verify payment" });
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
-// payment pengin
+// payment pending
 const logOrderCancellation = async (req, res) => {
   try {
     const userId = req.session.user._id;
@@ -501,10 +507,8 @@ const logOrderCancellation = async (req, res) => {
     req.flash("fail", "Transaction Cancelled pls try again");
     res.json({ success: true, redirectUrl: "/order" });
   } catch (error) {
-    console.error("Error logging order cancellation:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to log order cancellation" });
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -524,8 +528,8 @@ const createOrderRetry = async (req, res) => {
 
     res.json(order);
   } catch (error) {
-    console.error("Error creating order:", error);
-    res.status(500).send({ error: "Failed to create Razorpay order" });
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -552,7 +556,8 @@ const verifyPaymentRetry = async (req, res) => {
       redirectUrl: `/confirmorder?orderId=${orderId}`,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -576,7 +581,8 @@ const invoiceGet = async (req, res) => {
       res.redirect("/order");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500')
   }
 };
 
@@ -618,7 +624,8 @@ const getOrderList = async (req, res) => {
       totalPages: totalPages,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -638,7 +645,8 @@ const orderDeatails = async (req, res) => {
       res.redirect("/admin/orderList");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -663,7 +671,8 @@ const orderUpdate = async (req, res) => {
       res.redirect("/admin/orderList");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 

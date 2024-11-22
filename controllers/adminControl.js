@@ -22,7 +22,8 @@ const loadAdminLogin = async (req, res) => {
       res.redirect("/admin/dashboard");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -44,7 +45,8 @@ const adminVerify = async (req, res) => {
       res.redirect("/admin/login");
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 //------------------------------------------------------ END ------------------------------------------------------------------
@@ -55,7 +57,8 @@ const logoutAdmin = async (req, res) => {
     req.session.destroy();
     res.redirect("/admin/login");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -343,7 +346,8 @@ const dashboard = async (req, res) => {
       months,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -357,7 +361,8 @@ const userData = async (req, res) => {
     const msg = req.flash("msg");
     res.render("userDetails", { user: users, msg });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -370,7 +375,8 @@ const deleteUser = async (req, res) => {
     req.flash("msg", "user deleted successfully");
     res.redirect("/admin/userdata");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -381,7 +387,8 @@ const unblockuser = async (req, res) => {
     const unblock = await User.findByIdAndUpdate(id, { isBlocked: false }); ////
     res.redirect("/admin/userdata");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -395,7 +402,8 @@ const blockuser = async (req, res) => {
 
     res.redirect("/admin/userdata");
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
@@ -540,7 +548,8 @@ const salesReportGet = async (req, res) => {
       amountAfterDiscount,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error.stack);
+    res.status(500).render('500Admin')
   }
 };
 
