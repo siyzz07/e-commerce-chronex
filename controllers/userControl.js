@@ -52,19 +52,19 @@ const verifyUser = async (req, res) => {
             res.redirect("/home");
           } else {
             req.flash("fail", "invalied password");
-            res.redirect("/");
+            res.redirect("/login");
           }
         } else {
           req.flash("fail", "use to login with google");
-          res.redirect("/");
+          res.redirect("/login");
         }
       } else {
         req.flash("fail", "Your account blocked by admin");
-        res.redirect("/");
+        res.redirect("/login");
       }
     } else {
       req.flash("fail", "invalied email");
-      res.redirect("/");
+      res.redirect("/login");
     }
   } catch (error) {
     console.log(error.stack);
@@ -206,7 +206,7 @@ const otpVarificationCheck = async (req, res) => {
 
           // Redirect to success page or login page after verification
           req.flash("success", "your account is created ");
-          res.redirect("/");
+          res.redirect("/login");
         } else {
           req.flash("fail", "invalid otp");
           res.redirect(`/otp?id=${id}`);
@@ -289,7 +289,7 @@ const postforgotPassword = async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (!user || user.isVerified == false) {
       req.flash("fail", "you dont have an account,please signup");
-      res.redirect("/");
+      res.redirect("/login");
     } else {
       const email = req.body.email;
       const existUser = await User.findOne({ email: req.body.email });
@@ -328,7 +328,7 @@ const getotpcheck = async (req, res) => {
       if (email) {
         res.render("forgotpassOTP", { email: email });
       } else {
-        res.redirect("/");
+        res.redirect("/login");
       }
     }
   } catch (error) {
@@ -349,7 +349,6 @@ const postotpcheck = async (req, res) => {
     const userid = user._id;
     const userOtp = await UserOtpStore.findOne({ userId: userid });
     // console.log(userOtp);
-
     if (userOtp.otpexpire < new Date()) {
       await UserOtpStore.deleteMany({ userId: userid });
       req.flash("fail", "otpexpired");
@@ -381,7 +380,7 @@ const getSetPassword = async (req, res) => {
         const fail = req.flash("fail");
         res.render("setpassword", { fail, email });
       } else {
-        res.redirect("/");
+        res.redirect("/login");
       }
     }
   } catch (error) {
@@ -411,7 +410,7 @@ const postSetPassword = async (req, res) => {
         await user.save();
 
         req.flash("success", "password changed ");
-        res.redirect("/");
+        res.redirect("/login");
       }
     } else {
       req.flash("fail", "password and conform Passwords are not correct");
@@ -435,7 +434,7 @@ const loadHome = async (req, res) => {
     const userData = await User.findOne({ email: user });
     if (userData.isBlocked) {
       req.session.destroy();
-      return res.redirect("/");
+      return res.redirect("/login");
     }
 
     const cart = await Cart.findOne({ userId: userId });
@@ -447,6 +446,8 @@ const loadHome = async (req, res) => {
     let noProduct = "";
 
     const searchTerm = req.query.search;
+   
+    
     const categoryFilter = req.query.category;
 
     // creeeeeate a serch creiteria
@@ -456,6 +457,7 @@ const loadHome = async (req, res) => {
       searchCriteria.$or = [
         { title: { $regex: String(searchTerm), $options: "i" } },
         { description: { $regex: String(searchTerm), $options: "i" } },
+        
       ];
     }
 
@@ -495,10 +497,13 @@ const loadHome = async (req, res) => {
 //load product details page
 const productDetails = async (req, res) => {
   try {
+  
+    
+
     const id = req.query.id;
     const userId = req.session.user._id;
-    const cart = await Cart.findOne({ userId: userId });
-    const wishlist = await Wishlist.findOne({ userId: userId });
+      const cart = await Cart.findOne({ userId: userId });
+      const wishlist = await Wishlist.findOne({ userId: userId });
 
     const productData = await Product.findOne({ _id: id })
       .populate("brandName")
@@ -754,7 +759,7 @@ const getShop = async (req, res) => {
 
     if (userData.isBlocked) {
       req.session.destroy();
-      return res.redirect("/");
+      return res.redirect("/login");
     }
 
     // Search criteria
@@ -815,7 +820,7 @@ googleAuth = (req, res) => {
 
       return res.redirect("/home");
     } else {
-      return res.redirect("/");
+      return res.redirect("login");
     }
   } catch (error) {
     console.log(error.stack);
@@ -915,7 +920,94 @@ const verifyPayment = async (req, res) => {
 
 // --------------------------------------------- END ----------------------------------
 
+//=------------------------------------- LANDING --------------------------------------------------------------------------------------
+//-----------------------------------------landing page -------------------------------------------------
 
+const landinPage=async (req,res)=>{
+  try{
+    
+   
+if(req.session.user){
+  return res.redirect('/home')
+}
+   
+    const category = await Category.find({ isListed: true });
+    const brand = await Brand.find({ isListed: true });
+
+    let product;
+    let noProduct = "";
+
+    const searchTerm = req.query.search;
+    const categoryFilter = req.query.category;
+
+    // creeeeeate a serch creiteria
+    let searchCriteria = { isPublished: true };
+
+    if (searchTerm && searchTerm.trim() !== "") {
+      searchCriteria.$or = [
+        { title: { $regex: String(searchTerm), $options: "i" } },
+        { description: { $regex: String(searchTerm), $options: "i" } },
+      ];
+    }
+
+    if (categoryFilter && categoryFilter.trim() !== "") {
+      searchCriteria.category = categoryFilter;
+    }
+
+    // Fetch products based on search criteria
+    product = await Product.find(searchCriteria)
+      .populate("brandName")
+      .populate("category");
+
+    // Check if no product is found
+    if (!product || product.length === 0) {
+      noProduct = `No products found for ${searchTerm || ""}`;
+    }
+
+    // Render the landing page
+    res.render("landingPage", {
+      product: product,
+      category: category,
+      brand: brand,
+      noProduct,
+    });
+  } catch (error) {
+    console.log(error.stack);
+    res.status(500).render('500')
+  }
+}
+
+// ----------------------------landin product details page ---------------------------------
+
+
+const landingProduct =async (req,res)=>{
+  try{
+
+    if(req.session.user){
+    return  res.redirect('/home')
+    }
+    const id=req.query.id
+    const category = await Category.find({ isListed: true });
+    const brand = await Brand.find({ isListed: true });
+
+
+    const productData = await Product.findOne({ _id: id })
+      .populate("brandName")
+      .populate("category");
+
+     res.render("landingProductDetailsPage",{
+      data: productData,
+      brand: brand,
+      category: category,
+     })
+
+  }catch(error){
+    console.log(error.stack);
+    res.status(500).render('500')
+  }
+}
+
+//----------------------------------------- END -----------------------------------------------------------------
 
 //-----------------------404---------------------------
 const pageNotFound=async(req,res)=>{
@@ -951,5 +1043,7 @@ module.exports = {
   getShop,
   googleAuth,
   /////////////////
-  pageNotFound
+  pageNotFound,
+  landinPage,
+  landingProduct
 };

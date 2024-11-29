@@ -94,8 +94,27 @@ const getCheckOut = async (req, res) => {
 const placeOrder = async (req, res) => {
   try {
     const userId = req.session.user._id;
-    // const cart = await Cart.findOne({ userId: userId });
-    // const wishlist = await Wishlist.findOne({ userId: userId });
+    
+
+
+
+
+    // check the stock still available
+    const stockCheck = await Cart.findOne({ userId: userId });
+    for (const val of stockCheck.items) {
+      const isStock = await Product.findById(val.product); 
+      if (!isStock.isBlocked || isStock.stock < val.quantity) { 
+        req.flash('fail', `${ isStock.title } is not available`);
+        return res.json({
+            success: true,
+            redirectUrl:'/cart',
+          });
+      }
+    }
+
+
+
+    
 
     const { payment_option, address, couponName } = req.body;
     const coupenAddUser = await Coupen.updateOne(
@@ -314,6 +333,10 @@ const cancelOrder = async (req, res) => {
   }
 };
 
+
+
+
+//return order
 const retrunProduct = async (req, res) => {
   try {
     const orderId = req.query.orderid;
@@ -613,7 +636,7 @@ const getOrderList = async (req, res) => {
     const orders = await Order.find()
       .skip(skip)
       .limit(limit)
-      .sort({ orderDate: -1 });
+      .sort({ orderDate: 1 });
     const totalOrders = await Order.countDocuments();
     const totalPages = Math.ceil(totalOrders / limit);
     const msg = req.flash("msg");

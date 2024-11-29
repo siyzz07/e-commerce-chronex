@@ -312,10 +312,8 @@
                       <%= noProduct %>
                     </p>
 
-                    <% for(let i = 0; i < product.length; i++) { %> <%
-                    if(product[i].brandName.isListed == false ||
-                    product[i].category.isListed == false ||
-                    product[i].isBlocked === false) { %>
+                    <% for(let i = 0; i < product.length; i++) { %> 
+                    <% if(product[i].brandName.isListed == false ||product[i].category.isListed == false ||product[i].isBlocked === false) { %>
                     <!-- Skip this product if it's not listed or blocked -->
                     <% } else { %>
 
@@ -332,8 +330,7 @@
                             class="product-img product-img-zoom"
                           >
                             <a href="/productdetails?id=<%= product[i]._id %>">
-                              <% for(let j = 0; j < product[i].images.length;
-                              j++) { %>
+                              <% for(let j = 0; j < product[i].images.length;j++) { %>
                               <img
                                 class="default-img"
                                 style="

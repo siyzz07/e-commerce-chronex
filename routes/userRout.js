@@ -38,8 +38,16 @@ const coupenController=require('../controllers/coupenController')
 const walletController=require('../controllers/walletControll')
 
 
+
+
+
+
+// landing page 
+user_route.get("/",userController.landinPage)
+user_route.get("/landingproductdetails",userController.landingProduct)
+
 // login page
-user_route.get("/",userController.loadLogin)
+user_route.get("/login",userController.loadLogin)
 user_route.post('/verifyuser',userController.verifyUser)
 
 //logout
@@ -62,6 +70,11 @@ user_route.post('/register',userController.insertUser)
 user_route.get("/otp",userController.otpVarification)
 user_route.post("/otpverification",userController.otpVarificationCheck)
 user_route.get('/resendotp',userController.resendOtp)
+
+
+
+
+
 
 //home page
 user_route.get('/home',userSession,userController.loadHome)

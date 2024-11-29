@@ -149,16 +149,6 @@ const productSchema = new mongoose.Schema({
   },
 });
 
-// productSchema.pre('save', function (next) {
-//   // Check if the product is discounted
-//   if (this.isDiscounted && this.offerId) {
-//     // Calculate the offer price if isDiscounted is true
-//     this.offerPrice = Math.floor(this.price - (this.price * this.offerPercentage) / 100);
-//   } else {
-//     // Set offer price to 0 if the product is not discounted
-//     this.offerPrice = 0;
-//   }
-//   next();
-// });
+
 
 module.exports = mongoose.model('Product', productSchema);
