@@ -322,19 +322,15 @@ const postforgotPassword = async (req, res) => {
 const getotpcheck = async (req, res) => {
   try {
     if (req.session.user) {
-      console.log("1");
-      
-
+    
       res.redirect("/home");
     } else {
-      console.log("2");
       const id = req.query.id;
 
       const fail=req.flash('fail')
       if (id) {
         res.render("forgotpassOTP", { id:id,fail });
       } else {
-        console.log("3");
         res.redirect("/login");
       }
     }
@@ -348,8 +344,6 @@ const getotpcheck = async (req, res) => {
 const postotpcheck = async (req, res) => {
   try {
     const id = req.body.id;
-    console.log("4");
-  
     const userid = id
     const userOtp = await UserOtpStore.findOne({ userId: userid });
     // console.log(userOtp);
@@ -358,13 +352,10 @@ const postotpcheck = async (req, res) => {
       req.flash("fail", "otpexpired");
       res.redirect(`/otpcheck?id=${id}`);
     } else {
-      console.log("5");
       if (userOtp.otp == req.body.otp) {
-        console.log("6");
         await UserOtpStore.deleteMany({ userId: userid });
         res.redirect(`/setpassword?id=${id}`);
       } else {
-        console.log("7");
         // await UserOtpStore.deleteMany({ userId: userid });
         req.flash("fail", "Invalied OTP");
         res.redirect(`/otpcheck?id=${id}`);
@@ -381,17 +372,12 @@ const postotpcheck = async (req, res) => {
 const resendOtpForPassword = async (req, res) => {
   try {
     const id = req.query.id;
-    console.log('id', id)
-    console.log("8");
-    console.log('id', id)
     const userOtp = await UserOtpStore.findOne({ userId: id });
     const user = await User.findOne({ _id: id });
     if (!userOtp) {
-      console.log("9");
       req.flash("fail", "User not found please Signup");
       return res.redirect("/signup");
     }
-    console.log("10");
     // Generate new OTP and update expiry time
     const newOtp = crypto.randomInt(100000, 999999).toString();
 
