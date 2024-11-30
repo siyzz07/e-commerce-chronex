@@ -181,8 +181,8 @@
 
         <p style="color: #6c6767;">Enter the 6 digit OTP that you will receive in your registered Email</p>
         
-
-        <input type="hidden" name="email" value="<%= email %>"> 
+        <P style="color: rgb(255, 23, 23); text-align: center;"><%= fail %></P> 
+        <input type="" name="id" value="<%= id %>"> 
 
         
        
@@ -195,7 +195,8 @@
         <br>
         <input type="submit" value="Submit">
         <!-- Resend link and timer -->
-        
+        <div id="timer"></div>
+        <a id="resend-otp" href="/resendotpforPassword?id=<%= id %>" style="display: none;">Resend OTP</a>
 
 
 
@@ -207,4 +208,55 @@
 
 <%- include('../layout/footer.ejs') %>
 
+<script>
 
+
+
+    // Check if an existing expiration time is stored in localStorage
+    let otpExpiryTime = localStorage.getItem('otpExpiryTime');
+    
+    // If no expiry time exists, set a new one (OTP valid for 5 minutes)
+    if (!otpExpiryTime) {
+        const expiryTime = new Date(Date.now() + 2 * 60000).getTime(); // 2 minutes from now
+        localStorage.setItem('otpExpiryTime', expiryTime);
+        otpExpiryTime = expiryTime;
+    } else {
+        otpExpiryTime = parseInt(otpExpiryTime);
+    }
+    
+    // Timer logic
+    const timerDisplay = document.getElementById('timer');
+    const resendLink = document.getElementById('resend-otp');
+    
+    const timerInterval = setInterval(() => {
+        const now = new Date().getTime();
+        const timeLeft = otpExpiryTime - now;
+    
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            //  timerDisplay.innerHTML = 'OTP expired';
+            resendLink.style.display = 'inline'; // Show resend link
+            localStorage.removeItem('otpExpiryTime'); // Clear the OTP expiration from localStorage
+        } else {
+            const minutes = Math.floor(timeLeft / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            timerDisplay.innerHTML = `${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s remaining`;
+        }
+    }, 1000);
+    
+    // When the "resend OTP" link is clicked
+    resendLink.addEventListener('click', () => {
+        // Reset the OTP expiration time
+        const newExpiryTime = new Date(Date.now() + 2 * 60000).getTime(); // New 2 minutes from now
+        localStorage.setItem('otpExpiryTime', newExpiryTime);
+        location.reload(); // Reload the page to start a new timer
+    });
+    
+    
+    
+    
+    
+    
+    
+    
+    </script>

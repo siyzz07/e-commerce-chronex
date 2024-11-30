@@ -293,7 +293,7 @@ const postforgotPassword = async (req, res) => {
     } else {
       const email = req.body.email;
       const existUser = await User.findOne({ email: req.body.email });
-      const otp1 = crypto.randomInt(100000, 999999).toString(); //generate random otp
+      const otp1 = crypto.randomInt(100000, 999999).toString(); 
 
       const storeOtp = await new UserOtpStore({
         userId: existUser._id,
@@ -310,7 +310,7 @@ const postforgotPassword = async (req, res) => {
         text: `your OTP for reset  password ${otp1}`,
       });
 
-      res.redirect(`/otpcheck?email=${email}`);
+      res.redirect(`/otpcheck?id=${storeOtp.userId}`);
     }
   } catch (error) {
     console.log(error.stack);
@@ -322,12 +322,19 @@ const postforgotPassword = async (req, res) => {
 const getotpcheck = async (req, res) => {
   try {
     if (req.session.user) {
+      console.log("1");
+      
+
       res.redirect("/home");
     } else {
-      const email = req.query.email;
-      if (email) {
-        res.render("forgotpassOTP", { email: email });
+      console.log("2");
+      const id = req.query.id;
+
+      const fail=req.flash('fail')
+      if (id) {
+        res.render("forgotpassOTP", { id:id,fail });
       } else {
+        console.log("3");
         res.redirect("/login");
       }
     }
@@ -340,27 +347,27 @@ const getotpcheck = async (req, res) => {
 //post otp checkpage
 const postotpcheck = async (req, res) => {
   try {
-    const email = req.body.email;
-    // console.log(email);
-
-    const user = await User.findOne({ email: email });
-    // console.log(user);
-
-    const userid = user._id;
+    const id = req.body.id;
+    console.log("4");
+  
+    const userid = id
     const userOtp = await UserOtpStore.findOne({ userId: userid });
     // console.log(userOtp);
     if (userOtp.otpexpire < new Date()) {
       await UserOtpStore.deleteMany({ userId: userid });
       req.flash("fail", "otpexpired");
-      res.redirect("/forgotemail");
+      res.redirect(`/otpcheck?id=${id}`);
     } else {
+      console.log("5");
       if (userOtp.otp == req.body.otp) {
+        console.log("6");
         await UserOtpStore.deleteMany({ userId: userid });
-        res.redirect(`/setpassword?email=${email}`);
+        res.redirect(`/setpassword?id=${id}`);
       } else {
-        await UserOtpStore.deleteMany({ userId: userid });
-        req.flash("fail", "otp not correct start again");
-        res.redirect(`/forgotemail`);
+        console.log("7");
+        // await UserOtpStore.deleteMany({ userId: userid });
+        req.flash("fail", "Invalied OTP");
+        res.redirect(`/otpcheck?id=${id}`);
       }
     }
   } catch (error) {
@@ -369,14 +376,60 @@ const postotpcheck = async (req, res) => {
   }
 };
 
+
+// resend otp for forgot password
+const resendOtpForPassword = async (req, res) => {
+  try {
+    const id = req.query.id;
+    console.log('id', id)
+    console.log("8");
+    console.log('id', id)
+    const userOtp = await UserOtpStore.findOne({ userId: id });
+    const user = await User.findOne({ _id: id });
+    if (!userOtp) {
+      console.log("9");
+      req.flash("fail", "User not found please Signup");
+      return res.redirect("/signup");
+    }
+    console.log("10");
+    // Generate new OTP and update expiry time
+    const newOtp = crypto.randomInt(100000, 999999).toString();
+
+    userOtp.otp = newOtp;
+    userOtp.otpexpire = Date.now() + 300000;
+    await userOtp.save();
+
+    // Send new OTP to user's email
+    await transporter.sendMail({
+      from: "testbrocamp@gmail.com",
+      to: user.email,
+      subject: "Resend OTP",
+      text: `Your new OTP is ${newOtp}`,
+    });
+
+    res.redirect(`/otpcheck?id=${id}`);
+  } catch (error) {
+    console.log(error.stack);
+    res.status(500).render('500')
+  }
+};
+
+
+
+
+
+
 // get set password page
 const getSetPassword = async (req, res) => {
   try {
     if (req.session.user) {
       res.redirect("/home");
     } else {
-      const email = req.query.email;
-      if (email) {
+      const id = req.query.id;
+      let user=await User.findById(id)
+      console.log('user', user)
+      let email=user.email
+      if (id) {
         const fail = req.flash("fail");
         res.render("setpassword", { fail, email });
       } else {
@@ -1027,6 +1080,7 @@ module.exports = {
   postforgotPassword,
   postotpcheck,
   getotpcheck,
+  resendOtpForPassword,
   getSetPassword,
   postSetPassword,
   insertUser,
@@ -1047,3 +1101,6 @@ module.exports = {
   landinPage,
   landingProduct
 };
+
+
+

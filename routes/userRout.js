@@ -59,6 +59,7 @@ user_route.get('/forgotemail',userController.getforgotPassword)
 user_route.post('/forgotemail',userController.postforgotPassword)
 user_route.get('/otpcheck',userController.getotpcheck)
 user_route.post('/otpcheck',userController.postotpcheck)
+user_route.get('/resendotpforPassword',userController.resendOtpForPassword)
 user_route.get('/setpassword',userController.getSetPassword)
 user_route.post('/setpassword',userController.postSetPassword)
 
