@@ -1,40 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>500 Internal Server Error</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f9f9f9;
-            color: #333;
-            padding: 50px;
-        }
-        h1 {
-            font-size: 50px;
-            color: #e74c3c;
-        }
-        p {
-            font-size: 18px;
-            margin: 20px 0;
-        }
-        a {
-            text-decoration: none;
-            color: #3498db;
-            font-weight: bold;
-        }
-        a:hover {
-            color: #2980b9;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>500 Internal Server Error</title>
+  <style>
+    /* General Page Setup */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Arial", sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f9f9f9;
+      color: #333;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    /* Error Number */
+    h1 {
+      font-size: 6rem;
+      color: #e74c3c;
+      margin: 0;
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    /* Text and Description */
+    p {
+      font-size: 1.1rem;
+      margin: 15px 20px;
+      line-height: 1.6;
+      color: #555;
+      max-width: 600px;
+    }
+
+    /* Link Button */
+    a {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 12px 28px;
+      text-decoration: none;
+      background-color: #3498db;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 6px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    a:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+    }
+
+    /* Simple Animation for Error Code */
+    @keyframes pulse {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 0.8;
+        transform: scale(1.05);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      h1 {
+        font-size: 5rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 4rem;
+      }
+      p {
+        font-size: 0.95rem;
+      }
+      a {
+        font-size: 0.9rem;
+        padding: 10px 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 3.2rem;
+      }
+      p {
+        font-size: 0.9rem;
+        margin: 10px 15px;
+      }
+      a {
+        font-size: 0.85rem;
+        padding: 9px 18px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      h1 {
+        font-size: 2.6rem;
+      }
+      p {
+        font-size: 0.85rem;
+      }
+      a {
+        font-size: 0.8rem;
+        padding: 8px 16px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>500</h1>
-    <p><strong>Internal Server Error</strong></p>
-    <p>Oops! Something went wrong on our end.</p>
-    <p>Please try again later or contact the website administrator if the problem persists.</p>
-    <p><a href="/">Go back to the homepage</a></p>
+  <h1>500</h1>
+  <p><strong>Internal Server Error</strong></p>
+  <p>Oops! Something went wrong on our end.</p>
+  <p>Please try again later or contact the website administrator if the problem persists.</p>
+  <a href="/">Go back to the homepage</a>
 </body>
 </html>

@@ -1,145 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found</title>
-    <style>
-        /* General Styles */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background-color: #f3f4f6;
-            color: #333;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 - Page Not Found</title>
+  <style>
+    /* General Styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Arial", sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: #f3f4f6;
+      color: #333;
+    }
 
-        /* Site Header */
-        .site-name {
-            width: 100%;
-            padding: 20px 0;
-            background-color: #121212; /* Blue color */
-            color: #fff;
-            font-size: 26px;
-            font-weight: bold;
-            text-align: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        .site-name:hover {
-            transform: translateY(-5px);
-        }
+    /* Site Header */
+    .site-name {
+      width: 100%;
+      padding: 20px 0;
+      background-color: #121212;
+      color: #fff;
+      font-size: 1.6rem;
+      font-weight: bold;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
 
-        /* Wrapper for Main Content */
-        .wrapper {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            flex: 1;
-            width: 100%;
-            margin-top: 80px; /* Adjust for fixed header */
-            padding: 20px;
-        }
+    .site-name:hover {
+      transform: translateY(-5px);
+    }
 
-        /* Container Styles */
-        .container {
-            max-width: 600px;
-            padding: 20px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
+    /* Wrapper for Main Content */
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      width: 100%;
+      margin-top: 80px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
 
-        /* Headline */
-        h1 {
-            font-size: 96px;
-            margin: 0;
-            color: #656667;
-            animation: bounce 1s infinite alternate;
-        }
+    /* Container Styles */
+    .container {
+      max-width: 600px;
+      width: 100%;
+      padding: 30px 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-        /* Subtext */
-        p {
-            font-size: 18px;
-            margin: 20px 0 30px;
-            color: #555;
-        }
+    .container:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    }
 
-        /* Button Styles */
-        a {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #036f3e;
-            color: #fff;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 5px;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        a:hover {
-            background-color: #014527;
-            transform: translateY(-2px);
-        }
+    /* Headline */
+    h1 {
+      font-size: 6rem;
+      margin: 0;
+      color: #656667;
+      animation: bounce 1s infinite alternate;
+    }
 
-        /* Animation for the Heading */
-        @keyframes bounce {
-            0% {
-                transform: translateY(0);
-            }
-            100% {
-                transform: translateY(-10px);
-            }
-        }
+    /* Subtext */
+    p {
+      font-size: 1.1rem;
+      margin: 20px 0 30px;
+      color: #555;
+      line-height: 1.6;
+    }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 72px;
-            }
-            p {
-                font-size: 16px;
-            }
-            a {
-                font-size: 14px;
-                padding: 10px 20px;
-            }
-        }
+    /* Button Styles */
+    a {
+      display: inline-block;
+      padding: 12px 28px;
+      background-color: #036f3e;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 6px;
+      transition: background-color 0.3s, transform 0.2s;
+    }
 
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 56px;
-            }
-            p {
-                font-size: 14px;
-            }
-            a {
-                font-size: 12px;
-                padding: 8px 16px;
-            }
-        }
-    </style>
+    a:hover {
+      background-color: #014527;
+      transform: translateY(-2px);
+    }
+
+    /* Animation for the Heading */
+    @keyframes bounce {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      h1 {
+        font-size: 5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .site-name {
+        font-size: 1.4rem;
+        padding: 16px 0;
+      }
+      h1 {
+        font-size: 4rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+      a {
+        font-size: 0.95rem;
+        padding: 10px 22px;
+      }
+      .container {
+        padding: 25px 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .site-name {
+        font-size: 1.2rem;
+        padding: 14px 0;
+      }
+      h1 {
+        font-size: 3.2rem;
+      }
+      p {
+        font-size: 0.9rem;
+      }
+      a {
+        font-size: 0.85rem;
+        padding: 9px 18px;
+      }
+      .container {
+        padding: 20px 14px;
+        border-radius: 10px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      h1 {
+        font-size: 2.8rem;
+      }
+      p {
+        font-size: 0.85rem;
+      }
+      a {
+        font-size: 0.8rem;
+        padding: 8px 16px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Fixed Header -->
-    <div class="site-name">Chronex</div>
+  <!-- Fixed Header -->
+  <div class="site-name">Chronex</div>
 
-    <!-- Centered Content -->
-    <div class="wrapper">
-        <div class="container">
-            <h1>404</h1>
-            <p>Oops! The page you’re looking for cannot be found. It might have been moved or deleted.</p>
-            <a href="/">Go Back Home</a>
-        </div>
+  <!-- Centered Content -->
+  <div class="wrapper">
+    <div class="container">
+      <h1>404</h1>
+      <p>Oops! The page you’re looking for cannot be found. It might have been moved or deleted.</p>
+      <a href="/">Go Back Home</a>
     </div>
+  </div>
 </body>
 </html>
