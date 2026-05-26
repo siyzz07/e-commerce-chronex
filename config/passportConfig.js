@@ -7,7 +7,7 @@ const User = require('../models/userModels');
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "https://chronex.siyzz.site/auth/google/callback"
+  callbackURL: "https://chronex.shibnsiyad.site/auth/google/callback"
 },
 async (accessToken, refreshToken, profile, done) => {
   try {
